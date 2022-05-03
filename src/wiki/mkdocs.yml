@@ -1,0 +1,30 @@
+site_name: Book-site
+
+site_url: https://book-site.com
+nav:
+  - Site`s structure:
+      - Flowchart: Structure/site_structure.md
+      - Site`s development: Structure/development.md
+
+theme:
+  name: material
+
+markdown_extensions:
+
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.snippets
+  - toc:
+      permalink: True
+
+
+plugins:
+  - search
+  - awesome-pages
+
+site_author:
+  Андрій Григор
+
+# pip install mkdocs-awesome-pages-plugin
+# pip install mkdocs-material
