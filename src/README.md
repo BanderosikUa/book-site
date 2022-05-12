@@ -1,6 +1,13 @@
 # Book-site
 This site designed to buy, search and rating books.
 
+## Requirements
+To install all libraries run the following:
+`pip install -r requirements.txt`
+
+Also, you need set up your virtual environment.
+
+
 ### Settings
 Converted to python package, that contains base, local, production, staging and 
 test .py files for all servers we need to start.
