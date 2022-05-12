@@ -1,0 +1,13 @@
+## Book models
+- name
+- slug
+- about
+- photo
+- author
+- views
+- time_create
+- time_update
+- rating
+- category
+- comments
+- collections

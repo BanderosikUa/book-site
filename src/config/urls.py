@@ -5,6 +5,7 @@ from config import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('Books.urls')),
 ]
 
 if settings.local.DEBUG:

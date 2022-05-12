@@ -14,7 +14,7 @@ You also can set DJANGO_SETTINGS_MODULE environment variable.
 
 Windows command: `set DJANGO_SETTINGS_MODULE=config.settings.local` 
 
-until venv is started. To add permanent variable add this line in venv/Scripts/activate.bat
+until venv is started. To add permanent variable add this line in venv/Scripts/activate.bat(or in pycharm)
 #### Env
 Collect all your secret keys in config/settings/.env file.
 
