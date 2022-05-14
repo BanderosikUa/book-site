@@ -17,11 +17,16 @@ class Book(models.Model):
     # Delete null and blank
     photo = models.ImageField(upload_to='photos/%Y/%m/%d/', null=True,
                               blank=True)
+    author = models.CharField(max_length=100, db_index=True,)
     count_views = models.IntegerField(default=0)
     time_created = models.DateTimeField(auto_now_add=True)
     time_modified = models.DateTimeField(auto_now=True)
 
+
+
+
     def counter(self):
+        """Counts new views for the book"""
         self.count_views += 1
 
     def __str__(self):
