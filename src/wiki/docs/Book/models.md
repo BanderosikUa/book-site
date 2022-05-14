@@ -7,6 +7,7 @@
 - views
 - time_create
 - time_update
+- is_published
 - rating
 - category
 - comments
