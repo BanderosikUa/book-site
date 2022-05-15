@@ -12,8 +12,9 @@ logs/
 *.toc
 *.out
 *.pickle
-celerybeat-schedule                                                                     
+celerybeat-schedule
 .ipynb_checkpoints
 .env
 env/
 venv/
+.vscode/

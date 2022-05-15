@@ -15,4 +15,8 @@ DATABASES = {
         }
     }
 
-INSTALLED_APPS += ['debug_toolbar', 'Books.apps.BookConfig']
+
+INSTALLED_APPS += ['Authors.apps.AuthorsConfig',
+                   'Books.apps.BookConfig', 'core.apps.CoreConfig',
+                   ]
+INSTALLED_APPS += ['debug_toolbar', 'django_extensions', ]
