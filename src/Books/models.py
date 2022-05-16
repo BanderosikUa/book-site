@@ -1,6 +1,7 @@
 from django.db import models
 from core.models import NameStampedModel
 from Authors.models import Author
+from Genres.models import Genre
 
 
 class Book(NameStampedModel):
@@ -15,6 +16,8 @@ class Book(NameStampedModel):
                               blank=True)
     author = models.ForeignKey(Author, on_delete=models.SET_NULL,
                                related_name="book_author", null=True)
+    genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True,
+                              blank=True, related_name="book_genre")
     count_views = models.IntegerField(default=0)
     time_created = models.DateTimeField(auto_now_add=True)
     time_modified = models.DateTimeField(auto_now=True)
