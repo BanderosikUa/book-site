@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from core.models import NameStampedModel
 from Authors.models import Author
 from Genres.models import Genre
@@ -28,6 +29,10 @@ class Book(NameStampedModel):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("book", kwargs={"slug": self.slug})
+
 
 
 # Create your models here.
