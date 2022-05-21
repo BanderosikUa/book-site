@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>book</title>
+    <meta name="" content="">
+    <meta property="itemprop=&quot;position&quot;" content="1">
+    <link rel="stylesheet" href="{% static 'bootstrap/assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee&amp;display=swap">
+    <link rel="stylesheet" href="{% static 'bootstrap/assets/css/styles.css' %}">
+</head>
+
+<body style="font-family: ABeeZee, sans-serif;">
+    {% block content%}
+    {% endblock%}
+    <script src="{% static 'bootstrap/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

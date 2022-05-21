@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<section style="padding: 0px;margin: 73px;">
+    <ul class="row list-unstyled breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList">
+        <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="" itemprop="item"><span itemprop="name">Main</span></a></li>
+        <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="#" itemprop="item"><span itemprop="name">Books</span></a></li>
+        {% if Book.genre.all %}
+            <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="" itemprop="item"><span itemprop="name">{{ Book.genre.all|first }}</span></a></li>
+        {% endif %}
+        <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="#" itemprop="item"><span itemprop="name">{{ Book.name }}</span></a></li>
+        </ul>
+    <div class="row">
+        <div class="col pb-5">
+            <div id="book" class="row text-md-left text-center mb-5 book">
+                    <div id="book_picture" class="col-auto mx-auto"><span class="image"><img class="rounded d-block mx-auto tooltip-title lazyloaded" title="#" width="200" height="300" {% if Book.photo %} src = {{ Book.photo.url }} {% else %} src={% static 'bootstrap/assets/img/default_book_cover_2015.jpg'%} {% endif %}></span>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="stars">
+                            {% for radio in form.rate %}
+                            {{ radio }}
+                            {% endfor %}
+                        </div>
+                        {% comment %} <div class="stars">
+                        <input type="radio" id="star1" name="rating" value="1" /><input type="radio" id="star2" name="rating" value="2" /><input type="radio" id="star3" name="rating" value="3" /><input type="radio" id="star4" name="rating" value="4"
+                            /><input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star1">1 star </label><label for="star2">2 stars</label><label for="star3">3 stars</label><label for="star4">4 stars</label><label for="star5">5 stars</label>
+                        </div>
+                        </form> {% endcomment %}
+            </div>
+                <div class="text-start col-12 col-md" id="text" style="padding-left: 20px;padding-right: 0px;margin-bottom: 0px;margin-left: 13px;font-size: 14px;">
+                    <ul class="list-inline" style="width: 606.6px;height: 26px;padding: 0px;margin: 2px 0px 0px;text-align: left;">
+                        {% if Book.genre.all %}
+                            {% for genre in Book.genre.all%}
+                                <li class="list-inline-item rounded" style="padding: 0px 1px;padding-right: 0px;padding-left: 1px;"><a class="text-center link d-block font-size-sm" href="{{ genre.get_absolute_url }}">{{ genre }}</a></li>
+                            {% endfor%}
+                        {% endif %}
+                    </ul><span class="fs-1 current title-link" style="font-weight: bold;">{{ Book.name }}</span>
+                    <div><span class="title-name" style="opacity: 0.77;">Author:&nbsp;<a href="{{ Book.author.get_absolute_url }}">{{ Book.author }}</a></span></div>
+                    <div id="content" class="content">
+                        <div class="entity">
+                            <p><br>{{ Book.about }}<br></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="d-lg-flex justify-content-lg-end align-items-lg-end">{{ Book.time_created|date:"SHORT_DATE_FORMAT" }}|{{ Book.views }} views</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
