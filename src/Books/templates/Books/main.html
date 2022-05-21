@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% block title %}{{ Book.name|capfirst }}{% endblock %}
+
 {% block content %}
 
 <section style="padding: 0px;margin: 73px;">
@@ -17,19 +19,16 @@
         <div class="col pb-5">
             <div id="book" class="row text-md-left text-center mb-5 book">
                     <div id="book_picture" class="col-auto mx-auto"><span class="image"><img class="rounded d-block mx-auto tooltip-title lazyloaded" title="#" width="200" height="300" {% if Book.photo %} src = {{ Book.photo.url }} {% else %} src={% static 'bootstrap/assets/img/default_book_cover_2015.jpg'%} {% endif %}></span>
-                        <form method="POST">
+                        <form class="rate-form" action="" method="POST" id="{{book.id}}">
                             {% csrf_token %}
-                            <div class="stars">
-                            {% for radio in form.rate %}
-                            {{ radio }}
-                            {% endfor %}
-                        </div>
-                        {% comment %} <div class="stars">
-                        <input type="radio" id="star1" name="rating" value="1" /><input type="radio" id="star2" name="rating" value="2" /><input type="radio" id="star3" name="rating" value="3" /><input type="radio" id="star4" name="rating" value="4"
-                            /><input type="radio" id="star5" name="rating" value="5" />
-                            <label for="star1">1 star </label><label for="star2">2 stars</label><label for="star3">3 stars</label><label for="star4">4 stars</label><label for="star5">5 stars</label>
-                        </div>
-                        </form> {% endcomment %}
+                            <button type="submit" class="fa fa-star fa-3x my-btn" id="first"></button>
+                            <button type="submit" class="fa fa-star fa-3x my-btn" id="second"></button>
+                            <button type="submit" class="fa fa-star fa-3x my-btn" id="third"></button>
+                            <button type="submit" class="fa fa-star fa-3x my-btn" id="fourth"></button>
+                            <button type="submit" class="fa fa-star fa-3x my-btn" id="fifth"></button>
+                        </form>
+                        <br>
+                        <div id="confirm-box"></div>
             </div>
                 <div class="text-start col-12 col-md" id="text" style="padding-left: 20px;padding-right: 0px;margin-bottom: 0px;margin-left: 13px;font-size: 14px;">
                     <ul class="list-inline" style="width: 606.6px;height: 26px;padding: 0px;margin: 2px 0px 0px;text-align: left;">
