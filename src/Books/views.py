@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import DetailView, FormView
-from .models import Book
+from django.views.generic import UpdateView
+from .models import Book, UserBookRelation
 from .forms import RateForm
 
-class BookView(FormView):
+
+class BookView(UpdateView):
     model = Book
     template_name = "Books/main.html"
     slug_url_kwarg = 'book_slug'
@@ -15,6 +16,10 @@ class BookView(FormView):
         slug = self.kwargs.get('book_slug')
         context['Book'] = get_object_or_404(Book, slug=slug)
         return context
+
+    def form_valid(self, form):
+        print('ok')
+        return super().form_valid(form)
 
 
 def test(request):
