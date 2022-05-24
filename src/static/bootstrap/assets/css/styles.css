@@ -107,36 +107,3 @@ a {
   color: var(--bs-warning);
   text-decoration: blink;
 }
-
-.rating{
-  display: flex;
-  align-items: flex-end;
-  font-size:30px;
-  line-height: 0.50;
-}
-
-.rating__body{
-  position: relative;
-}
-
-
-.rating__body::before{
-  content: "☆☆☆☆☆";
-  display: block;
-}
-
-.rating__active{
-  
-}
-
-.rating__items{
-  
-}
-
-.rating__item{
-
-}
-
-.rating__value{
-  font-size: 50%;
-}
