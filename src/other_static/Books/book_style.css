@@ -41,12 +41,11 @@
       position: absolute;
       width: 100%;
       top: 0;
-      left: 0;
   }
   
   .rating__item{
       flex: 0 0 20%;
-      height: 35px;
+      height: 32px;
       opacity: 0%;
   }
   

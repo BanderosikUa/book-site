@@ -107,3 +107,29 @@ a {
   color: var(--bs-warning);
   text-decoration: blink;
 }
+
+.states button.btn-state .btn-separator {
+  width: 1px;
+  background: rgba(255,255,255,.2);
+  top: 8px;
+  right: -1px;
+  bottom: 8px;
+  z-index: 1;
+}
+
+.states button.btn-state {
+  min-width: 150px;
+}
+
+.states.btn-group {
+  z-index: 3;
+}
+
+.states button.btn-state .btn-separator {
+  width: 1px;
+  background: rgba(255,255,255,.2);
+  top: 8px;
+  right: -1px;
+  bottom: 8px;
+  z-index: 1;
+}

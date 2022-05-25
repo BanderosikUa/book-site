@@ -22,11 +22,10 @@
         </ul>
     <div class="row">
         <div class="col pb-5">
-            <div id="book" class="row text-md-left text-center mb-5 book">
+            <div id="book" class="row text-md-left text-center mb-5 book" book-id="{{ Book.pk }}">
                     <div id="book_picture" class="col-auto mx-auto"><span class="image"><img class="rounded d-block mx-auto tooltip-title lazyloaded" title="#" width="200" height="300" {% if Book.photo %} src = {{ Book.photo.url }} {% else %} src={% static 'bootstrap/assets/img/default_book_cover_2015.jpg'%} {% endif %}></span>
-                        <form method="POST">
-                        {% csrf_token %}
-                        <div class="rating">
+                        <form method="POST" class="rating-form" >
+                        <div class="rating rating_set">
                             <div class="rating__body">
                                 <div class="rating__active"></div>
                                 <div class="rating__items">
@@ -37,8 +36,9 @@
                                     <input type="radio" class="rating__item" value="5" name="rating">
                                 </div>
                             </div>
-                            <div class="rating__value">1.8</div>
+                            <div class="rating__value">0</div>
                         </div>
+                        <span id="user_checked_value"></span>
                         </form>
             </div>
                 <div class="text-start col-12 col-md" id="text" style="padding-left: 20px;padding-right: 0px;margin-bottom: 0px;margin-left: 13px;font-size: 14px;">

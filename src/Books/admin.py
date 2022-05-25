@@ -9,7 +9,7 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ('name', 'author')
     readonly_fields = ('time_modified', 'time_created')
     fields = ('name', 'slug', 'about', 'photo', 'author', 'genre',
-              'time_created', 'time_modified', '')
+              'time_created', 'time_modified',)
     prepopulated_fields = {"slug": ("name",)}
 
 

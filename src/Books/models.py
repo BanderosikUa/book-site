@@ -4,6 +4,7 @@ from core.models import NameStampedModel
 from Authors.models import Author
 from Genres.models import Genre
 from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Book(NameStampedModel):
@@ -50,13 +51,14 @@ class UserBookRelation(models.Model):
     The class for rating, liking, bookmarking Book model
     """
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     like = models.BooleanField(default=False)
     in_bookmarks = models.BooleanField(default=False)
     rate = models.PositiveSmallIntegerField(choices=RATE_CHOICES)
-
+    
     def __str__(self):
         return f'{self.user.username}: {self.book}, RATE {self.rate}'
+
 
 # Create your models here.
