@@ -18,3 +18,4 @@ celerybeat-schedule
 env/
 venv/
 .vscode/
+db.json

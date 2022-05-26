@@ -34,23 +34,3 @@ class TestBookModel(TestCase):
         expected_name = 'test-bukva'
 
         self.assertEqual(real_slug, expected_name)
-
-    def test_one_view_count(self):
-        """Testing user add 1 view to book(page)"""
-
-        self.trial.counter()
-        real_views = getattr(self.trial, 'count_views')
-        expected_views = 1
-
-        self.assertEqual(real_views, expected_views)
-
-    def test_three_view_count(self):
-        """Testing user add 3 view to book(page)"""
-
-        self.trial.counter()
-        self.trial.counter()
-        self.trial.counter()
-        real_views = getattr(self.trial, 'count_views')
-        expected_views = 3
-
-        self.assertEqual(real_views, expected_views)
