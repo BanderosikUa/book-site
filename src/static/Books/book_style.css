@@ -1,0 +1,57 @@
+.rating{
+    display: flex;
+    align-items: flex-end;
+    font-size:40px;
+    line-height: 0.75;
+    padding: 10px 0px 0px 5px;
+  }
+  
+  .rating__body{
+    position: relative;
+  }
+  
+  
+  .rating__body::before{
+    content: "★★★★★";
+    color:rgb(177, 177, 177);
+    display: block;
+  }
+  
+  .rating__active{
+    position: absolute;
+    width: 0%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden ;
+  }
+
+  .rating__active::before{
+    content: "★★★★★";
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    color: rgb(241, 218, 10);
+
+  }
+  
+  .rating__items{
+      display: flex;
+      position: absolute;
+      width: 100%;
+      top: 0;
+  }
+  
+  .rating__item{
+      flex: 0 0 20%;
+      height: 32px;
+      opacity: 50%;
+  }
+  
+  .rating__value{
+    font-size: 50%;
+    line-height: 1;
+    padding: 0px 0px 0px 10px;
+  }
+  

@@ -1,0 +1,59 @@
+{% for review in users_reviews %}
+{% if review.comment %}
+    <div class="reviews-list" style="margin: 40px;width: 1000px;">
+        <div class="row">
+            <div class="col">
+                <h2 class="text-start">Comments</h2><span
+                    class="text-start d-xxl-flex justify-content-xxl-start"
+                    style="margin-top: -9px;">Add and read other comments here!</span>
+                <div id="review-" class="item">
+                    <div class="border rounded-0 review" style="margin-top: 18px;">
+                        <div class="user-info"><a class="avatar" href="#" title="Taras Pavlo"
+                                style="padding-right: -18px;margin-right: 0px;">
+                                <ul class="list-inline">
+                                    <li class="d-xxl-flex justify-content-xxl-start list-inline-item"
+                                        style="margin-top: 0px;margin-left: 38px;"><img
+                                            class="border rounded-circle d-xxl-flex align-items-xxl-start"
+                                            src="assets/img/b7647bef0d7011489f1c129bf01a2190.jpg"
+                                            style="width: 80px;height: 60px;margin-right: 0px;">
+                                        <ul class="list-unstyled">
+                                            <li style="margin-top: -14px;margin-left: 9px;"><span
+                                                    class="d-xxl-flex justify-content-xxl-start">{{ review.user.username }}</span><span
+                                                    class="d-xxl-flex align-items-xxl-end disabled"
+                                                    style="height: 30px; padding-down: 20px">{{ review.comment_time_created }}
+                                                    г.</span></li>
+                                                    <br>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </a>
+                            <div class="comment" style="margin-left: 90px;">
+                                <div><span class="d-xxl-flex justify-content-xxl-start"
+                                        style="margin-top: -20px;padding-left: 37px;">{{review.comment}}
+                                    </span>
+                                    <ul class="list-inline d-xxl-flex justify-content-xxl-start"
+                                        style="margin-down: 10px;padding-left: 33px;">
+                                        <li class="list-inline-item"><button
+                                                class="btn d-inline d-xxl-flex justify-content-xxl-start"
+                                                type="button"
+                                                style="margin-top: -17px;margin-left: -9px;"><i
+                                                    class="fa fa-thumbs-up d-xxl-flex justify-content-xxl-end align-items-xxl-start"></i><span
+                                                    class="border rounded-0 shadow-sm d-xxl-flex align-items-xxl-center"
+                                                    style="margin-left: 10px;margin-top: -3px;transform: scale(1.10);opacity: 0.86;filter: brightness(135%);--bs-body-bg: var(--bs-red);">1</span></button>
+                                        </li>
+                                        <li class="list-inline-item"><button
+                                                class="btn d-inline d-xxl-flex justify-content-xxl-start"
+                                                type="button"
+                                                style="margin-top: -17px;margin-left: -9px;"><i
+                                                    class="fa fa-thumbs-down d-xxl-flex justify-content-xxl-end align-items-xxl-start"></i><span
+                                                    class="border rounded-0 shadow-sm d-xxl-flex align-items-xxl-center"
+                                                    style="margin-left: 10px;margin-top: -3px;transform: scale(1.10);opacity: 0.86;filter: brightness(135%);--bs-body-bg: var(--bs-red);">1</span></button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{% endif %}
+{% endfor %}
