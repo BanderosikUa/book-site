@@ -8,6 +8,7 @@ from .forms import RateForm
 
 
 class BookView(UpdateView):
+    """Class-based view for displaying Book and UserBookRelation models"""
     model = Book
     template_name = "Books/main.html"
     slug_url_kwarg = 'book_slug'
@@ -28,6 +29,8 @@ def test(request):
 
 
 def get_avarage_rating(request, book_pk):
+    """Function, that calculate avarage rating of the book and
+    return json into ajax function with GET request"""
     book = Book.objects.get(pk=book_pk)
     qs_user_book_relations = UserBookRelation.objects.filter(book=book)
     if qs_user_book_relations:
@@ -40,6 +43,8 @@ def get_avarage_rating(request, book_pk):
 
 
 def rate_book(request):
+    """Function, that add user rating into created or updated UserBookRealtion
+    model and return json into ajax function with POST request"""
     book_pk = request.POST.get('pk')
     book = Book.objects.get(pk=book_pk)
     rate_value = request.POST.get('value')

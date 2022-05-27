@@ -65,7 +65,7 @@ class UserBookRelation(models.Model):
     comment = models.TextField(max_length=800, blank=True)
     like = models.BooleanField(default=False)
     # Delete null after
-    comment_time_created = models.CharField(max_length=100, blank=True)
+    comment_time_created = models.DateTimeField(blank=True, null=True)
     bookmarks = models.PositiveSmallIntegerField(choices=BOOKMARK_CHOICES,
                                                  default=None, blank=True,
                                                  null=True)
