@@ -1,7 +1,8 @@
 const SpinnerBox = document.getElementById('spinner-box')
 const ReviewBox = document.getElementById('review-box')
 const ToCommentBox = document.getElementById('to-comment-book')
-
+const LoadBtn = document.getElementById('load-btn')
+const EndBox = document.getElementById('end-box')
 
 const LikeComment = () =>{
     const LikeForm=[...document.getElementsByClassName('like-form-comment')];
@@ -21,7 +22,18 @@ const LikeComment = () =>{
             success: function(response){
                 $(`#like-${ClickedId}`).find('span').text(response.likes)
                 $(`#dislike-${ClickedId}`).find('span').text(response.dislikes)
-                $(`#like-${ClickedId}`).find('i').css("color", "blue")
+                if (response.liked){
+                    $(`#like-${ClickedId}`).find('i').css("color", "blue")
+                }
+                else{
+                    $(`#like-${ClickedId}`).find('i').css("color", "black")
+                }
+                if (response.disliked){
+                    $(`#dislike-${ClickedId}`).find('i').css("color", "blue")
+                }
+                else{
+                    $(`#dislike-${ClickedId}`).find('i').css("color", "black")
+                }
             }
         })
 
@@ -45,6 +57,18 @@ const DislikeComment = () =>{
             success: function(response){
                 $(`#dislike-${ClickedId}`).find('span').text(response.dislikes)
                 $(`#like-${ClickedId}`).find('span').text(response.likes)
+                if (response.liked){
+                    $(`#like-${ClickedId}`).find('i').css("color", "blue")
+                }
+                else{
+                    $(`#like-${ClickedId}`).find('i').css("color", "black")
+                }
+                if (response.disliked){
+                    $(`#dislike-${ClickedId}`).find('i').css("color", "blue")
+                }
+                else{
+                    $(`#dislike-${ClickedId}`).find('i').css("color", "black")
+                }
             }
         })
 
@@ -112,15 +136,28 @@ const GetCommentData = () =>{
                         </div>
                     </div>
                 </div>`
+                if (el.liked){
+                    $(`#like-${el.pk}`).find('i').css("color", "blue")
+                }
+                else{
+                    $(`#like-${el.pk}`).find('i').css("color", "black")
+                }
+                if (el.disliked){
+                    $(`#dislike-${el.pk}`).find('i').css("color", "blue")
+                }
+                else{
+                    $(`#dislike-${el.pk}`).find('i').css("color", "black")
+                }
                 });
             LikeComment();
             DislikeComment();
             }, 100)
             if (response.size === 0){
-                ReviewBox.textContent = "No comments under this book"
+                EndBox.textContent = "No comments under this book"
             }
             else if (response.size <= visible){
-                ReviewBox.text = "No more comments"
+                LoadBtn.classList.add('not-visible')
+                EndBox.textContent = "No more comments"
             }
             ToCommentBox.innerHTML = `<div id="post-comment" class="post-comment" style="padding-top: 30px">
             <div class="card text-black bg- mb-1">
@@ -152,6 +189,12 @@ const GetCommentData = () =>{
 
     })
 }
+
+LoadBtn.addEventListener('click', ()=>{
+    SpinnerBox.classList.remove('not-visible')
+    visible += 3
+    GetCommentData()
+})
 
 GetCommentData();
 $(document).ready(function(){

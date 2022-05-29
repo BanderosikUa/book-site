@@ -62,11 +62,12 @@ def rate_book(request):
     return JsonResponse({'status': 'success'})
 
 def get_comment_data(request, book_pk, num_comments):
+    """Function, that return Json with limited(3) data of comments in GET ajax request"""
     visible = 3
     upper = num_comments
     lower = upper - visible
     book = Book.objects.get(pk=book_pk)
-    qs = UserBookRelation.objects.filter(book=book).exclude(comment='')
+    qs = UserBookRelation.objects.filter(book=book).exclude(comment='').order_by('comment_time_created')
     size = qs.count()
     data = []
     for obj in qs:
@@ -76,35 +77,56 @@ def get_comment_data(request, book_pk, num_comments):
             'comment': obj.comment,
             'likes': obj.comment_likes,
             'dislikes': obj.comment_dislikes,
-            'time_created': obj.comment_time_created.strftime("%d %B %Y")
+            'time_created': obj.comment_time_created.strftime("%d %B %Y"),
+            'liked': True if request.user in obj.comment_liked.all() else False,
+            'disliked': True if request.user in obj.comment_disliked.all() else False,
         }
         data.append(item)
     return JsonResponse({'data':data[lower:upper],'size': size})
 
 def like_book_comment(request):
+    """Function, that add or remove user like to book's comment
+    and return Json in POST ajax request"""
     relation_pk = request.POST.get('comment_pk')
     relation = UserBookRelation.objects.get(pk=relation_pk)
     users_that_like_comment = relation.comment_liked
     users_that_dislike_comment = relation.comment_disliked
+    disliked = False
     if request.user in users_that_like_comment.all():
         users_that_like_comment.remove(request.user)
+        liked = False
     elif request.user in users_that_dislike_comment.all():
         users_that_dislike_comment.remove(request.user)
         users_that_like_comment.add(request.user)
+        liked = True
     else:
         users_that_like_comment.add(request.user)
-    return JsonResponse({'likes': relation.comment_likes, 'dislikes': relation.comment_dislikes})
+        liked = True
+    return JsonResponse({'likes': relation.comment_likes, 
+                         'dislikes': relation.comment_dislikes,
+                         'liked': liked,
+                         'disliked': disliked})
 
 def dislike_book_comment(request):
+    """Function, that add or remove user dislike to book's comment
+    and return Json in POST ajax request"""
     relation_pk = request.POST.get('comment_pk')
     relation = UserBookRelation.objects.get(pk=relation_pk)
     users_that_dislike_comment = relation.comment_disliked
     users_that_like_comment = relation.comment_liked
+    liked = False
     if request.user in users_that_dislike_comment.all():
         users_that_dislike_comment.remove(request.user)
+        disliked = False
     elif request.user in users_that_like_comment.all():
         users_that_like_comment.remove(request.user)
         users_that_dislike_comment.add(request.user)
+        disliked = True
     else:
         users_that_dislike_comment.add(request.user)
-    return JsonResponse({'dislikes': relation.comment_dislikes, 'likes': relation.comment_likes})
+        disliked = True
+        
+    return JsonResponse({'dislikes': relation.comment_dislikes, 
+                         'likes': relation.comment_likes,
+                         'liked': liked,
+                         'disliked': disliked})
