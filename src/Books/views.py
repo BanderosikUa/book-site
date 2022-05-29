@@ -80,3 +80,31 @@ def get_comment_data(request, book_pk, num_comments):
         }
         data.append(item)
     return JsonResponse({'data':data[lower:upper],'size': size})
+
+def like_book_comment(request):
+    relation_pk = request.POST.get('comment_pk')
+    relation = UserBookRelation.objects.get(pk=relation_pk)
+    users_that_like_comment = relation.comment_liked
+    users_that_dislike_comment = relation.comment_disliked
+    if request.user in users_that_like_comment.all():
+        users_that_like_comment.remove(request.user)
+    elif request.user in users_that_dislike_comment.all():
+        users_that_dislike_comment.remove(request.user)
+        users_that_like_comment.add(request.user)
+    else:
+        users_that_like_comment.add(request.user)
+    return JsonResponse({'likes': relation.comment_likes, 'dislikes': relation.comment_dislikes})
+
+def dislike_book_comment(request):
+    relation_pk = request.POST.get('comment_pk')
+    relation = UserBookRelation.objects.get(pk=relation_pk)
+    users_that_dislike_comment = relation.comment_disliked
+    users_that_like_comment = relation.comment_liked
+    if request.user in users_that_dislike_comment.all():
+        users_that_dislike_comment.remove(request.user)
+    elif request.user in users_that_like_comment.all():
+        users_that_like_comment.remove(request.user)
+        users_that_dislike_comment.add(request.user)
+    else:
+        users_that_dislike_comment.add(request.user)
+    return JsonResponse({'dislikes': relation.comment_dislikes, 'likes': relation.comment_likes})

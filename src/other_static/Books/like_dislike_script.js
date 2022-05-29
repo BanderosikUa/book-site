@@ -4,14 +4,11 @@ const ToCommentBox = document.getElementById('to-comment-book')
 
 
 const LikeComment = () =>{
-    const LikeForm=[...document.getElementsByClassName('like-comment')];
-    console.log(LikeForm);
+    const LikeForm=[...document.getElementsByClassName('like-form-comment')];
     LikeForm.forEach(form => form.addEventListener('submit', e=>{
         e.preventDefault()
-        const ClickedId = e.target.getAttribute('data-form-id');
-        console.log(ClickedId)
-        const ClickedBtn = document.getElementById(`like-${ClickedBtn}`)
-        const SpanBox = document.getElementById(`span-like-${ClickedBtn}`)
+        const ClickedId = e.target.getAttribute('data-form-id')
+        const ClickedBtn = document.getElementById(`like-${ClickedId}`)
         console.log(ClickedBtn)
 
         $.ajax({
@@ -19,10 +16,34 @@ const LikeComment = () =>{
             url: "/like-book-comment/",
             data: {
                 'csrfmiddlewaretoken': csrftoken,
-                'book_pk': BookPk,
-                'liked_comment': ClickedId
+                'comment_pk': ClickedId,
             },
             success: function(response){
+                $(`#like-${ClickedId}`).find('span').text(response.likes)
+                $(`#dislike-${ClickedId}`).find('span').text(response.dislikes)
+                $(`#like-${ClickedId}`).find('i').css("color", "blue")
+            }
+        })
+
+    }))
+}
+
+const DislikeComment = () =>{
+    const LikeForm=[...document.getElementsByClassName('dislike-form-comment')];
+    LikeForm.forEach(form => form.addEventListener('submit', e=>{
+        e.preventDefault()
+        const ClickedId = e.target.getAttribute('data-form-id')
+        const ClickedBtn = document.getElementById(`dislike-${ClickedId}`)
+
+        $.ajax({
+            type: "POST",
+            url: "/dislike-book-comment/",
+            data: {
+                'csrfmiddlewaretoken': csrftoken,
+                'comment_pk': ClickedId,
+            },
+            success: function(response){
+                $(`#dislike-${ClickedId}`).find('span').text(response.dislikes)
                 $(`#like-${ClickedId}`).find('span').text(response.likes)
             }
         })
@@ -30,15 +51,16 @@ const LikeComment = () =>{
     }))
 }
 
+
 var visible = 3
 
 const GetCommentData = () =>{
     $.ajax({
         type: "GET",
         url: `/book-comments/${BookPk}/${visible}`,
+        csrfmiddlewaretoken: csrftoken,
         success: function(response){
             const data = response.data
-            console.log(data)
             setTimeout(()=>{
                 SpinnerBox.classList.add('not-visible')
                 data.forEach(el => {
@@ -68,21 +90,21 @@ const GetCommentData = () =>{
                                 </span>
                                 <ul class="list-inline d-xxl-flex justify-content-xxl-start"
                                     style="margin-down: 10px;padding-left: 33px;">
-                                    <li class="list-inline-item"><form class="like-comment" data-form-id="${el.pk}"><button
+                                    <li class="list-inline-item"><form action="" method="POST" class="like-form-comment" data-form-id="${el.pk}"><button
                                             class="btn d-inline d-xxl-flex justify-content-xxl-start" id="like-${el.pk}"
-                                            type="button"
+                                            type="submit"
                                             style="margin-top: -17px;margin-left: -9px;"><i
                                                 class="fa fa-thumbs-up d-xxl-flex justify-content-xxl-end align-items-xxl-start"></i><span id="span-like-${el.pk}"
                                                 class="border rounded-0 shadow-sm d-xxl-flex align-items-xxl-center"
                                                 style="margin-left: 10px;margin-top: -3px;transform: scale(1.10);opacity: 0.86;filter: brightness(135%);--bs-body-bg: var(--bs-red);">${el.likes}</span></button></form>
                                     </li>
-                                    <li class="list-inline-item"><button
-                                            class="btn d-inline d-xxl-flex justify-content-xxl-start"
-                                            type="button"
+                                    <li class="list-inline-item"><form action="" method="POST" class="dislike-form-comment" data-form-id="${el.pk}"><button
+                                            class="btn d-inline d-xxl-flex justify-content-xxl-start" id="dislike-${el.pk}"
+                                            type="submit"
                                             style="margin-top: -17px;margin-left: -9px;"><i
-                                                class="fa fa-thumbs-down d-xxl-flex justify-content-xxl-end align-items-xxl-start"></i><span
+                                                class="fa fa-thumbs-down d-xxl-flex justify-content-xxl-end align-items-xxl-start"></i><span id="span-dislike-${el.pk}"
                                                 class="border rounded-0 shadow-sm d-xxl-flex align-items-xxl-center"
-                                                style="margin-left: 10px;margin-top: -3px;transform: scale(1.10);opacity: 0.86;filter: brightness(135%);--bs-body-bg: var(--bs-red);">${el.disliked}</span></button>
+                                                style="margin-left: 10px;margin-top: -3px;transform: scale(1.10);opacity: 0.86;filter: brightness(135%);--bs-body-bg: var(--bs-red);">${el.dislikes}</span></button></form>
                                     </li>
                                 </ul>
                             </div>
@@ -92,6 +114,7 @@ const GetCommentData = () =>{
                 </div>`
                 });
             LikeComment();
+            DislikeComment();
             }, 100)
             if (response.size === 0){
                 ReviewBox.textContent = "No comments under this book"
@@ -131,3 +154,10 @@ const GetCommentData = () =>{
 }
 
 GetCommentData();
+$(document).ready(function(){
+    $('.like-form-comment').submit(function(e){
+        e.preventDefault();
+        const CommentId=$('.btn d-inline d-xxl-flex justify-content-xxl-start')
+        console.log(CommentId)
+    })
+})
