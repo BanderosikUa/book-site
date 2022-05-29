@@ -11,12 +11,13 @@ class NameStampedModel(models.Model):
     """
     name = models.CharField(max_length=100, db_index=True,
                             help_text='No more 100 chars')
-    slug = models.SlugField(null=True, blank=True)
+    slug = models.SlugField(blank=True, null=True)
 
     class Meta:
         abstract = True
 
     def save(self, *args, **kwargs):
-        name = unidecode(self.name)
-        self.slug = slugify(name)
+        if not self.slug:
+            name = unidecode(self.name)
+            self.slug = slugify(name)
         super().save(*args, **kwargs)

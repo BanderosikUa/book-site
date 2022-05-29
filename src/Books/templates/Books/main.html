@@ -7,6 +7,7 @@
 {% block scripts %}
 <link rel="stylesheet" href="{% static 'Books/book_style.css' %}">
 <script src="{% static 'Books/rating_script.js' %}" defer></script>
+<script src="{% static 'Books/like_dislike_script.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -21,11 +22,11 @@
         <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="#" itemprop="item"><span itemprop="name">{{ Book.name }}</span></a></li>
         </ul>
     <div class="row">
-        <div class="col pb-5">
+        <div class="col-xs-12">
             <div id="book" class="row text-md-left text-center mb-5 book" book-id="{{ Book.pk }}">
                     <div id="book_picture" class="col-auto mx-auto"><span class="image"><img class="rounded d-block mx-auto tooltip-title lazyloaded" title="#" width="200" height="300" {% if Book.photo %} src = {{ Book.photo.url }} {% else %} src={% static 'bootstrap/assets/img/default_book_cover_2015.jpg'%} {% endif %}></span>
                         <form method="POST" class="rating-form" >
-                        <div class="rating rating_set">
+                        <div class="rating rating_set col-xs-12">
                             <div class="rating__body">
                                 <div class="rating__active"></div>
                                 <div class="rating__items">
@@ -38,10 +39,10 @@
                             </div>
                             <div class="rating__value">0</div>
                         </div>
-                        <span id="user_checked_value"></span>
+                        {% if user_relation.rate %}<span id="user_checked_value">Your rate: {{ user_relation.rate }}</span>{% endif%}
                         </form>
             </div>
-                <div class="text-start col-12 col-md" id="text" style="padding-left: 20px;padding-right: 0px;margin-bottom: 0px;margin-left: 13px;font-size: 14px;">
+                <div class="text-start col-xs-12 col-md" id="text" style="padding-left: 20px;padding-right: 0px;margin-bottom: 0px;margin-left: 13px;font-size: 14px;">
                     <ul class="list-inline" style="width: 606.6px;height: 26px;padding: 0px;margin: 2px 0px 0px;text-align: left;">
                         {% if Book.genre.all %}
                             {% for genre in Book.genre.all%}
@@ -50,10 +51,10 @@
                         {% endif %}
                     </ul><span class="fs-1 current title-link" style="font-weight: bold;">{{ Book.name }}</span>
                     <ul class="list-inline">
-                        <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-clock-o d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Plan to read</span><a class="d-inline-block" href="#" style="margin-left: 5px;">1</a></li>
-                        <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-book d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Reading</span><a class="d-inline-block" href="#" style="margin-left: 5px;">1</a></li>
-                        <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-check-circle d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Read</span><a class="d-inline-block" href="#" style="margin-left: 5px;">1</a></li>
-                        <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-remove d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Abandonded</span><a class="d-inline-block" href="#" style="margin-left: 5px;">1</a></li>
+                        <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-clock-o d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Plan to read</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{planning_users}}</a></li>
+                        <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-book d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Reading</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{reading_users}}</a></li>
+                        <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-check-circle d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Read</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{read_users}}</a></li>
+                        <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-remove d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Abandonded</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{abandonded_users}}</a></li>
                     </ul>
                     <div><span class="title-name" style="opacity: 0.77;">Author:&nbsp;<a href="{{ Book.author.get_absolute_url }}">{{ Book.author }}</a></span></div>
                     <div id="content" class="content">
@@ -70,30 +71,6 @@
         </div>
     </div>
     {% include 'Books/review.html' %}
-                <div id="post-comment" class="post-comment" style="padding-top: 30px">
-                    <div class="card text-black bg- mb-1">
-                        <div class="card-header">
-                            <span class='d-flex align-item-center user-name'>UserName</span>
-                        </div>
-                        <div class="card-body">
-                            <div class=" card-text form-group">
-                                <textarea placeholder="Message" rows="4"
-                                    class="form-control form-control-lg">
-</textarea>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                            <a class="float-right btn btn-dark"> <i class="fa fa-comment"></i>
-                                Comment</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-</section>
+
 
 {% endblock %}

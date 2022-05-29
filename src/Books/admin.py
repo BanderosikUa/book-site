@@ -15,7 +15,7 @@ class BookAdmin(admin.ModelAdmin):
 
 @admin.register(UserBookRelation)
 class UserBookRelationAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('comment_time_created',)
 
 
 # Register your models here.

@@ -1,4 +1,5 @@
 from datetime import datetime
+from signal import default_int_handler
 from django.db import models
 from django.urls import reverse
 from core.models import NameStampedModel
@@ -63,6 +64,8 @@ class UserBookRelation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     comment = models.TextField(max_length=800, blank=True)
+    comment_liked = models.ManyToManyField(User, blank=True, related_name='comment_likes')
+    comment_disliked = models.ManyToManyField(User, blank=True, related_name='comment_dislikes')
     like = models.BooleanField(default=False)
     # Delete null after
     comment_time_created = models.DateTimeField(blank=True, null=True)
@@ -73,13 +76,24 @@ class UserBookRelation(models.Model):
                                             default=None, blank=True,
                                             null=True)
 
+    @property
+    def comment_likes(self):
+        return self.comment_liked.count()
+
+    @property
+    def comment_dislikes(self):
+        return self.comment_disliked.count()
+
+
     def save(self, *args, **kwargs):
         if self.comment:
             self.comment_time_created = datetime.now()
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.user.username}: {self.book}, RATE {self.rate}'
+        return f'{self.user.username}: {self.book}, RATE {self.rate}, BOOKMARK {self.BOOKMARK_CHOICES[self.bookmarks-1][1] if self.bookmarks else None}'
 
+
+#class CommentBook(models.model):
 
 # Create your models here.
