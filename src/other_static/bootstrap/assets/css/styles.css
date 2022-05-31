@@ -133,3 +133,6 @@ a {
   bottom: 8px;
   z-index: 1;
 }
+button span {
+  pointer-events: none;
+}

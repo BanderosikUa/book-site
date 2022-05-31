@@ -1,4 +1,3 @@
-
 const rating = document.querySelectorAll('.rating')[0]
 const BookPicture = document.getElementById('book')
 const BookPk = BookPicture.getAttribute('book-id')
@@ -107,10 +106,72 @@ const RateBook = (rate_value) =>{
     }
     }
 
+const UserBookmarking = () =>{
+    const BookmarkButtons = [...document.getElementsByClassName('dropdown-item bookmark')]
+    BookmarkButtons.forEach(button => button.addEventListener('click', e=>{
+        e.preventDefault()
+        const ClickedBookmarkBtn = e.target
+        const ClickedBookmark = ClickedBookmarkBtn.value
+
+        $.ajax({
+            type: "POST",
+            url: "/bookmark-book/",
+            data:{
+                'csrfmiddlewaretoken': csrftoken,
+                'book_pk': BookPk,
+                'bookmarked': ClickedBookmark
+            },
+            success: function(response){
+                if (response.clicked){
+                    $(ClickedBookmarkBtn).css('background-color', 'orange')
+                    const html = ClickedBookmarkBtn.innerHTML
+                    $('.btn.btn-secondary.dropdown-toggle.border.rounded-pill').html(html)
+                }
+                else{
+                    const AddTheBookHtml = `<i class="fa fa-bookmark"></i><span style="margin-left: 7px;">Add this book</span>`
+                    $(ClickedBookmarkBtn).css('background-color', 'white')
+                    $('.btn.btn-secondary.dropdown-toggle.border.rounded-pill').html(AddTheBookHtml)
+                }
+                if (response.previous_bookmark){
+                    for(let index=0; index < BookmarkButtons.length; index++){
+                        if (BookmarkButtons[index].value == response.previous_bookmark){
+                            $(BookmarkButtons[index]).css('background-color', 'white')
+                      }
+                    }
+                }
+            },
+            error: function(error){
+                console.log(error)
+            }
+        })
+    }))
+}
+
+const SetUserBookmark = () => {
+    const BookmarkButtons = [...document.getElementsByClassName('dropdown-item bookmark')]
+
+    $.ajax({
+        type: "GET",
+        url: `/get-bookmark-data/${BookPk}`,
+        success: function(response){
+            if(response.bookmark_value){
+                const UserBookmark = BookmarkButtons[response.bookmark_value-1]
+                $(UserBookmark).css('background-color', 'orange')
+                const html = UserBookmark.innerHTML
+                $('.btn.btn-secondary.dropdown-toggle.border.rounded-pill').html(html)
+            }
+        }
+    })
+}
+
+
+
 main();
 
 function main(){
     setRatingActiveWidth(getAvgRate());
     SetRating();
     getUserValue();
+    SetUserBookmark();
+    UserBookmarking();
 }

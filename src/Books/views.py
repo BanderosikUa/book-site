@@ -1,24 +1,28 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import UpdateView
+from django.views.generic import DetailView
 from django.db.models import Avg, Count, Q, Sum
 
 from .models import Book, UserBookRelation
 from .forms import RateForm
 
 
-class BookView(UpdateView):
+class BookView(DetailView):
     """Class-based view for displaying Book and UserBookRelation models"""
-    model = Book
+    queryset = Book.objects.get
     template_name = "Books/main.html"
     slug_url_kwarg = 'book_slug'
-    form_class = RateForm
-    # context_object_name = 'Book'
+    
+    def get_object(self, queryset=None):
+        slug = self.kwargs.get('book_slug')
+        return get_object_or_404(Book.objects
+                                 .select_related('author')
+                                 .prefetch_related('genre'),
+                                 slug=slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        slug = self.kwargs.get('book_slug')
-        book = get_object_or_404(Book, slug=slug)
+        book = context['object']
         relation = UserBookRelation.objects.filter(book=book)
         user_relation = UserBookRelation.objects.get_or_create(book=book, user=self.request.user)
         context['Book'] = book
@@ -30,6 +34,7 @@ class BookView(UpdateView):
         context['abandonded_users'] = relation.filter(bookmarks=4).count()
         return context
 
+        
 
 def test(request):
     return render(request, 'Books/main.html')
@@ -61,6 +66,7 @@ def rate_book(request):
     user_book_relation.save()
     return JsonResponse({'status': 'success'})
 
+
 def get_comment_data(request, book_pk, num_comments):
     """Function, that return Json with limited(3) data of comments in GET ajax request"""
     visible = 3
@@ -83,6 +89,7 @@ def get_comment_data(request, book_pk, num_comments):
         }
         data.append(item)
     return JsonResponse({'data':data[lower:upper],'size': size})
+
 
 def like_book_comment(request):
     """Function, that add or remove user like to book's comment
@@ -130,3 +137,27 @@ def dislike_book_comment(request):
                          'likes': relation.comment_likes,
                          'liked': liked,
                          'disliked': disliked})
+
+
+def bookmark_book(request):
+    book_pk = request.POST.get('book_pk')
+    book = Book.objects.get(pk=book_pk)
+    user_relation = UserBookRelation.objects.get(book=book, user=request.user)
+    previous_bookmark = user_relation.bookmarks
+    bookmark = int(request.POST.get('bookmarked'))
+    clicked = True
+    if previous_bookmark == bookmark:
+        print('ok')
+        clicked = False
+        user_relation.bookmarks = None
+    else:
+        user_relation.bookmarks = bookmark
+    user_relation.save()
+    return JsonResponse({'clicked': clicked, 'previous_bookmark': previous_bookmark})
+
+
+def get_bookmark_data(request, book_pk):
+    book_pk = book_pk
+    book = Book.objects.get(pk=book_pk)
+    relation = UserBookRelation.objects.get(book=book, user=request.user)
+    return JsonResponse({'bookmark_value': relation.bookmarks})

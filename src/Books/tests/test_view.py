@@ -107,3 +107,6 @@ class TestBookViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(response.content, {'avg_rating': 3,
                                                 'user_rating_count': 3})
+    
+    def test_get_comment_data(self):
+        

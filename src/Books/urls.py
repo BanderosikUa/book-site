@@ -10,5 +10,7 @@ urlpatterns = [
     path('rate-book/', rate_book, name='rate-book'),
     path('book-comments/<int:book_pk>/<int:num_comments>/', get_comment_data, name='get-comment-data'),
     path('like-book-comment/', like_book_comment, name='like-book-comment'),
-    path('dislike-book-comment/', dislike_book_comment, name='dislike-book-comment')
+    path('dislike-book-comment/', dislike_book_comment, name='dislike-book-comment'),
+    path('bookmark-book/', bookmark_book, name='bookmark-book'),
+    path('get-bookmark-data/<int:book_pk>/', get_bookmark_data, name='get-bookmark-data',)
 ]

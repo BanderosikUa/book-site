@@ -32,7 +32,7 @@ class Book(NameStampedModel):
         return self.count_views
 
     def __str__(self):
-        return self.name
+        return f"NAME: {self.name}, AUTHOR: {self.author}"
 
     def get_absolute_url(self):
         return reverse("book", kwargs={"slug": self.slug})

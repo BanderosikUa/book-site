@@ -1,12 +1,10 @@
-
 const rating = document.querySelectorAll('.rating')[0]
 const BookPicture = document.getElementById('book')
 const BookPk = BookPicture.getAttribute('book-id')
+const ratingActive = rating.querySelector('.rating__active');
+const ratingValue = rating.querySelector('.rating__value');
+const userValue = document.getElementById('user_checked_value')
 
-function initRatingVars(rating){
-    ratingActive = rating.querySelector('.rating__active');
-    ratingValue = rating.querySelector('.rating__value');
-}
 
 function setRatingActiveWidth(index){
     const ratingActiveWidth = index / 0.05;
@@ -32,18 +30,20 @@ const csrftoken = getCookie('csrftoken');
 
 
 const getAvgRate = () =>{
+    var avarage_rating = 0;
     $.ajax({
+        async: false,
         type: 'GET',
         url: `/get-avarage-rating/${BookPk}`,
         success: function(response){
             ratingValue.textContent = response.avg_rating
-            const avarage_rating = response.avg_rating
-            return avarage_rating
+            avarage_rating = response.avg_rating
         },
-    })
+    });
+    return avarage_rating
 }
 
-const AvgRate = getAvgRate();
+var AvgRate = getAvgRate();
 
 
 function SetRating(){
@@ -59,11 +59,26 @@ function SetRating(){
             })
             ratingItem.addEventListener('click', function(e){
                 RateBook(rate_value=ratingItem.value);
+                getAvgRate();
+                AvgRate = getAvgRate();
+                setRatingActiveWidth(AvgRate);
+                getUserValue();
             })                
         }
 
     } 
 }
+
+const getUserValue = () =>{
+    const ratingItems = rating.querySelectorAll('.rating__item');
+    for(let index=0;index < ratingItems.length; index++){
+        const ratingItem = ratingItems[index]
+        if(ratingItem.checked){
+            userValue.textContent = `Your rate: ${ratingItem.value}`
+        }
+    }
+}
+
 
 const RateBook = (rate_value) =>{
     if(!rating.classList.contains('rating_sending')){
@@ -91,11 +106,54 @@ const RateBook = (rate_value) =>{
     }
     }
 
+const UserBookmarking = () =>{
+    const BookmarkButtons = [...document.getElementsByClassName('dropdown-item bookmark')]
+    BookmarkButtons.forEach(button => button.addEventListener('click', e=>{
+        e.preventDefault()
+        const ClickedBookmarkBtn = e.target
+        const ClickedBookmark = ClickedBookmarkBtn.value
+
+        $.ajax({
+            type: "POST",
+            url: "/bookmark-book/",
+            data:{
+                'csrfmiddlewaretoken': csrftoken,
+                'book_pk': BookPk,
+                'bookmarked': ClickedBookmark
+            },
+            success: function(response){
+                if (response.clicked){
+                    $(ClickedBookmarkBtn).css('background-color', 'orange')
+                    const html = ClickedBookmarkBtn.innerHTML
+                    $('.btn.btn-secondary.dropdown-toggle.border.rounded-pill').html(html)
+                }
+                else{
+                    const AddTheBookHtml = `<i class="fa fa-bookmark"></i><span style="margin-left: 7px;">Add this book</span>`
+                    $(ClickedBookmarkBtn).css('background-color', 'white')
+                    $('.btn.btn-secondary.dropdown-toggle.border.rounded-pill').html(AddTheBookHtml)
+                }
+                if (response.previous_bookmark){
+                    for(let index=0; index < BookmarkButtons.length; index++){
+                        if (BookmarkButtons[index].value == response.previous_bookmark){
+                            $(BookmarkButtons[index]).css('background-color', 'white')
+                      }
+                    }
+                }
+            },
+            error: function(error){
+                console.log(error)
+            }
+        })
+    }))
+}
+
+
+
 main();
 
 function main(){
-    let ratingActive, ratingValue;
-    initRatingVars(rating);
-    getAvgRate();
+    setRatingActiveWidth(getAvgRate());
     SetRating();
+    getUserValue();
+    UserBookmarking();
 }
