@@ -30,7 +30,6 @@ const csrftoken = getCookie('csrftoken');
 
 
 const getAvgRate = () =>{
-    var avarage_rating = 0;
     $.ajax({
         async: false,
         type: 'GET',
@@ -38,13 +37,15 @@ const getAvgRate = () =>{
         success: function(response){
             ratingValue.textContent = response.avg_rating
             avarage_rating = response.avg_rating
+            UpdateRate(avarage_rating)
         },
     });
-    return avarage_rating
 }
 
-var AvgRate = getAvgRate();
-
+var AvgRate;
+function UpdateRate(data){
+    AvgRate = data
+}
 
 function SetRating(){
     if (rating.classList.contains('rating_set')){
@@ -58,10 +59,7 @@ function SetRating(){
                 setRatingActiveWidth(AvgRate);
             })
             ratingItem.addEventListener('click', function(e){
-                RateBook(rate_value=ratingItem.value);
-                getAvgRate();
-                AvgRate = getAvgRate();
-                setRatingActiveWidth(AvgRate);
+                RateBook(ratingItem.value)
                 getUserValue();
             })                
         }
@@ -165,11 +163,11 @@ const SetUserBookmark = () => {
 }
 
 
-
 main();
 
 function main(){
-    setRatingActiveWidth(getAvgRate());
+    getAvgRate();
+    setRatingActiveWidth(AvgRate);
     SetRating();
     getUserValue();
     SetUserBookmark();

@@ -2,9 +2,12 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView
 from django.db.models import Avg, Count, Q, Sum
+from Books.services import *
+from Books.selectors import *
+from Books.forms import CommentCreateForm
 
-from .models import Book, UserBookRelation
-from .forms import RateForm
+from .models import Book, UserBookRelation, CommentBook
+
 
 
 class BookView(DetailView):
@@ -12,7 +15,7 @@ class BookView(DetailView):
     queryset = Book.objects.get
     template_name = "Books/main.html"
     slug_url_kwarg = 'book_slug'
-    
+
     def get_object(self, queryset=None):
         slug = self.kwargs.get('book_slug')
         return get_object_or_404(Book.objects
@@ -23,141 +26,94 @@ class BookView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         book = context['object']
-        relation = UserBookRelation.objects.filter(book=book)
-        user_relation = UserBookRelation.objects.get_or_create(book=book, user=self.request.user)
+        create_comment_form = CommentCreateForm()
+        users_bookmarks = get_users_bookmarks(book=book)
+        if self.request.user.is_authenticated:
+            user_relation = get_book_relation(book=book).get_or_create(user=self.request.user, book=book)
+            context['user_relation'] = user_relation[0]
         context['Book'] = book
-        context['users_reviews'] = relation
-        context['user_relation'] = user_relation[0]
-        context['planning_users'] = relation.filter(bookmarks=1).count()
-        context['reading_users'] = relation.filter(bookmarks=2).count()
-        context['read_users'] = relation.filter(bookmarks=3).count()
-        context['abandonded_users'] = relation.filter(bookmarks=4).count()
+        context['users_bookmarks'] = users_bookmarks
+        context['comment_create_form'] = create_comment_form
         return context
 
-        
 
 def test(request):
     return render(request, 'Books/main.html')
 
 
-def get_avarage_rating(request, book_pk):
-    """Function, that calculate avarage rating of the book and
-    return json into ajax function with GET request"""
-    book = Book.objects.get(pk=book_pk)
-    qs_user_book_relations = UserBookRelation.objects.filter(book=book)
-    if qs_user_book_relations:
-        aggregations = qs_user_book_relations.aggregate(Avg('rate'), Count('user'))
-        avarage_rating = round(aggregations['rate__avg'], 1)
-        return JsonResponse({'avg_rating': avarage_rating,
-                            'user_rating_count': aggregations['user__count']})
-    else:
-        return JsonResponse({'avg_rating': 0})
+def get_avarage_rating_view(request, book_pk):
+    response = get_avarage_rating(book_pk)
+    return JsonResponse(response)
 
 
-def rate_book(request):
-    """Function, that add user rating into created or updated UserBookRealtion
-    model and return json into ajax function with POST request"""
+def rate_book_view(request):
     book_pk = request.POST.get('pk')
-    book = Book.objects.get(pk=book_pk)
     rate_value = request.POST.get('value')
     user = request.user
-    user_book_relation = UserBookRelation.objects.get(book=book, user=user)
-    user_book_relation.rate = rate_value
-    user_book_relation.save()
+    create_rate_book(book_pk=book_pk, rate=rate_value, user=user)
     return JsonResponse({'status': 'success'})
 
 
-def get_comment_data(request, book_pk, num_comments):
+def get_comment_data_view(request, book_pk, num_comments):
     """Function, that return Json with limited(3) data of comments in GET ajax request"""
-    visible = 3
-    upper = num_comments
-    lower = upper - visible
-    book = Book.objects.get(pk=book_pk)
-    qs = UserBookRelation.objects.filter(book=book).exclude(comment='').order_by('comment_time_created')
-    size = qs.count()
-    data = []
-    for obj in qs:
-        item = {
-            'pk': obj.pk,
-            'username': obj.user.username,
-            'comment': obj.comment,
-            'likes': obj.comment_likes,
-            'dislikes': obj.comment_dislikes,
-            'time_created': obj.comment_time_created.strftime("%d %B %Y"),
-            'liked': True if request.user in obj.comment_liked.all() else False,
-            'disliked': True if request.user in obj.comment_disliked.all() else False,
-        }
-        data.append(item)
-    return JsonResponse({'data':data[lower:upper],'size': size})
+    user = request.user
+    response = get_comment_data(book_pk=book_pk,
+                                num_comments=num_comments,
+                                user=user
+                                )
+    return JsonResponse(response)
 
 
-def like_book_comment(request):
+def like_book_comment_view(request):
     """Function, that add or remove user like to book's comment
     and return Json in POST ajax request"""
-    relation_pk = request.POST.get('comment_pk')
-    relation = UserBookRelation.objects.get(pk=relation_pk)
-    users_that_like_comment = relation.comment_liked
-    users_that_dislike_comment = relation.comment_disliked
-    disliked = False
-    if request.user in users_that_like_comment.all():
-        users_that_like_comment.remove(request.user)
-        liked = False
-    elif request.user in users_that_dislike_comment.all():
-        users_that_dislike_comment.remove(request.user)
-        users_that_like_comment.add(request.user)
-        liked = True
-    else:
-        users_that_like_comment.add(request.user)
-        liked = True
-    return JsonResponse({'likes': relation.comment_likes, 
-                         'dislikes': relation.comment_dislikes,
-                         'liked': liked,
-                         'disliked': disliked})
+    comment_pk = request.POST.get('comment_pk')
+    book_pk = request.POST.get('book_pk')
+    user = request.user
 
-def dislike_book_comment(request):
+    response = like_book_comment(comment_pk=comment_pk, 
+                                 book_pk=book_pk,
+                                 user=user)
+    print(response)
+    return JsonResponse(response)
+
+
+def dislike_book_comment_view(request):
     """Function, that add or remove user dislike to book's comment
     and return Json in POST ajax request"""
-    relation_pk = request.POST.get('comment_pk')
-    relation = UserBookRelation.objects.get(pk=relation_pk)
-    users_that_dislike_comment = relation.comment_disliked
-    users_that_like_comment = relation.comment_liked
-    liked = False
-    if request.user in users_that_dislike_comment.all():
-        users_that_dislike_comment.remove(request.user)
-        disliked = False
-    elif request.user in users_that_like_comment.all():
-        users_that_like_comment.remove(request.user)
-        users_that_dislike_comment.add(request.user)
-        disliked = True
-    else:
-        users_that_dislike_comment.add(request.user)
-        disliked = True
-        
-    return JsonResponse({'dislikes': relation.comment_dislikes, 
-                         'likes': relation.comment_likes,
-                         'liked': liked,
-                         'disliked': disliked})
-
-
-def bookmark_book(request):
+    comment_pk = request.POST.get('comment_pk')
     book_pk = request.POST.get('book_pk')
-    book = Book.objects.get(pk=book_pk)
-    user_relation = UserBookRelation.objects.get(book=book, user=request.user)
-    previous_bookmark = user_relation.bookmarks
+    user = request.user
+
+    response = dislike_book_comment(comment_pk=comment_pk, 
+                                    book_pk=book_pk,
+                                    user=user)
+    
+    return JsonResponse(response)
+
+
+def create_comment_view(request):
+    """Function, that create comment model from AJAX post request"""
+    user = request.user
+    book_pk = request.POST.get('book_pk')
+    body = request.POST.get('comment')
+    
+    response = create_comment(book_pk=book_pk, body=body, user=user)
+    
+    return JsonResponse(response)
+
+
+def bookmark_book_view(request):
+    """Function, that add or remove user bookmark and return selected bookmark"""
+    book_pk = request.POST.get('book_pk')
     bookmark = int(request.POST.get('bookmarked'))
-    clicked = True
-    if previous_bookmark == bookmark:
-        print('ok')
-        clicked = False
-        user_relation.bookmarks = None
-    else:
-        user_relation.bookmarks = bookmark
-    user_relation.save()
-    return JsonResponse({'clicked': clicked, 'previous_bookmark': previous_bookmark})
+    user = request.user
 
+    response = bookmark_book(book_pk=book_pk, bookmark=bookmark, user=user)
 
-def get_bookmark_data(request, book_pk):
-    book_pk = book_pk
-    book = Book.objects.get(pk=book_pk)
-    relation = UserBookRelation.objects.get(book=book, user=request.user)
-    return JsonResponse({'bookmark_value': relation.bookmarks})
+    return JsonResponse(response)
+
+def get_bookmark_data_view(request, book_pk):
+    """Function, that return selected user bookmark"""
+    response = get_bookmark_data(book_pk=book_pk, user=request.user)
+    return JsonResponse(response)

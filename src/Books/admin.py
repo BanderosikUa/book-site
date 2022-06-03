@@ -1,6 +1,6 @@
 from django.contrib import admin
 from Authors.models import Author
-from .models import Book, UserBookRelation
+from .models import Book, UserBookRelation, CommentBook
 
 
 @admin.register(Book)
@@ -15,7 +15,13 @@ class BookAdmin(admin.ModelAdmin):
 
 @admin.register(UserBookRelation)
 class UserBookRelationAdmin(admin.ModelAdmin):
-    readonly_fields = ('comment_time_created',)
+    pass
+
+
+@admin.register(CommentBook)
+class CommentBookAdmin(admin.ModelAdmin):
+    readonly_fields = ('time_created',)
+
 
 
 # Register your models here.

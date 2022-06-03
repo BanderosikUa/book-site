@@ -4,6 +4,8 @@ const ToCommentBox = document.getElementById('to-comment-book')
 const LoadBtn = document.getElementById('load-btn')
 const EndBox = document.getElementById('end-box')
 
+console.log('comment_script')
+
 const LikeComment = () =>{
     const LikeForm=[...document.getElementsByClassName('like-form-comment')];
     LikeForm.forEach(form => form.addEventListener('submit', e=>{
@@ -53,6 +55,7 @@ const DislikeComment = () =>{
             data: {
                 'csrfmiddlewaretoken': csrftoken,
                 'comment_pk': ClickedId,
+                'book_pk': BookPk,
             },
             success: function(response){
                 $(`#dislike-${ClickedId}`).find('span').text(response.dislikes)
@@ -87,6 +90,7 @@ const GetCommentData = () =>{
             const data = response.data
             setTimeout(()=>{
                 SpinnerBox.classList.add('not-visible')
+                LoadBtn.classList.remove('not-visible')
                 data.forEach(el => {
                     ReviewBox.innerHTML += `<div class="border rounded-0 review" style="margin-top: 18px;">
                     <div class="user-info"><a class="avatar" href="#"
@@ -159,32 +163,7 @@ const GetCommentData = () =>{
                 LoadBtn.classList.add('not-visible')
                 EndBox.textContent = "No more comments"
             }
-            ToCommentBox.innerHTML = `<div id="post-comment" class="post-comment" style="padding-top: 30px">
-            <div class="card text-black bg- mb-1">
-                <div class="card-header">
-                    <span class='d-flex align-item-center user-name'>UserName</span>
-                </div>
-                <div class="card-body">
-                    <div class=" card-text form-group">
-                        <textarea placeholder="Message" rows="4"
-                            class="form-control form-control-lg">
-        </textarea>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                    <a class="float-right btn btn-dark"> <i class="fa fa-comment"></i>
-                        Comment</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </section>
-        `
+         
         }
 
     })
@@ -192,6 +171,7 @@ const GetCommentData = () =>{
 
 LoadBtn.addEventListener('click', ()=>{
     SpinnerBox.classList.remove('not-visible')
+    LoadBtn.classList.add('not-visible')
     visible += 3
     GetCommentData()
 })
@@ -202,5 +182,75 @@ $(document).ready(function(){
         e.preventDefault();
         const CommentId=$('.btn d-inline d-xxl-flex justify-content-xxl-start')
         console.log(CommentId)
+    })
+})
+
+
+const CommentForm = document.getElementById('CommentForm')
+
+$(document).on('submit', '#CommentForm', function(e){
+    e.preventDefault()
+    $.ajax({
+        type: "POST",
+        url: "/comment-book/",
+        csrfmiddlewaretoken: csrftoken,
+        data:{
+            'csrfmiddlewaretoken': csrftoken,
+            'book_pk': BookPk,  
+            'comment': $('#body-comment').val()
+        },
+        success: function(response){
+            ReviewBox.insertAdjacentHTML('afterbegin', `<div class="border rounded-0 review" style="margin-top: 18px;">
+                    <div class="user-info"><a class="avatar" href="#"
+                            style="padding-right: -18px;margin-right: 0px;">
+                            <ul class="list-inline">
+                                <li class="d-xxl-flex justify-content-xxl-start list-inline-item"
+                                    style="margin-top: 0px;margin-left: 38px;"><img
+                                        class="border rounded-circle d-xxl-flex align-items-xxl-start"
+                                        src=""
+                                        style="width: 80px;height: 60px;margin-right: 0px;">
+                                    <ul class="list-unstyled">
+                                        <li style="margin-top: -14px;margin-left: 9px;"><span
+                                                class="d-xxl-flex justify-content-xxl-start">${response.username}</span><span
+                                                class="d-xxl-flex align-items-xxl-end disabled"
+                                                style="height: 30px; padding-down: 20px">${response.time_created}
+                                                </span></li>
+                                                <br>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </a>
+                        <div class="comment" style="margin-left: 90px;">
+                            <div><span class="d-xxl-flex justify-content-xxl-start"
+                                    style="margin-top: -20px;padding-left: 37px;">${response.comment}
+                                </span>
+                                <ul class="list-inline d-xxl-flex justify-content-xxl-start"
+                                    style="margin-down: 10px;padding-left: 33px;">
+                                    <li class="list-inline-item"><form action="" method="POST" class="like-form-comment" data-form-id="${response.comment_pk}"><button
+                                            class="btn d-inline d-xxl-flex justify-content-xxl-start" id="like-${response.comment_pk}"
+                                            type="submit"
+                                            style="margin-top: -17px;margin-left: -9px;"><i
+                                                class="fa fa-thumbs-up d-xxl-flex justify-content-xxl-end align-items-xxl-start"></i><span id="span-like-${response.comment_pk}"
+                                                class="border rounded-0 shadow-sm d-xxl-flex align-items-xxl-center"
+                                                style="margin-left: 10px;margin-top: -3px;transform: scale(1.10);opacity: 0.86;filter: brightness(135%);--bs-body-bg: var(--bs-red);">0</span></button></form>
+                                    </li>
+                                    <li class="list-inline-item"><form action="" method="POST" class="dislike-form-comment" data-form-id="${response.comment_pk}"><button
+                                            class="btn d-inline d-xxl-flex justify-content-xxl-start" id="dislike-${response.comment_pk}"
+                                            type="submit"
+                                            style="margin-top: -17px;margin-left: -9px;"><i
+                                                class="fa fa-thumbs-down d-xxl-flex justify-content-xxl-end align-items-xxl-start"></i><span id="span-dislike-${response.comment_pk}"
+                                                class="border rounded-0 shadow-sm d-xxl-flex align-items-xxl-center"
+                                                style="margin-left: 10px;margin-top: -3px;transform: scale(1.10);opacity: 0.86;filter: brightness(135%);--bs-body-bg: var(--bs-red);">0</span></button></form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>`)
+                LikeComment();
+                DislikeComment();
+            }
+        
     })
 })

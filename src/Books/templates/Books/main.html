@@ -6,8 +6,8 @@
 
 {% block scripts %}
 <link rel="stylesheet" href="{% static 'Books/book_style.css' %}">
-<script src="{% static 'Books/rating_script.js' %}" defer></script>
-<script src="{% static 'Books/like_dislike_script.js' %}" defer></script>
+<script src="{% static 'Books/book_script.js' %}" defer></script>
+<script src="{% static 'Books/comment_script.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -39,7 +39,7 @@
                             </div>
                             <div class="rating__value">0</div>
                         </div>
-                        {% if user_relation.rate %}<span id="user_checked_value">Your rate: {{ user_relation.rate }}</span>{% endif%}
+                        {%if user_relation %}{% if user_relation.rate %}<span id="user_checked_value">Your rate: {{ user_relation.rate }}</span>{% endif %}{% endif %}
                         </form>
             </div>
                 <div class="text-start col-xs-12 col-md" id="text" style="padding-left: 20px;padding-right: 0px;margin-bottom: 0px;margin-left: 13px;font-size: 14px;">
@@ -51,10 +51,10 @@
                         {% endif %}
                     </ul><span class="fs-1 current title-link" style="font-weight: bold;">{{ Book.name }}</span>
                     <ul class="list-inline">
-                            <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-clock-o d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Plan to read</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{planning_users}}</a></li>
-                            <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-book d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Reading</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{reading_users}}</a></li>
-                            <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-check-circle d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Read</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{read_users}}</a></li>
-                            <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-remove d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Abandonded</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{abandonded_users}}</a></li>
+                            <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-clock-o d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Plan to read</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{users_bookmarks.plan_to_read}}</a></li>
+                            <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-book d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Reading</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{users_bookmarks.reading}}</a></li>
+                            <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-check-circle d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Read</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{users_bookmarks.read}}</a></li>
+                            <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-remove d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Abandonded</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{users_bookmarks.abandonded}}</a></li>
                         </ul>
                     <div><span class="title-name" style="opacity: 0.77;">Author:&nbsp;<a href="{{ Book.author.get_absolute_url }}">{{ Book.author }}</a></span></div>
                     <div id="content" class="content">

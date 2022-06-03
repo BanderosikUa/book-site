@@ -1,11 +1,12 @@
+from urllib import request
+from attr import attr
 from django import forms
-from .models import UserBookRelation, RATE_CHOICES
 
-
-class RateForm(forms.ModelForm):
-    rate = forms.MultipleChoiceField(choices=RATE_CHOICES, required=False,
-                                     widget=forms.RadioSelect)
-
-    class Meta:
-        model = UserBookRelation
-        fields = ('rate', )
+class CommentCreateForm(forms.Form):
+    body = forms.CharField(widget=forms.Textarea(
+                                    attrs={
+                                        'rows': 4,
+                                        'placeholder': 'Comment',
+                                        'id': 'body-comment',
+                                        'class': "form-control form-control-lg"
+                                    }), required=True, label=False)
