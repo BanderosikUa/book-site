@@ -37,7 +37,8 @@ class Book(NameStampedModel):
         return self.count_views
 
     def __str__(self):
-        return f"NAME: {self.name}, AUTHOR: {self.author}"
+        return f"NAME: {self.name}, AUTHOR: {self.author}," \
+               f"GENRE: {list(self.genre.values_list('name', flat=True))}"
 
     def get_absolute_url(self):
         return reverse("book", kwargs={"slug": self.slug})
@@ -78,7 +79,8 @@ class UserBookRelation(models.Model):
                                             null=True)
 
     def __str__(self):
-        return f'{self.user.username}: {self.book}, RATE {self.rate}, BOOKMARK {BOOKMARK_CHOICES[self.bookmarks-1][1] if self.bookmarks else None}'
+        return f'{self.user.username}: {self.book}, RATE {self.rate},' \
+               f'BOOKMARK {BOOKMARK_CHOICES[self.bookmarks-1][1] if self.bookmarks else None}'
 
 
 class CommentBook(models.Model):

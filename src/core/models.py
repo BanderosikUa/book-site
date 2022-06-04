@@ -11,7 +11,8 @@ class NameStampedModel(models.Model):
     """
     name = models.CharField(max_length=100, db_index=True,
                             help_text='No more 100 chars')
-    slug = models.SlugField(blank=True, null=True)
+    slug = models.SlugField(blank=True, null=True,
+                            db_index=True)
 
     class Meta:
         abstract = True

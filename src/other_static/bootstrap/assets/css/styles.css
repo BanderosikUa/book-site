@@ -136,3 +136,34 @@ a {
 button span {
   pointer-events: none;
 }
+.nav.nav-tabs {
+  overflow: hidden;
+  /*background-color: #f1f1f1;*/
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link {
+  float: left;
+  display: block;
+  color: grey;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  border-bottom: 3px solid transparent;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
+  border-bottom: 3px solid #d88727;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  border-bottom: 3px solid #d88727;
+}
+
+.nav.nav-tabs {
+  /*border-top: 0px solid transparent;*/
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link {
+  border: 0px solid transparent;
+}

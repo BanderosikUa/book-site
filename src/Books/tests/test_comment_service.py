@@ -1,11 +1,13 @@
-from urllib import response
-from django.urls import reverse
-from django.test import RequestFactory, TestCase, Client
-from django.contrib.auth.models import User
+from datetime import datetime
 
-from Books.models import Book, UserBookRelation, CommentBook
+from Books.models import Book, CommentBook, UserBookRelation
 from Books.views import *
+from django.contrib.auth.models import User
+from django.test import Client, RequestFactory, TestCase
+from django.urls import reverse
+
 from ..selectors import *
+
 
 class TestBookServices(TestCase):
 
@@ -24,6 +26,7 @@ class TestBookServices(TestCase):
         self.user4 = User.objects.create(username='user4', password='username123')
         self.user5 = User.objects.create(username='user5', password='username123')
         self.user6 = User.objects.create(username='user6', password='username123')
+        self.time_today = datetime.now().strftime("%d %B %Y")
 
 
     def test_get_comment_data(self):
@@ -37,7 +40,7 @@ class TestBookServices(TestCase):
             'comment': 'Test comment',
             'likes': 1,
             'dislikes': 1,
-            'time_created': "03 June 2022",
+            'time_created': self.time_today,
             'liked': False,
             'disliked': False,
         }], 'size': 1}
@@ -127,13 +130,14 @@ class TestBookServices(TestCase):
         self.assertEquals(response, expected_response)
 
     def test_create_comment(self):
+        """Test creating comment"""
         response = create_comment(book_pk=self.book.pk,
                                   body='Test',
                                   user=self.user,)
         expected_response = {'username': self.user.username,
                              'comment': "Test",
                              'comment_pk': 2,
-                             'time_created': '03 June 2022'}
+                             'time_created': self.time_today}
         self.assertEquals(response, expected_response) 
         
     

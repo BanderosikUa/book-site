@@ -1,9 +1,8 @@
-from django.urls import reverse
-from django.test import RequestFactory, TestCase, Client
-from django.contrib.auth.models import User
-
 from Books.models import Book, UserBookRelation
 from Books.views import *
+from django.contrib.auth.models import User
+from django.test import Client, TestCase
+from django.urls import reverse
 
 
 class TestBookViews(TestCase):

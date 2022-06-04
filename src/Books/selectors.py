@@ -61,3 +61,7 @@ def get_users_bookmarks(*, book: Book = None, book_pk: int = None) -> dict:
                         read=Count('bookmarks', filter=Q(bookmarks=3)),
                         abandonded=Count('bookmarks', filter=Q(bookmarks=4))
                         )
+
+
+def get_books_by_genre(*, slug: str) -> QuerySet:
+    return Book.objects.filter(genre__slug=slug)

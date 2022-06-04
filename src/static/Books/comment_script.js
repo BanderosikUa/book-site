@@ -4,6 +4,8 @@ const ToCommentBox = document.getElementById('to-comment-book')
 const LoadBtn = document.getElementById('load-btn')
 const EndBox = document.getElementById('end-box')
 
+console.log('comment_script')
+
 const LikeComment = () =>{
     const LikeForm=[...document.getElementsByClassName('like-form-comment')];
     LikeForm.forEach(form => form.addEventListener('submit', e=>{
@@ -53,6 +55,7 @@ const DislikeComment = () =>{
             data: {
                 'csrfmiddlewaretoken': csrftoken,
                 'comment_pk': ClickedId,
+                'book_pk': BookPk,
             },
             success: function(response){
                 $(`#dislike-${ClickedId}`).find('span').text(response.dislikes)
@@ -87,6 +90,7 @@ const GetCommentData = () =>{
             const data = response.data
             setTimeout(()=>{
                 SpinnerBox.classList.add('not-visible')
+                LoadBtn.classList.remove('not-visible')
                 data.forEach(el => {
                     ReviewBox.innerHTML += `<div class="border rounded-0 review" style="margin-top: 18px;">
                     <div class="user-info"><a class="avatar" href="#"
@@ -167,6 +171,7 @@ const GetCommentData = () =>{
 
 LoadBtn.addEventListener('click', ()=>{
     SpinnerBox.classList.remove('not-visible')
+    LoadBtn.classList.add('not-visible')
     visible += 3
     GetCommentData()
 })
@@ -184,12 +189,14 @@ $(document).ready(function(){
 const CommentForm = document.getElementById('CommentForm')
 
 $(document).on('submit', '#CommentForm', function(e){
+    e.preventDefault()
     $.ajax({
         type: "POST",
         url: "/comment-book/",
+        csrfmiddlewaretoken: csrftoken,
         data:{
             'csrfmiddlewaretoken': csrftoken,
-            'book_pk': BookPk,
+            'book_pk': BookPk,  
             'comment': $('#body-comment').val()
         },
         success: function(response){
@@ -241,6 +248,9 @@ $(document).on('submit', '#CommentForm', function(e){
                         </div>
                     </div>
                 </div>`)
-        }
+                LikeComment();
+                DislikeComment();
+            }
+        
     })
 })
