@@ -16,8 +16,4 @@ class Genre(NameStampedModel):
 
     def get_absolute_url(self):
         return reverse("genres", kwargs={"genre_slug": self.slug})
-
-
-
-
 # Create your models here.

@@ -53,9 +53,9 @@ class TestBookViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
 
-    def test_get_avarage_rating_without_any_relations(self):
-        """Testing function return rating 0, if any relation exists"""
-        response = self.client.get(self.get_avarage_rating_url)
+    # def test_get_avarage_rating_without_any_relations(self):
+    #     """Testing function return rating 0, if any relation exists"""
+    #     response = self.client.get(self.get_avarage_rating_url)
 
-        self.assertEquals(response.status_code, 200)
-        self.assertJSONEqual(response.content, {'avg_rating': 0})
+    #     self.assertEquals(response.status_code, 200)
+    #     self.assertJSONEqual(response.content, {'avg_rating': 0})

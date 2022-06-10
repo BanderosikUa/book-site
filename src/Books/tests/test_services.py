@@ -1,4 +1,3 @@
-from urllib import response
 from django.urls import reverse
 from django.test import RequestFactory, TestCase, Client
 from django.contrib.auth.models import User
@@ -17,7 +16,7 @@ class TestBookServices(TestCase):
         self.user = User.objects.create(username='user1',
                                         password='username123')
 
-    def test_selector_fetch_get_count_bookmarks(self):
+    def test_selector_fetch_get_count_bookmarks_and_rating(self):
         """Test getting from db count of reading, abandonded, read and planning books"""
         user2 = User.objects.create(username='user2', password='username123')
         user3 = User.objects.create(username='user3', password='username123')
@@ -33,11 +32,16 @@ class TestBookServices(TestCase):
                     book=self.book, user=user3,
                     bookmarks=2
         )
-        response = get_users_bookmarks(book=self.book)
+        response = get_users_bookmarks_and_rating().get(pk=self.book.pk)
+        response = {'plan_to_read': response.plan_to_read,
+                    'reading': response.reading,
+                    'read': response.read,
+                    'abandonded': response.abandonded,
+                    }
         expected_response = {'plan_to_read': 0,
                              'reading': 2,
                              'read': 1,
-                             'abandonded': 0
+                             'abandonded': 0,
                              }
         self.assertEqual(response, expected_response)
 
@@ -57,9 +61,9 @@ class TestBookServices(TestCase):
                     book=self.book, user=user3,
                     rate=2
         )
-        response = get_avarage_rating(book_pk=self.book.pk)
-        expected_response = {'avg_rating': 3}
-        self.assertEquals(response, expected_response)
+        response = get_average_rating(book_pk=self.book.pk)
+        expected_response = 3.0
+        self.assertEquals(response, expected_response, response)
 
     def test_get_bookmark_data(self):
         """Test getting bookmark from db"""

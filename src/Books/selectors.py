@@ -1,7 +1,9 @@
+from django.http import JsonResponse
 from Books.models import Book, CommentBook, UserBookRelation
-from django.db.models import Count, Q, QuerySet
+from django.db.models import Count, Q, QuerySet, Avg, FloatField, F
 from django.contrib.auth.models import User
-
+from django.db.models.functions import Round, Coalesce, Cast
+from django.contrib.postgres.aggregates import ArrayAgg
 
 class CommentBookSelector:
     """Class that fetch comment`s data from db"""
@@ -49,19 +51,33 @@ def get_user_book_relation(*, book_pk: int, user: User):
                                         user=user)
 
 
-def get_users_bookmarks(*, book: Book = None, book_pk: int = None) -> dict:
-    if book:
-        relations = get_book_relation(book=book)
-    elif book_pk:
-        relations = get_book_relation(book_pk=book_pk)
-        
-    return relations.aggregate(
-                        plan_to_read=Count('bookmarks', filter=Q(bookmarks=1)),
-                        reading=Count('bookmarks', filter=Q(bookmarks=2)),
-                        read=Count('bookmarks', filter=Q(bookmarks=3)),
-                        abandonded=Count('bookmarks', filter=Q(bookmarks=4))
-                        )
+def get_users_bookmarks_and_rating() -> Book:
+    """Return users bookmarks and average rating to the book"""
+    return Book.objects.annotate(
+        plan_to_read=Count('userbookrelation__bookmarks',
+                           filter=Q(userbookrelation__bookmarks=1)),
+        reading=Count('userbookrelation__bookmarks',
+                      filter=Q(userbookrelation__bookmarks=2)),
+        read=Count('userbookrelation__bookmarks',
+                   filter=Q(userbookrelation__bookmarks=3)),
+        abandonded=Count('userbookrelation__bookmarks',
+                         filter=Q(userbookrelation__bookmarks=4)),
+        # Coalesce return 0 if avg rating == None
+        # Cast for output_fueld error
+        avg_rating=Cast(Coalesce(Round(Avg('userbookrelation__rate'),
+                        precision=1), 0), output_field=FloatField()),
+        )
 
 
-def get_books_by_genre(*, slug: str) -> QuerySet:
-    return Book.objects.filter(genre__slug=slug)
+def get_average_rating(*, book_pk: int) -> int:
+    result = Book.objects.filter(pk=book_pk).aggregate(
+        avg_rating=Round(Avg('userbookrelation__rate'), precision=1)
+        )
+    result = result['avg_rating']
+    return result if result else 0
+
+
+def get_genres_of_book(*, book_pk: int) -> list:
+    book = Book.objects.filter(pk=book_pk).select_related('genre')
+    genres_data = list(book.values('genre__name', 'genre__slug'))    
+    return genres_data

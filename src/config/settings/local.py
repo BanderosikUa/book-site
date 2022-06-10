@@ -19,4 +19,4 @@ DATABASES = {
 INSTALLED_APPS += ['Authors.apps.AuthorsConfig', 'Genres.apps.GenresConfig',
                    'Books.apps.BookConfig', 'core.apps.CoreConfig',
                    ]
-INSTALLED_APPS += ['debug_toolbar', 'django_extensions', ]
+INSTALLED_APPS += ['debug_toolbar', 'django_extensions', 'hitcount']

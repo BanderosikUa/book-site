@@ -2,23 +2,29 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView
 from django.db.models import Avg, Count, Q, Sum
+
+
+from hitcount.views import HitCountDetailView
+
+
 from Books.services import *
 from Books.selectors import *
 from Books.forms import CommentCreateForm
-
 from .models import Book, UserBookRelation, CommentBook
 
 
 
-class BookView(DetailView):
+class BookView(HitCountDetailView):
     """Class-based view for displaying Book and UserBookRelation models"""
-    queryset = Book.objects.get
+    model = Book
     template_name = "Books/main.html"
     slug_url_kwarg = 'book_slug'
+    count_hit = True
 
     def get_object(self, queryset=None):
         slug = self.kwargs.get('book_slug')
-        return get_object_or_404(Book.objects
+        book = get_users_bookmarks_and_rating()
+        return get_object_or_404(book
                                  .select_related('author')
                                  .prefetch_related('genre'),
                                  slug=slug)
@@ -26,13 +32,12 @@ class BookView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         book = context['object']
+
         create_comment_form = CommentCreateForm()
-        users_bookmarks = get_users_bookmarks(book=book)
         if self.request.user.is_authenticated:
             user_relation = get_book_relation(book=book).get_or_create(user=self.request.user, book=book)
             context['user_relation'] = user_relation[0]
         context['Book'] = book
-        context['users_bookmarks'] = users_bookmarks
         context['comment_create_form'] = create_comment_form
         return context
 
@@ -41,9 +46,9 @@ def test(request):
     return render(request, 'Books/main.html')
 
 
-def get_avarage_rating_view(request, book_pk):
-    response = get_avarage_rating(book_pk)
-    return JsonResponse(response)
+def get_average_rating_view(request, book_pk):
+    response = get_average_rating(book_pk=book_pk)
+    return JsonResponse({'avg_rating': response})
 
 
 def rate_book_view(request):

@@ -1,27 +1,34 @@
-from datetime import datetime
-from signal import default_int_handler
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Count, Q
 from django.urls import reverse
+from django.contrib.contenttypes.fields import GenericRelation
+
+
+from hitcount.models import HitCountMixin, HitCount
+
+
 from core.models import NameStampedModel
 from Authors.models import Author
 from Genres.models import Genre
-from django.contrib.auth.models import User
-from django.conf import settings
 
 
-class Book(NameStampedModel):
+class Book(NameStampedModel, HitCountMixin):
     """
     The class for definition books.
     """
     about = models.TextField(blank=True)
     # Delete null
-    photo = models.ImageField(upload_to='books/%Y/%m/%d/', null=True,
-                              blank=True)
+    photo = models.ImageField(upload_to='books/%Y/%m/%d/', 
+                              default='default/book/default_book_cover_2015.jpg')
     author = models.ForeignKey(Author, on_delete=models.SET_NULL,
-                               related_name="book_author", null=True)
+                               related_name="book_author", blank=True,
+                               null=True)
     genre = models.ManyToManyField(Genre, blank=True,
                                    related_name="book_genres")
-    count_views = models.IntegerField(default=0)
+    hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk',
+                                        related_query_name='hit_count_generic_relation')
     time_created = models.DateTimeField(auto_now_add=True)
     time_modified = models.DateTimeField(auto_now=True)
     readers = models.ManyToManyField(settings.AUTH_USER_MODEL,
@@ -31,17 +38,16 @@ class Book(NameStampedModel):
                                       through='CommentBook',
                                       related_name="comments")
 
-    def views(self):
-        """Counts new views for the book"""
-        self.count_views += 1
-        return self.count_views
+    @property
+    def count_views(self):
+        return self.hit_count.hits
 
     def __str__(self):
         return f"NAME: {self.name}, AUTHOR: {self.author}," \
                f"GENRE: {list(self.genre.values_list('name', flat=True))}"
 
     def get_absolute_url(self):
-        return reverse("book", kwargs={"slug": self.slug})
+        return reverse("book", kwargs={"book_slug": self.slug})
 
 
 RATE_CHOICES = [(1, 'Horrible'),
