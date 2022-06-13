@@ -113,9 +113,9 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR.parent.joinpath('static')
+STATIC_ROOT = BASE_DIR.parent.joinpath('staticfiles')
 STATICFILES_DIRS = [
-    BASE_DIR.parent.joinpath('other_static')
+    BASE_DIR.parent.joinpath('static')
 ]
 
 STATICFILES_FINDERS = [

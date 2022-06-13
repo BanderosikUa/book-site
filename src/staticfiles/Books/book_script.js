@@ -33,7 +33,7 @@ const getAvgRate = () =>{
     $.ajax({
         async: false,
         type: 'GET',
-        url: `/get-average-rating/${BookPk}`,
+        url: `/get-avarage-rating/${BookPk}`,
         success: function(response){
             ratingValue.textContent = response.avg_rating
             avarage_rating = response.avg_rating

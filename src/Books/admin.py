@@ -5,11 +5,12 @@ from .models import Book, UserBookRelation, CommentBook
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author', 'time_modified', 'get_genres', 'get_count_views')
+    list_display = ('pk', 'name', 'author', 'time_modified', 'get_genres', 'get_count_views')
     search_fields = ('name', 'author')
+    list_display_links = ('pk', 'name')
     readonly_fields = ('time_modified', 'time_created', )
     fields = ('name', 'slug', 'about', 'photo', 'author', 'genre',
-              'time_created', 'time_modified',)
+              'age_category', 'time_created', 'time_modified',)
     prepopulated_fields = {"slug": ("name",)}
 
     @admin.display(description='Views')

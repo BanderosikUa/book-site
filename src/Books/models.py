@@ -13,6 +13,12 @@ from core.models import NameStampedModel
 from Authors.models import Author
 from Genres.models import Genre
 
+AGE_CATEGORY = [('12', '12+'),
+                ('14', '14+'),
+                ('16', '16+'),
+                ('18', '18+')]
+
+
 
 class Book(NameStampedModel, HitCountMixin):
     """
@@ -27,6 +33,8 @@ class Book(NameStampedModel, HitCountMixin):
                                null=True)
     genre = models.ManyToManyField(Genre, blank=True,
                                    related_name="book_genres")
+    age_category = models.CharField(max_length=3, choices=AGE_CATEGORY,
+                                    default='12')
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk',
                                         related_query_name='hit_count_generic_relation')
     time_created = models.DateTimeField(auto_now_add=True)

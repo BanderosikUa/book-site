@@ -27,7 +27,6 @@ class GenreDetailView(ListView):
             qs = qs.order_by('-avg_rating')
         elif ordering_by == "Popular":
             qs = qs.order_by('-hit_count_generic__hits')
-            print(qs)
         return qs
 
     def get_context_data(self, **kwargs):
@@ -36,42 +35,6 @@ class GenreDetailView(ListView):
         context['Genre'] = genre_name
         context['ordering'] = self.request.GET.get('ordering')
         return context
-
-
-class JsonGenreDetailView(ListView):
-    """Return book's by genre in order by time created"""
-    template_name = "Genres/genres.html"
-    context_object_name = "books"
-    
-    def get_queryset(self):
-        """Get queryset by time created"""
-        slug = self.kwargs.get('genre_slug')
-        qs = get_users_bookmarks_and_rating().filter(genre__slug=slug)
-        qs = qs.select_related('author').prefetch_related('genre')
-        qs = qs.order_by('-time_created')
-        return qs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        genre_name = self.kwargs.get('genre_slug')
-        context['Genre'] = genre_name
-        return context
-
-    def get(self, *args, **kwargs):
-        self.object_list = None
-        return render(self.request, self.template_name,
-                      {'Genre': self.kwargs.get('genre_slug')})
-
-    def post(self, *args, **kwargs):
-        """Method for ajax that return JsonResponse with sorted qs"""
-        if self.request.method == 'POST':
-            target = self.request.POST.get('ordering_by')
-            if target == 'Rated':
-                qs = get_book_values(self.get_queryset()).order_by('-avg_rating')
-            elif target == 'Novelties':
-                qs = get_book_values(self.get_queryset())
-            qs = list(qs)
-            return JsonResponse({'books': qs})
 
 
 def get_genres_of_book_view(request, book_pk):

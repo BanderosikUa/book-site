@@ -8,6 +8,7 @@ from Books.views import *
 from ..selectors import *
 from Books.selectors import *
 
+
 class TestBookServices(TestCase):
 
     @classmethod
@@ -53,3 +54,5 @@ class TestBookServices(TestCase):
                     book=self.book2, user=self.user3,
                     bookmarks=2, rate=1
         )
+
+    

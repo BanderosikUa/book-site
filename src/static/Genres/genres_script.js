@@ -72,8 +72,12 @@ InitRatings()
 // send_ajax('Novelties')
 
 $(document).ready(function(){
-    const ordering = window.location.href.split(/\/?ordering=(\w*)/)[1]
+    const page_url = window.location.href
+    const ordering = page_url.split(/\/?ordering=(\w*)/)[1]
     console.log(ordering)
+    if(ordering==undefined){
+        window.location.href = `${url}?ordering=Popular`
+    }
     const buttons = [...document.getElementsByClassName('nav-link bookmark')]
     buttons.forEach(but => {
         if(but.classList.contains('active') && but.textContent != ordering){

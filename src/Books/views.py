@@ -24,9 +24,9 @@ class BookView(HitCountDetailView):
     def get_object(self, queryset=None):
         slug = self.kwargs.get('book_slug')
         book = get_users_bookmarks_and_rating()
-        return get_object_or_404(book
+        return get_object_or_404(book\
                                  .select_related('author')
-                                 .prefetch_related('genre'),
+                                 .prefetch_related('genre', 'hit_count_generic'),
                                  slug=slug)
 
     def get_context_data(self, **kwargs):
@@ -35,7 +35,8 @@ class BookView(HitCountDetailView):
 
         create_comment_form = CommentCreateForm()
         if self.request.user.is_authenticated:
-            user_relation = get_book_relation(book=book).get_or_create(user=self.request.user, book=book)
+            user_relation = get_book_relation(book=book)\
+                            .get_or_create(user=self.request.user, book=book)
             context['user_relation'] = user_relation[0]
         context['Book'] = book
         context['comment_create_form'] = create_comment_form

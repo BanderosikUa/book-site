@@ -71,7 +71,7 @@
                     </div>
                 </div>
             </div>
-            <p class="d-lg-flex justify-content-lg-end align-items-lg-end">{{ Book.time_created|date:"SHORT_DATE_FORMAT" }}|{{ Book.count_views }} views</p>
+            <p class="d-lg-flex justify-content-lg-end align-items-lg-end">{{ Book.time_created|date:"SHORT_DATE_FORMAT" }}|{{ hitcount.total_hits }} views</p>
         </div>
     </div>
     {% include 'Books/review.html' %}
