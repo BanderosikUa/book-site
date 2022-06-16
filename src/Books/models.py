@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Count, Q
 from django.urls import reverse
@@ -102,9 +101,9 @@ class CommentBook(models.Model):
                              on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     body = models.TextField(max_length=800)
-    liked = models.ManyToManyField(User, blank=True,
+    liked = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
                                    related_name='comment_likes')
-    disliked = models.ManyToManyField(User, blank=True,
+    disliked = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
                                       related_name='comment_dislikes')
     time_created = models.DateTimeField(auto_now_add=True)
 

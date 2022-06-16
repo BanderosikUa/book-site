@@ -8,14 +8,13 @@
 
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-secondary">
     <!-- Container wrapper -->
     <div class="container-fluid">
-      <!-- Navbar brand -->  
       <!-- Toggle button -->
       <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
+        <i class="fa fa-bars"></i>
       </button>
   
       <!-- Collapsible wrapper -->
@@ -48,14 +47,15 @@
           </button>
         </form>
         <ul class="navbar-nav mb-2 mb-lg-0">
+        {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="#">CHILDREN</a>
+            <a class="nav-link" href="#">{% if user.is_authenticated %}{{user.username}}{% else %}guest{% endif %}</a>
           </li>
           <!-- Navbar dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle hidden-arrow" href="#" id="navbarDropdown" role="button"
               data-mdb-toggle="dropdown" aria-expanded="false">
-              <i class="fas fa-bell"></i>
+              <i class="fa fa-bell"></i>
             </a>
             <!-- Dropdown menu -->
             <ul class="dropdown-menu dropdown-menu-end notifications-list p-1" aria-labelledby="navbarDropdown">
@@ -75,115 +75,62 @@
               <li>
                 <hr class="dropdown-divider" />
               </li>
-              <li>
-                <div class="row">
-                  <div class="col-md">
-                    <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(10).jpg" height='63' width='auto'
-                      class="d-block" alt="..." />
-                  </div>
-                  <div class="col-md">
-                    <p class="h6 mb-0">New</p>
-                    <p class="h6 mb-1">Movie title</p>
-                    <span class="small">Today</span>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <div class="row">
-                  <div class="col-md">
-                    <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(11).jpg" height='63' width='auto'
-                      class="d-block" alt="..." />
-                  </div>
-                  <div class="col-md">
-                    <p class="h6 mb-0">New</p>
-                    <p class="h6 mb-1">Movie title</p>
-                    <span class="small">Today</span>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <div class="row">
-                  <div class="col-md">
-                    <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(20).jpg" height='63' width='auto'
-                      class="d-block" alt="..." />
-                  </div>
-                  <div class="col-md">
-                    <p class="h6 mb-0">New</p>
-                    <p class="h6 mb-1">Movie title</p>
-                    <span class="small">Today</span>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <div class="row">
-                  <div class="col-md">
-                    <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(5).jpg" height='63' width='auto'
-                      class="d-block" alt="..." />
-                  </div>
-                  <div class="col-md">
-                    <p class="h6 mb-0">New</p>
-                    <p class="h6 mb-1">Movie title</p>
-                    <span class="small">Today</span>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <div class="row">
-                  <div class="col-md">
-                    <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).jpg" height='63' width='auto'
-                      class="d-block" alt="..." />
-                  </div>
-                  <div class="col-md">
-                    <p class="h6 mb-0">New</p>
-                    <p class="h6 mb-1">Movie title</p>
-                    <span class="small">Today</span>
-                  </div>
-                </div>
-              </li>
             </ul>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown"
-              aria-expanded="false">
-              <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(2).jpg" class="rounded-circle img-fluid"
-                height='25' width='25'>
-            </a>
-            <!-- Dropdown menu -->
-            <ul class="dropdown-menu dropdown-menu-end p-1" aria-labelledby="navbarDropdown">
-              <li class="my-2 d-flex align-items-center"><img
-                  src="https://mdbootstrap.com/img/Photos/Avatars/img%20(4).jpg" class="rounded-circle img-fluid me-1"
-                  height='25' width='25'><span> User 1</span></li>
-              <li class="my-2 d-flex align-items-center"><img
-                  src="https://mdbootstrap.com/img/Photos/Avatars/img%20(6).jpg" class="rounded-circle img-fluid me-1"
-                  height='25' width='25'><span> User 2</span></li>
-              <li class="my-2 d-flex align-items-center"><img
-                  src="https://mdbootstrap.com/img/Photos/Avatars/img%20(3).jpg" class="rounded-circle img-fluid me-1"
-                  height='25' width='25'><span> User 3</span></li>
-              <li><a class="dropdown-item" href="#">Manage Profilses</a></li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li><a class="dropdown-item" href="#">Your Account</a></li>
-              <li><a class="dropdown-item" href="#">Help</a></li>
-              <li><a class="dropdown-item" href="#">Log Out</a></li>
-            </ul>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown"
+                aria-expanded="false">
+                <img {% if user.photo %}src="{{ user.photo }}"{% else %}src="{% static 'bootstrap/assets/img/b7647bef0d7011489f1c129bf01a2190.jpg' %}"{% endif %}class="rounded-circle img-fluid"
+                    height='25' width='25'>
+                </a>
+                <!-- Dropdown menu -->
+                <ul class="dropdown-menu dropdown-menu-end p-1" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#">Your Account</a></li>
+                <li><a class="dropdown-item" href="#">Help</a></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}?next={{ request.path | urlencode }}">Log Out</a></li>
+                </ul>
+            </li>
+        {% else %}
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item user-form">
+              {% comment %} <a id='registration-link'href="#RegistrationModal" class="nav-link" data-mdb-target="#RegistrationModal" data-mdb-toggle="modal">
+              Registration</a> {% endcomment %}
+              
+              <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content"></div>
+                </div>
+              </div>
+
+              <button id="signup-btn" class="btn btn-primary" type="button" name="button">Sign up</button>
+
+
+              <script type="text/javascript">
+                $("#signup-btn").modalForm({
+                    console.log('ok')
+                    formURL: "{% url 'signup' %}"
+                });
+              </script> 
+          
+          </li>
+           <li class="nav-item user-form">
+            <a href="#LoginModal" class="nav-link" data-mdb-target="#LoginModal" data-mdb-toggle="modal">
+              Login</a>
+            {% include 'login.html' %}
           </li>
         </ul>
-  
+          {% comment %} <li class="nav-item">
+            {% include 'registration.html' %}
+          </li>
+          <li class="nav-item">
+            {% include 'login.html' %}
+          </li> {% endcomment %}
+
+        {% endif %}
+        
+        </ul>
       </div>
-      <!-- Collapsible wrapper -->
+      <!-- Collapsible wrapper -->  
     </div>
     <!-- Container wrapper -->
   </nav>

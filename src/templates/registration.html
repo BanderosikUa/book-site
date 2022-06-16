@@ -1,0 +1,82 @@
+{% load static %}
+{% load widget_tweaks %}
+
+{% block scripts %}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
+{% endblock scripts %}
+
+  <form action="" method="POST">
+    <div class="text-center mb-3">
+      <p>Sign up with:</p>
+      <button type="button" class="btn btn-primary btn-floating mx-1">
+        <i class="fa fa-facebook-f"></i>
+      </button>
+
+      <button type="button" class="btn btn-primary btn-floating mx-1">
+        <i class="fa fa-google"></i>
+      </button>
+
+      <button type="button" class="btn btn-primary btn-floating mx-1">
+        <i class="fa fa-twitter"></i>
+      </button>
+
+      <button type="button" class="btn btn-primary btn-floating mx-1">
+        <i class="fa fa-github"></i>
+      </button>
+    </div>
+    <p class="text-center">or:</p>
+
+    {% comment %} <div class="form-outline mb-4">
+      <input type="text" id="form3Example1cg" class="form-control form-control-lg" />
+      <label class="form-label" for="form3Example1cg">Your Username</label>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
+      <label class="form-label" for="form3Example3cg">Your Email</label>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
+      <label class="form-label" for="form3Example4cg">Password</label>
+    </div>
+
+    <div class="form-outline mb-4>
+      <input type="password" id="form3Example4cdg" class="form-control form-control-lg" />
+      <label class="form-label" for="form3Example4cdg">Repeat your password</label>
+    </div> {% endcomment %}
+    <div class="{% if form_create_user.non_field_errors %}invalid{% endif %} mb-2">
+      {% for error in form_create_user.non_field_errors %}
+        {{ error }}
+        {% render_field field class="form-control" placeholder=field.label %}
+        <div class="{% if field.errors %} invalid{% endif %}">
+          {% for error in field.errors %}
+            <p class="help-block">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+    {% for field in form_create_user %}
+    <div class="form-outline mb-4">
+        {{field}}<label class="form-label" for="{{field.id_for_label}}">{{field.label}}</label>
+    </div>
+    {% endfor %}
+
+
+    <div class="form-check d-flex justify-content-center mb-5">
+      <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
+      <label class="form-check-label" for="form2Example3g">
+        I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
+      </label>
+    </div>
+
+    {% comment %} <div class="d-flex justify-content-center">
+      <button type="submit" 
+        class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+    </div> {% endcomment %}
+
+    <p class="text-center text-muted mt-5 mb-0">Have already an account? 
+      <a href="#LoginModal" data-mdb-target="#LoginModal" data-mdb-toggle="modal"
+        class="fw-bold text-body"><u>Login here</u></a></p>
+
+  </form>

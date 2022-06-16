@@ -16,7 +16,18 @@ DATABASES = {
     }
 
 
-INSTALLED_APPS += ['Authors.apps.AuthorsConfig', 'Genres.apps.GenresConfig',
-                   'Books.apps.BookConfig', 'core.apps.CoreConfig',
+INSTALLED_APPS += ['Authors.apps.AuthorsConfig',
+                   'Genres.apps.GenresConfig',
+                   'Books.apps.BookConfig',
+                   'core.apps.CoreConfig',
+                   'users.apps.UsersConfig'
                    ]
-INSTALLED_APPS += ['debug_toolbar', 'django_extensions', 'hitcount']
+INSTALLED_APPS += ['debug_toolbar',
+                   'django_extensions',
+                   'hitcount',
+                   'crispy_forms',
+                   'bootstrap_modal_forms',
+                   'widget_tweaks',
+                    ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
