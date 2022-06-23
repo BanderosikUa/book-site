@@ -7,74 +7,83 @@
 {% block scripts %}
 <link rel="stylesheet" href="{% static 'Books/book_style.css' %}">
 <script src="{% static 'Books/book_script.js' %}" defer></script>
-<script src="{% static 'Books/comment_script.js' %}" defer></script>
+<script src="{% static 'Books/comment_script.js' %}" defer></script >
 {% endblock %}
 
 {% block content %}
 
-<section style="padding: 0px;margin: 73px;">
-    <ul class="row list-unstyled breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList">
-        <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="" itemprop="item"><span itemprop="name">Main</span></a></li>
-        <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="#" itemprop="item"><span itemprop="name">Books</span></a></li>
-        {% if Book.genre.all %}
-            <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="{{Book.genre.first.get_absolute_url}}" itemprop="item"><span itemprop="name">{{ Book.genre.all|first }}</span></a></li>
-        {% endif %}
-        <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="#" itemprop="item"><span itemprop="name">{{ Book.name }}</span></a></li>
-        </ul>
-    <div class="row">
-        <div class="col-xs-12">
-            <div id="book" class="row text-md-left text-center mb-5 book" book-id="{{ Book.pk }}">
-                    <div id="book_picture" class="col-auto mx-auto"><span class="image"><img class="rounded d-block mx-auto tooltip-title lazyloaded" title="#" width="200" height="300" {% if Book.photo %} src = {{ Book.photo.url }} {% else %} src={% static 'bootstrap/assets/img/default_book_cover_2015.jpg'%} {% endif %}></span>
-                        <form method="POST" class="rating-form" >
-                        <div class="rating rating_set col-xs-12">
-                            <div class="rating__body">
-                                <div class="rating__active"></div>
-                                <div class="rating__items">
-                                    <input type="radio" class="rating__item" value="1" name="rating">
-                                    <input type="radio" class="rating__item" value="2" name="rating">
-                                    <input type="radio" class="rating__item" value="3" name="rating">
-                                    <input type="radio" class="rating__item" value="4" name="rating">
-                                    <input type="radio" class="rating__item" value="5" name="rating">
+<section style="padding: 0px;">
+    <div class='row'>
+        <div class='col-1'></div>
+        <div class='col-9'>
+            <div style='margin-right:15px;'>
+                <ul class="row list-unstyled breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList">
+                    <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="" itemprop="item"><span itemprop="name">Main</span></a></li>
+                    <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="#" itemprop="item"><span itemprop="name">Books</span></a></li>
+                    {% if Book.genre.all %}
+                        <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="{{Book.genre.first.get_absolute_url}}" itemprop="item"><span itemprop="name">{{ Book.genre.all|first }}</span></a></li>
+                    {% endif %}
+                    <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="{{Book.get_absolute_url}}" itemprop="item"><span itemprop="name">{{ Book.name }}</span></a></li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="book" class="row text-md-left text-center mb-5 book" book-id="{{ Book.pk }}">
+                            <div id="book_picture" class="col-auto mx-auto"><span class="image"><img class="rounded d-block mx-auto tooltip-title lazyloaded" title="#" width="200" height="300" {% if Book.photo %} src = {{ Book.photo.url }} {% else %} src={% static 'bootstrap/assets/img/default_book_cover_2015.jpg'%} {% endif %}></span>
+                                <form method="POST" class="rating-form" >
+                                <div class="rating rating_set col-xs-12">
+                                    <div class="rating__body">
+                                        <div class="rating__active"></div>
+                                        <div class="rating__items">
+                                            <input type="radio" class="rating__item" value="1" name="rating">
+                                            <input type="radio" class="rating__item" value="2" name="rating">
+                                            <input type="radio" class="rating__item" value="3" name="rating">
+                                            <input type="radio" class="rating__item" value="4" name="rating">
+                                            <input type="radio" class="rating__item" value="5" name="rating">
+                                        </div>
+                                    </div>
+                                    <div class="rating__value">0</div>
+                                </div>
+                                {%if user_relation %}{% if user_relation.rate %}<span id="user_checked_value">Your rate: {{ user_relation.rate }}</span>{% endif %}{% endif %}
+                                </form>
+                        </div>
+                        <div class="text-start col-xs-12 col-md" id="text" style="padding-left: 20px;padding-right: 0px;margin-bottom: 0px;margin-left: 13px;font-size: 14px;">
+                            <ul class="list-inline" style="width: 606.6px;height: 26px;padding: 0px;margin: 2px 0px 0px;text-align: left;">
+                                {% if Book.genre.all %}
+                                    {% for genre in Book.genre.all%}
+                                        <li class="list-inline-item rounded" style="padding: 0px 1px;padding-right: 0px;padding-left: 1px;"><a class="text-center link d-block font-size-sm" href="{{ genre.get_absolute_url }}">{{ genre }}</a></li>
+                                    {% endfor%}
+                                {% endif %}
+                            </ul><span class="fs-1 current title-link" style="font-weight: bold;">{{ Book.name }}</span>
+                            <ul class="list-inline">
+                                    <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-clock-o d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Plan to read</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{book.plan_to_read}}</a></li>
+                                    <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-book d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Reading</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{book.reading}}</a></li>
+                                    <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-check-circle d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Read</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{book.read}}</a></li>
+                                    <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-remove d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Abandonded</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{book.abandonded}}</a></li>
+                                </ul>
+                            <div><span class="title-name" style="opacity: 0.77;">Author:&nbsp;<a href="{{ Book.author.get_absolute_url }}">{{ Book.author }}</a></span></div>
+                            <div id="content" class="content">
+                                <div class="entity">
+                                    <p><br>{{ Book.about }}<br></p>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle border rounded-pill" id="dropdownMenuButton1" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fa fa-bookmark"></i><span style="margin-left: 7px;">Add this book</span></button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><button class="dropdown-item bookmark" type='submit' value='1'><i class="fa fa-clock-o"></i><span style="margin-left: 11px;">Plan to read</span></button></li>
+                                            <li><button class="dropdown-item bookmark" type='sumbit' value='2'><i class="fa fa-book"></i><span style="margin-left: 11px;">Reading</span></button></li>
+                                            <li><button class="dropdown-item bookmark" type='sumbit' value='3'><i class="fa fa-check"></i><span style="margin-left: 11px;">Read</span></button></li>
+                                            <li><button class="dropdown-item bookmark" type='sumbit' value='4'><i class="fa fa-remove"></i><span style="margin-left: 11px;">Abandonded</span></button></li>
+                                    </ul>>
                                 </div>
                             </div>
-                            <div class="rating__value">0</div>
                         </div>
-                        {%if user_relation %}{% if user_relation.rate %}<span id="user_checked_value">Your rate: {{ user_relation.rate }}</span>{% endif %}{% endif %}
-                        </form>
-            </div>
-                <div class="text-start col-xs-12 col-md" id="text" style="padding-left: 20px;padding-right: 0px;margin-bottom: 0px;margin-left: 13px;font-size: 14px;">
-                    <ul class="list-inline" style="width: 606.6px;height: 26px;padding: 0px;margin: 2px 0px 0px;text-align: left;">
-                        {% if Book.genre.all %}
-                            {% for genre in Book.genre.all%}
-                                <li class="list-inline-item rounded" style="padding: 0px 1px;padding-right: 0px;padding-left: 1px;"><a class="text-center link d-block font-size-sm" href="{{ genre.get_absolute_url }}">{{ genre }}</a></li>
-                            {% endfor%}
-                        {% endif %}
-                    </ul><span class="fs-1 current title-link" style="font-weight: bold;">{{ Book.name }}</span>
-                    <ul class="list-inline">
-                            <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-clock-o d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Plan to read</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{book.plan_to_read}}</a></li>
-                            <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-book d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Reading</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{book.reading}}</a></li>
-                            <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-check-circle d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Read</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{book.read}}</a></li>
-                            <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-remove d-xxl-flex align-items-xxl-center"></i><span class="align-middle d-inline-block" style="margin-left: 6px;">Abandonded</span><a class="d-inline-block" href="#" style="margin-left: 5px;">{{book.abandonded}}</a></li>
-                        </ul>
-                    <div><span class="title-name" style="opacity: 0.77;">Author:&nbsp;<a href="{{ Book.author.get_absolute_url }}">{{ Book.author }}</a></span></div>
-                    <div id="content" class="content">
-                        <div class="entity">
-                            <p><br>{{ Book.about }}<br></p>
-                        </div>
-                        <div class="dropdown"><button class="btn btn-secondary dropdown-toggle border rounded-pill" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fa fa-bookmark"></i><span style="margin-left: 7px;">Add this book</span></button>
-                            <div class="dropdown-menu">
-                                    <button class="dropdown-item bookmark" type='submit' value='1'><i class="fa fa-clock-o"></i><span style="margin-left: 11px;">Plan to read</span></button>
-                                    <button class="dropdown-item bookmark" type='sumbit' value='2'><i class="fa fa-book"></i><span style="margin-left: 11px;">Reading</span></button>
-                                    <button class="dropdown-item bookmark" type='sumbit' value='3'><i class="fa fa-check"></i><span style="margin-left: 11px;">Read</span></button>
-                                    <button class="dropdown-item bookmark" type='sumbit' value='4'><i class="fa fa-remove"></i><span style="margin-left: 11px;">Abandonded</span></button>
-                        </div>
-                    </div>
+                    <p class="d-lg-flex justify-content-lg-end align-items-lg-end">{{ Book.time_created|date:"SHORT_DATE_FORMAT" }}|{{ hitcount.total_hits }} views</p>
                 </div>
+                {% include 'Books/review.html' %}
             </div>
-            <p class="d-lg-flex justify-content-lg-end align-items-lg-end">{{ Book.time_created|date:"SHORT_DATE_FORMAT" }}|{{ hitcount.total_hits }} views</p>
+            <div class='col'></div>
         </div>
     </div>
-    {% include 'Books/review.html' %}
-
+</section>
 
 {% endblock %}

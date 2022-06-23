@@ -1,82 +1,120 @@
 {% load static %}
 {% load widget_tweaks %}
+{% load socialaccount %}
+{% providers_media_js %}
 
 {% block scripts %}
 <link rel="stylesheet" href="{% static 'css/registration.css' %}">
 {% endblock scripts %}
 
-  <form action="" method="POST">
-    <div class="text-center mb-3">
-      <p>Sign up with:</p>
-      <button type="button" class="btn btn-primary btn-floating mx-1">
-        <i class="fa fa-facebook-f"></i>
-      </button>
+<div class="modal fade" id="RegistrationModal" tabindex="-1" aria-labelledby="RegistrationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body p-5">
+          <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+          <div class="text-center mb-3">
+            <p>Sign up with:</p>
+            <ul class="list-group list-group-horizontal d-flex justify-content-center">
+              <li class="list-group-item" style="border: none;border-style: none;">
+                <form action="{% provider_login_url 'google' %}" class='form-inline'>
+                <button type="submit" class="btn btn-primary btn-floating mx-1"> 
+                  <i class="fa fa-facebook"></i>
+                </button>
+            </form></li>
 
-      <button type="button" class="btn btn-primary btn-floating mx-1">
-        <i class="fa fa-google"></i>
-      </button>
+            <li class="list-group-item" style="border: none;border-style: none;">
+              <form action="{% provider_login_url 'google' %}" class='form-inline'>
+              <button type="submit" class="btn btn-primary btn-floating mx-1">
+                <i class="fa fa-google"></i>
+              </button>
+            </form></li>
+            
+            <li class="list-group-item" style="border: none;border-style: none;">
+              <form action="" class='form-inline'>
+              <button type="submit" class="btn btn-primary btn-floating mx-1">
+                <i class="fa fa-github"></i>
+              </button>
+            </form></li>
+          </ul>
+          </div>
+          <p class="text-center">or:</p>
 
-      <button type="button" class="btn btn-primary btn-floating mx-1">
-        <i class="fa fa-twitter"></i>
-      </button>
+          {% comment %} <div class="form-outline mb-4">
+            <input type="text" id="form3Example1cg" class="form-control form-control-lg" />
+            <label class="form-label" for="form3Example1cg">Your Username</label>
+          </div>
 
-      <button type="button" class="btn btn-primary btn-floating mx-1">
-        <i class="fa fa-github"></i>
-      </button>
-    </div>
-    <p class="text-center">or:</p>
+          <div class="form-outline mb-4">
+            <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
+            <label class="form-label" for="form3Example3cg">Your Email</label>
+          </div>
 
-    {% comment %} <div class="form-outline mb-4">
-      <input type="text" id="form3Example1cg" class="form-control form-control-lg" />
-      <label class="form-label" for="form3Example1cg">Your Username</label>
-    </div>
+          <div class="form-outline mb-4">
+            <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
+            <label class="form-label" for="form3Example4cg">Password</label>
+          </div>
 
-    <div class="form-outline mb-4">
-      <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
-      <label class="form-label" for="form3Example3cg">Your Email</label>
-    </div>
+          <div class="form-outline mb-4>
+            <input type="password" id="form3Example4cdg" class="form-control form-control-lg" />
+            <label class="form-label" for="form3Example4cdg">Repeat your password</label>
+          </div> {% endcomment %}
+        <form action="" method="POST" id='registration-form'>
+        {% csrf_token %}
+          <div class="{% if registration_form.non_field_errors %}invalid{% endif %} mb-2">
+            {% for error in registration_form.non_field_errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
 
-    <div class="form-outline mb-4">
-      <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
-      <label class="form-label" for="form3Example4cg">Password</label>
-    </div>
-
-    <div class="form-outline mb-4>
-      <input type="password" id="form3Example4cdg" class="form-control form-control-lg" />
-      <label class="form-label" for="form3Example4cdg">Repeat your password</label>
-    </div> {% endcomment %}
-    <div class="{% if form_create_user.non_field_errors %}invalid{% endif %} mb-2">
-      {% for error in form_create_user.non_field_errors %}
-        {{ error }}
-        {% render_field field class="form-control" placeholder=field.label %}
-        <div class="{% if field.errors %} invalid{% endif %}">
-          {% for error in field.errors %}
-            <p class="help-block">{{ error }}</p>
+          
+          {% for field in registration_form %}
+          <div class="form-outline mt-1">
+              {{field}}<label class="form-label" for="{{field.id_for_label}}">{{field.label}}</label>
+              <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 71.2px;"></div><div class="form-notch-trailing"></div></div>
+            </div>
+          <div class="{% if field.errors %} invalid{% endif %} text-danger">
+                {% if not field.errors %}<p></p>{% endif %}
+                {% for error in field.errors %}
+                  <p class="help-block">{{ error }}</p>
+                {% endfor %}
+          </div>
           {% endfor %}
+
+
+          <div class="form-check d-flex justify-content-center mb-5">
+            <input class="form-check-input me-2" required type="checkbox" value="" id="form2Example3cg" />
+            <label class="form-check-label" for="form2Example3g">
+              I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
+            </label>
+          </div>
+
+          <div class="d-flex justify-content-center">
+            <button type="submit" 
+              class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+          </div>
+
+          <p class="text-center text-muted mt-5 mb-0">Have already an account? 
+            <a id="login-link" href="javascript:void(null);" data-mdb-target="#LoginModal" data-mdb-toggle="modal"
+              class="fw-bold text-body"><u>Login here</u></a></p>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'users/registration_script.js' %}"></script>
+{% comment %}           
+    <div class="modal fade" id="RegistrationModal" tabindex="-1" aria-labelledby="RegistrationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">      
+          <div class="modal-body p-5">
+                <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+          </div>
         </div>
-      {% endfor %}
+      </div>
     </div>
-    {% for field in form_create_user %}
-    <div class="form-outline mb-4">
-        {{field}}<label class="form-label" for="{{field.id_for_label}}">{{field.label}}</label>
-    </div>
-    {% endfor %}
+     {% endcomment %}
 
-
-    <div class="form-check d-flex justify-content-center mb-5">
-      <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
-      <label class="form-check-label" for="form2Example3g">
-        I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
-      </label>
-    </div>
-
-    {% comment %} <div class="d-flex justify-content-center">
-      <button type="submit" 
-        class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
-    </div> {% endcomment %}
-
-    <p class="text-center text-muted mt-5 mb-0">Have already an account? 
-      <a href="#LoginModal" data-mdb-target="#LoginModal" data-mdb-toggle="modal"
-        class="fw-bold text-body"><u>Login here</u></a></p>
-
-  </form>
+     
+    

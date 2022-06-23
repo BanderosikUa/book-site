@@ -1,0 +1,13 @@
+{% extends 'sidebar.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block settings-content %}
+    <h1> Information settings</h1>
+    <hr>
+    <form role='form' method='post' enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success btn-rounded float-end mt-3" style='width:200px; font-size:'>Save password</button>
+    </form>
+{% endblock settings-content %}

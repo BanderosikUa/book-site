@@ -22,3 +22,7 @@ class CustomUserAdmin(UserAdmin):
             }
         )
     )
+    fieldsets = (
+        (None, {'fields': ('email', 'username', 'password', 'avatar')}),
+        ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser')}),
+    )

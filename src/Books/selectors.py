@@ -66,7 +66,6 @@ def get_users_bookmarks_and_rating() -> Book:
         # Cast for output_fueld error
         avg_rating=Cast(Coalesce(Round(Avg('userbookrelation__rate'),
                         precision=1), 0), output_field=FloatField()),
-        comments_count=Count('comments')
         )
 
 

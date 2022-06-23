@@ -16,13 +16,15 @@ DATABASES = {
     }
 
 
-INSTALLED_APPS += ['Authors.apps.AuthorsConfig',
+INSTALLED_APPS += [
+                   'Authors.apps.AuthorsConfig',
                    'Genres.apps.GenresConfig',
                    'Books.apps.BookConfig',
                    'core.apps.CoreConfig',
                    'users.apps.UsersConfig'
                    ]
-INSTALLED_APPS += ['debug_toolbar',
+INSTALLED_APPS += [
+                   'debug_toolbar',
                    'django_extensions',
                    'hitcount',
                    'crispy_forms',

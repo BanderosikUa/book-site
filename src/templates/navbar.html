@@ -2,12 +2,15 @@
 
 {% block scripts %}
 <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
+<script src="{% static 'js/navbar_script.js' %}"></script>
 {% endblock %}
 
 
 
 
 <!-- Navbar -->
+  
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-secondary">
     <!-- Container wrapper -->
     <div class="container-fluid">
@@ -24,8 +27,16 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">TV Shows</a>
+          <li class="nav-item dropdown">
+            {% csrf_token %}
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-genres" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Genres
+            </a>
+            <ul class="dropdown-menu columns text-center" aria-labelledby="navbarDropdown-genres" id='genres-menu'>
+              {% comment %} <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li> {% endcomment %}
+            </ul>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Movies</a>
@@ -39,7 +50,7 @@
         </ul>
         <!-- Left links -->
   
-        <!-- Search form -->
+        <!-- Search form, right side -->
         <form class="d-flex input-group w-auto">
           <input type="search" class="form-control" placeholder="Type query" aria-label="Search" />
           <button class="btn btn-outline-primary" type="button" data-mdb-ripple-color="dark" style="padding: .45rem 1.5rem .35rem;">
@@ -80,51 +91,36 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-mdb-toggle="dropdown"
                 aria-expanded="false">
-                <img {% if user.photo %}src="{{ user.photo }}"{% else %}src="{% static 'bootstrap/assets/img/b7647bef0d7011489f1c129bf01a2190.jpg' %}"{% endif %}class="rounded-circle img-fluid"
+                <img {% if user.avatar %}src="{{ user.avatar.url }}"{% else %}src="{% static 'bootstrap/assets/img/b7647bef0d7011489f1c129bf01a2190.jpg' %}"{% endif %}class="rounded-circle"
                     height='25' width='25'>
                 </a>
                 <!-- Dropdown menu -->
                 <ul class="dropdown-menu dropdown-menu-end p-1" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Your Account</a></li>
-                <li><a class="dropdown-item" href="#">Help</a></li>
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'profile-settings-information' user.pk %}">Settings</a></li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                {% comment %} {{ request.path | urlencode }} {% endcomment %}
                 <li><a class="dropdown-item" href="{% url 'logout' %}?next={{ request.path | urlencode }}">Log Out</a></li>
                 </ul>
             </li>
         {% else %}
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item user-form">
-              {% comment %} <a id='registration-link'href="#RegistrationModal" class="nav-link" data-mdb-target="#RegistrationModal" data-mdb-toggle="modal">
-              Registration</a> {% endcomment %}
-              
-              <div class="modal fade" tabindex="-1" role="dialog" id="modal">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content"></div>
-                </div>
-              </div>
-
-              <button id="signup-btn" class="btn btn-primary" type="button" name="button">Sign up</button>
-
-
-              <script type="text/javascript">
-                $("#signup-btn").modalForm({
-                    console.log('ok')
-                    formURL: "{% url 'signup' %}"
-                });
-              </script> 
-          
+              <a id='registration-link' href="javascript:void(null);" class="nav-link" data-mdb-target="#RegistrationModal" data-mdb-toggle="modal">
+              Registration</a>
+              <div id='registration-li'>
+                {% include 'registration.html' %}
+              </div>    
           </li>
            <li class="nav-item user-form">
-            <a href="#LoginModal" class="nav-link" data-mdb-target="#LoginModal" data-mdb-toggle="modal">
+            <a id='login-link' href="javascript:void(null);" class="nav-link" data-mdb-target="#LoginModal" data-mdb-toggle="modal">
               Login</a>
-            {% include 'login.html' %}
+            <div id='login-li'>
+              {% include 'login.html'%}
+            </div>
           </li>
-        </ul>
-          {% comment %} <li class="nav-item">
-            {% include 'registration.html' %}
-          </li>
-          <li class="nav-item">
-            {% include 'login.html' %}
-          </li> {% endcomment %}
 
         {% endif %}
         

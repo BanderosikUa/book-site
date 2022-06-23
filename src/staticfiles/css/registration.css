@@ -21,9 +21,8 @@
 
 .modal {
     background: rgba(0, 0, 0, 0.5); 
-    }
+}
 
-
-    .modal-backdrop {
-display: none;
+.modal-backdrop {
+    display: none;
 }

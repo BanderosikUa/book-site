@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from ..models import CommentBook
 from ..selectors import CommentBookSelector
 
-
 def get_comment_data(*, book_pk: int, num_comments: int, user: User) -> dict:
     """Function, that return Json with limited(3) data of comments in GET ajax request"""
     visible = 3
@@ -16,6 +15,7 @@ def get_comment_data(*, book_pk: int, num_comments: int, user: User) -> dict:
         item = {
             'pk': obj.pk,
             'username': obj.user.username,
+            'avatar': obj.user.avatar.url,
             'comment': obj.body,
             'likes': obj.comment_likes,
             'dislikes': obj.comment_dislikes,
@@ -79,7 +79,11 @@ def create_comment(*, book_pk: int, body: str, user: User) -> dict:
     )
     response_data['username'] = user.username
     response_data['comment'] = body
-    response_data['comment_pk'] = UserComment.pk
+    response_data['pk'] = UserComment.pk
     response_data['time_created'] = UserComment.time_created.strftime("%d %B %Y")
+    response_data['likes'] = 0
+    response_data['dislikes'] = 0
+    response_data['avatar'] = user.avatar.url
+    response_data['pk'] = user.pk
 
     return response_data

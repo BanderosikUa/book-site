@@ -2,14 +2,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from config import settings
-from users.views import RegistrationView
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('allauth.urls')),
+    path('home', TemplateView.as_view(template_name='base.html'), name='home'),
     path('', include('Books.urls')),
     path('', include('Genres.urls')),
-    path('signup/', RegistrationView.as_view(), name='signup'),
+    path('', include('users.urls')),
 ]
 
 if settings.local.DEBUG:

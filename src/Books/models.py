@@ -53,6 +53,7 @@ class Book(NameStampedModel, HitCountMixin):
         return f"NAME: {self.name}, AUTHOR: {self.author}," \
                f"GENRE: {list(self.genre.values_list('name', flat=True))}"
 
+
     def get_absolute_url(self):
         return reverse("book", kwargs={"book_slug": self.slug})
 
