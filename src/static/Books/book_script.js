@@ -162,7 +162,7 @@ const SetUserBookmark = () => {
         url: `/get-bookmark-data/${BookPk}`,
         success: function(response){
             if(!response.user){
-                return False
+                return false
             }
             if(response.bookmark_value){
                 const UserBookmark = BookmarkButtons[response.bookmark_value-1]

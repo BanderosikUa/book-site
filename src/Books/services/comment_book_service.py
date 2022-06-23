@@ -44,7 +44,8 @@ def like_book_comment(*, comment_pk: int, book_pk: int, user: User):
     return {'likes': comment.likes_amount,
             'dislikes': comment.dislikes_amount,
             'liked': liked,
-            'disliked': disliked}
+            'disliked': disliked,
+            'user': True}
 
 
 def dislike_book_comment(comment_pk: int, book_pk: int, user: User) -> dict:
@@ -66,7 +67,8 @@ def dislike_book_comment(comment_pk: int, book_pk: int, user: User) -> dict:
     return {'dislikes': comment.dislikes_amount,
             'likes': comment.likes_amount,
             'liked': liked,
-            'disliked': disliked}
+            'disliked': disliked,
+            'user': True}
 
 
 def create_comment(*, book_pk: int, body: str, user: User) -> dict:

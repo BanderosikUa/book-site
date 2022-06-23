@@ -12,7 +12,6 @@ const LikeComment = () =>{
         e.preventDefault()
         const ClickedId = e.target.getAttribute('data-form-id')
         const ClickedBtn = document.getElementById(`like-${ClickedId}`)
-        console.log(ClickedBtn)
 
         $.ajax({
             type: "POST",

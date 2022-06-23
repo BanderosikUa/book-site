@@ -14,7 +14,7 @@ from .models import Book, UserBookRelation, CommentBook
 
 
 
-class BookView(ListView):
+class BookView(HitCountDetailView):
     """Class-based view for displaying Book and UserBookRelation models"""
     model = Book
     template_name = "Books/main.html"
