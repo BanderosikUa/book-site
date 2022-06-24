@@ -1,21 +1,24 @@
 from django.conf import settings
 from django.db import models
+from django.http import HttpRequest
 from django.db.models import Count, Q
 from django.urls import reverse
 from django.contrib.contenttypes.fields import GenericRelation
 
-
 from hitcount.models import HitCountMixin, HitCount
-
+from hitcount.views import HitCountMixin
 
 from core.models import NameStampedModel
 from Authors.models import Author
 from Genres.models import Genre
+from users.models import CustomUser
+
 
 AGE_CATEGORY = [('12', '12+'),
                 ('14', '14+'),
                 ('16', '16+'),
-                ('18', '18+')]
+                ('18', '18+')
+                ]
 
 
 
@@ -23,6 +26,8 @@ class Book(NameStampedModel, HitCountMixin):
     """
     The class for definition books.
     """
+
+    
     about = models.TextField(blank=True)
     # Delete null
     photo = models.ImageField(upload_to='books/%Y/%m/%d/', 
@@ -45,9 +50,8 @@ class Book(NameStampedModel, HitCountMixin):
                                       through='CommentBook',
                                       related_name="comments")
 
-    @property
-    def count_views(self):
-        return self.hit_count.hits
+    class Meta:
+        ordering = ['-hit_count_generic__hits']
 
     def __str__(self):
         return f"NAME: {self.name}, AUTHOR: {self.author}," \
@@ -56,6 +60,14 @@ class Book(NameStampedModel, HitCountMixin):
 
     def get_absolute_url(self):
         return reverse("book", kwargs={"book_slug": self.slug})
+
+    # def save(self):
+    # #     self.user = CustomUser.objects.get(username='admin')
+    #     hit_count = HitCount.objects.get_for_object(self)
+    #     request = HttpRequest()
+    #     request.session = {}
+    #     HitCountMixin.hit_count(request, hit_count)
+
 
 
 RATE_CHOICES = [(1, 'Horrible'),

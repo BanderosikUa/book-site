@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.test import TestCase, Client
-from django.contrib.auth.models import User
 
+from users.models import CustomUser
 from Books.models import Book, UserBookRelation
 from Genres.models import Genre
 from Genres.views import *
@@ -24,7 +24,7 @@ class TestBookViews(TestCase):
         self.book3 = Book.objects.create(name='third book')
         self.book3.genre.add(self.genre3)
 
-        self.user = User.objects.create(username='user1', password='username123')
+        self.user = CustomUser.objects.create(username='user1', password='username123')
         self.genres_url = reverse('genres', args=(self.genre2,))
 
     def test_genre_detail_view_GET(self):
@@ -34,10 +34,3 @@ class TestBookViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'Genres/genres.html')
-
-    def test_fetch_book_by_genre(self):
-        """Test fetching correct queryset of book by genre"""
-        response = list(get_books_by_genre(slug=self.genre2.slug))
-        expected_repsonse = [self.book1, self.book2]
-
-        self.assertEquals(response, expected_repsonse)

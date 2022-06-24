@@ -19,3 +19,4 @@ env/
 venv/
 .vscode/
 db.json
+media/

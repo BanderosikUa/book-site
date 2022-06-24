@@ -1,11 +1,12 @@
 from datetime import datetime
 
-from Books.models import Book, CommentBook, UserBookRelation
-from Books.views import *
-from django.contrib.auth.models import User
 from django.test import Client, RequestFactory, TestCase
 from django.urls import reverse
 
+from Books.models import Book, CommentBook, UserBookRelation
+from Books.views import *
+from django.contrib.auth.models import User
+from users.models import CustomUser
 from ..selectors import *
 
 
@@ -16,16 +17,15 @@ class TestBookServices(TestCase):
         self.client = Client()
 
         self.book = Book.objects.create(name='some book')
-        self.user = User.objects.create(username='user1',
-                                        password='username123')
+        self.user = CustomUser.objects.create(username='user1', password='username123', email='admin@gmail.com')
         self.comment = CommentBook.objects.create(book=self.book,
                                                   user=self.user,
                                                   body="Test comment")
-        self.user2 = User.objects.create(username='user2', password='username123')
-        self.user3 = User.objects.create(username='user3', password='username123')
-        self.user4 = User.objects.create(username='user4', password='username123')
-        self.user5 = User.objects.create(username='user5', password='username123')
-        self.user6 = User.objects.create(username='user6', password='username123')
+        self.user2 = CustomUser.objects.create(username='user2', password='username123', email='admin1@gmail.com')
+        self.user3 = CustomUser.objects.create(username='user3', password='username123', email='admin2@gmail.com')
+        self.user4 = CustomUser.objects.create(username='user4', password='username123', email='admin3@gmail.com')
+        self.user5 = CustomUser.objects.create(username='user5', password='username123', email='admin4@gmail.com')
+        self.user6 = CustomUser.objects.create(username='user6', password='username123', email='admin5@gmail.com')
         self.time_today = datetime.now().strftime("%d %B %Y")
 
 
@@ -37,6 +37,7 @@ class TestBookServices(TestCase):
         expected_data = {'data': [{
             'pk': self.comment.pk,
             'username': self.user.username,
+            'avatar': self.user.avatar.url,
             'comment': 'Test comment',
             'likes': 1,
             'dislikes': 1,
@@ -59,7 +60,8 @@ class TestBookServices(TestCase):
         expected_response = {'likes': 2,
                              'dislikes': 3,
                              'liked': True,
-                             'disliked': False}
+                             'disliked': False,
+                             'user': True}
         self.assertEquals(response, expected_response)
 
     def test_like_book_comment_delete_dislike(self):
@@ -73,7 +75,8 @@ class TestBookServices(TestCase):
         expected_response = {'likes': 2,
                              'dislikes': 3,
                              'liked': True,
-                             'disliked': False}
+                             'disliked': False,
+                             'user': True}
         self.assertEquals(response, expected_response)
     
     def test_like_book_comment_delete_like(self):
@@ -86,7 +89,8 @@ class TestBookServices(TestCase):
         expected_response = {'likes': 1,
                              'dislikes': 3,
                              'liked': False,
-                             'disliked': False}
+                             'disliked': False,
+                             'user': True}
         self.assertEquals(response, expected_response)
 
     def test_dislike_book_comment(self):
@@ -99,7 +103,8 @@ class TestBookServices(TestCase):
         expected_response = {'likes': 1,
                              'dislikes': 4,
                              'liked': False,
-                             'disliked': True}
+                             'disliked': True,
+                             'user': True}
         self.assertEquals(response, expected_response)
 
     def test_dislike_book_comment_delete_like(self):
@@ -113,7 +118,8 @@ class TestBookServices(TestCase):
         expected_response = {'likes': 1,
                              'dislikes': 4,
                              'liked': False,
-                             'disliked': True}
+                             'disliked': True,
+                             'user': True}
         self.assertEquals(response, expected_response)
     
     def test_dislike_book_comment_delete_dislike(self):
@@ -126,7 +132,8 @@ class TestBookServices(TestCase):
         expected_response = {'likes': 2,
                              'dislikes': 2,
                              'liked': False,
-                             'disliked': False}
+                             'disliked': False,
+                             'user': True}
         self.assertEquals(response, expected_response)
 
     def test_create_comment(self):
@@ -135,9 +142,14 @@ class TestBookServices(TestCase):
                                   body='Test',
                                   user=self.user,)
         expected_response = {'username': self.user.username,
+                             'avatar': self.user.avatar.url,
                              'comment': "Test",
-                             'comment_pk': 2,
-                             'time_created': self.time_today}
+                             'pk': 1,
+                             'time_created': self.time_today,
+                             'dislikes': 0,
+                             'likes': 0,
+                             'user': True
+                             }
         self.assertEquals(response, expected_response) 
         
     

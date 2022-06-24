@@ -1,7 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from Books.models import AGE_CATEGORY
+AGE_CATEGORY = [('12', '12+'),
+                ('14', '14+'),
+                ('16', '16+'),
+                ('18', '18+')
+                ]
 
 # Create your models here.
 

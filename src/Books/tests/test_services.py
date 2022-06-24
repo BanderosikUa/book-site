@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.test import RequestFactory, TestCase, Client
-from django.contrib.auth.models import User
 
+from users.models import CustomUser
 from Books.models import Book, UserBookRelation, CommentBook
 from Books.views import *
 from ..selectors import *
@@ -13,13 +13,13 @@ class TestBookServices(TestCase):
         self.client = Client()
 
         self.book = Book.objects.create(name='some book')
-        self.user = User.objects.create(username='user1',
-                                        password='username123')
+        self.user = CustomUser.objects.create(username='user1',
+                                              password='username123')
 
     def test_selector_fetch_get_count_bookmarks_and_rating(self):
         """Test getting from db count of reading, abandonded, read and planning books"""
-        user2 = User.objects.create(username='user2', password='username123')
-        user3 = User.objects.create(username='user3', password='username123')
+        user2 = CustomUser.objects.create(username='user2', password='username123', email='admin@gmail.com')
+        user3 = CustomUser.objects.create(username='user3', password='username123', email='admin2@gmail.com')
         relation1 = UserBookRelation.objects.create(
                     book=self.book, user=self.user,
                     bookmarks=2
@@ -47,8 +47,8 @@ class TestBookServices(TestCase):
 
     def test_get_avarage_rating_with_3_relations(self):
         """Testing avarage rating that make 3 users"""
-        user2 = User.objects.create(username='user2', password='username123')
-        user3 = User.objects.create(username='user3', password='username123')
+        user2 = CustomUser.objects.create(username='user2', password='username123', email='admin@gmail.com')
+        user3 = CustomUser.objects.create(username='user3', password='username123', email='admin2@gmail.com')
         UserBookRelation.objects.create(
                     book=self.book, user=self.user,
                     rate=2

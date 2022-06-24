@@ -87,5 +87,6 @@ def create_comment(*, book_pk: int, body: str, user: User) -> dict:
     response_data['dislikes'] = 0
     response_data['avatar'] = user.avatar.url
     response_data['pk'] = user.pk
+    response_data['user'] = True
 
     return response_data

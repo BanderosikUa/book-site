@@ -1,6 +1,6 @@
 from django.test import TestCase
 from Books.models import Book
-
+from hitcount.utils import get_hitcount_model
 
 class TestBookModel(TestCase):
     """Tests for Book's model"""
@@ -34,3 +34,13 @@ class TestBookModel(TestCase):
         expected_name = 'test-bukva'
 
         self.assertEqual(real_slug, expected_name)
+
+    def test_create_defualt_hitcount_book(self):
+        """Testing if add default admin hits to book"""
+        expected_hits = 1
+
+        book = Book.objects.create(name='Hello world')
+        hit_count = get_hitcount_model().objects.get_for_object(book)
+        real_hits = hit_count.hits
+
+        self.assertEqual(expected_hits, real_hits)

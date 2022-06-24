@@ -1,9 +1,9 @@
-from Books.models import Book, UserBookRelation
-from Books.views import *
-from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
 
+from users.models import CustomUser
+from Books.models import Book, UserBookRelation
+from Books.views import *
 
 class TestBookViews(TestCase):
 
@@ -12,11 +12,11 @@ class TestBookViews(TestCase):
         self.client = Client()
 
         self.model1 = Book.objects.create(name='some book')
-        self.user = User.objects.create(username='user1', password='username123')
+        self.user = CustomUser.objects.create(username='user1', password='username123', email='admifn@gmail.com')
 
         self.book_url = reverse('book', args=(self.model1.slug,))
         self.rate_book_url = reverse('rate-book',)
-        self.get_avarage_rating_url = reverse('get-avarage-rating',
+        self.get_avarage_rating_url = reverse('get-average-rating',
                                               args=(self.model1.pk,))
         
     def test_logined_book_view_GET(self):
