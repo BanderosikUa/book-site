@@ -80,12 +80,12 @@ RATE_CHOICES = [(1, 'Horrible'),
 Planning = 1
 Reading = 2
 Read = 3
-Abandonded = 4
+Abandoned = 4
 
 BOOKMARK_CHOICES = [(Planning, 'Plan to read'),
                     (Reading, 'Reading'),
                     (Read, 'Read'),
-                    (Abandonded, 'Abandonded')
+                    (Abandoned, 'Abandoned')
                     ]
 
 

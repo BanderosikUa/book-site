@@ -1,4 +1,4 @@
-# Architecture of the site
+# Architecture of the site(tips)
 ## Static
 Save all of your separated for specific app static files(like js scripts, images etc) in other_static/name_of_app
 ## Templates
@@ -15,3 +15,9 @@ Write here code to fetch data from database.
 Write here code to test services and selectors functions. Also test url response.
 ## Models
 Write here code only that showing structure of model. Don't write business logic in models. Only coding here some main function like get_absolute_url, `__str__`, etc.
+## HitCount(django extension)
+This extension is need for counting by ip users view for some model. Create a post_save signal
+that will add default hit for model if you want to sorting by "-hit_count_generic__hits" otherwise
+it will order incorrect.
+
+
