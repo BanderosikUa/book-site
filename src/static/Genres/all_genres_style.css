@@ -1,0 +1,23 @@
+.owl-carousel img{
+    height: 30vh;
+    width: 100%;
+    object-fit: cover;
+}
+
+.owl-prev{
+    left: -30px;
+}   
+
+.owl-next{
+    right: -30px;
+}
+
+.owl-prev , .owl-next{
+    position: absolute;
+    top: 80px;
+}
+
+.owl-prev span, .owl-next span{
+    font-size: 80px;
+    color: black;
+}

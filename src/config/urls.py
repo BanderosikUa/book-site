@@ -13,6 +13,7 @@ urlpatterns = [
     path('', include('Books.urls')),
     path('', include('Genres.urls')),
     path('', include('users.urls')),
+    path('', include('Authors.urls'))
 ]
 
 if settings.local.DEBUG:

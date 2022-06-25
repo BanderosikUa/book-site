@@ -14,10 +14,10 @@ def bookmark_book(*, book_pk: int, user: User, bookmark: int):
     else:
         user_relation.bookmarks = bookmark
     user_relation.save()
-    return {'clicked': clicked, 'previous_bookmark': previous_bookmark}
+    return {'clicked': clicked, 'previous_bookmark': previous_bookmark, 'user': True}
 
 
 def get_bookmark_data(*, book_pk: int, user: User):
     """Function, that return selected user bookmark"""
     relation = get_user_book_relation(book_pk=book_pk, user=user)
-    return {'bookmark_value': relation.bookmarks}
+    return {'bookmark_value': relation.bookmarks, 'user': True}

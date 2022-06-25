@@ -1,6 +1,7 @@
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 from hitcount.models import HitCount, HitCountMixin
 
@@ -13,6 +14,8 @@ class Genre(NameStampedModel, HitCountMixin):
     """
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk',
                                         related_query_name='hit_count_genre')
+    time_created = models.DateTimeField(auto_now_add=True)
+
     class Meta:
         verbose_name = "genre"
         verbose_name_plural = "genres"

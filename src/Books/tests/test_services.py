@@ -73,23 +73,23 @@ class TestBookServices(TestCase):
         )
         response = get_bookmark_data(book_pk=self.book.pk,
                                      user=self.user)
-        expected_response = {'bookmark_value': 2}
+        expected_response = {'bookmark_value': 2, 'user': True}
         self.assertEquals(response, expected_response)
         
     def test_bookmark_add_to_book(self):
         """Test add user bookmark"""
         UserBookRelation.objects.create(
-                    book=self.book, 
+                    book=self.book,
                     user=self.user,
         )
 
         response = bookmark_book(book_pk=self.book.pk,
                                  user=self.user,
                                  bookmark=2)
-        expected_response = {'clicked': True, 'previous_bookmark': None}
+        expected_response = {'clicked': True, 'previous_bookmark': None, 'user': True}
         bookmark = get_bookmark_data(book_pk=self.book.pk,
                                      user=self.user)
-        expected_bookmark = {'bookmark_value': 2}
+        expected_bookmark = {'bookmark_value': 2, 'user': True}
         self.assertEquals(response, expected_response)
         self.assertEquals(bookmark, expected_bookmark)
 
@@ -104,10 +104,10 @@ class TestBookServices(TestCase):
         response = bookmark_book(book_pk=self.book.pk,
                                  user=self.user,
                                  bookmark=2)
-        expected_response = {'clicked': False, 'previous_bookmark': 2}
+        expected_response = {'clicked': False, 'previous_bookmark': 2, 'user': True}
         bookmark = get_bookmark_data(book_pk=self.book.pk,
                                      user=self.user)
-        expected_bookmark = {'bookmark_value': None}
+        expected_bookmark = {'bookmark_value': None, 'user': True}
         self.assertEquals(response, expected_response)
         self.assertEquals(bookmark, expected_bookmark)
 

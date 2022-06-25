@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{% static 'bootstrap/assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/assets/css/styles.css' %}">
 
-    {% block scripts %}{% endblock scripts %}
+    {% comment %} {% block scripts %}{% endblock scripts %} {% endcomment %}
 </head>
 
 <body style="font-family: ABeeZee, sans-serif;padding-top: 70px;">
@@ -27,6 +27,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <script src="{% static 'mdb5/js/mdb.min.js' %}"></script>
     <script src="{% static 'js/base.js' %}"></script>
+    {% block scripts %}{% endblock scripts %}
+
 </body>
 
 </html>

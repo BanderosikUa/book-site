@@ -1,7 +1,7 @@
 from django.contrib import admin
 from Authors.models import Author
 from .models import Book, UserBookRelation, CommentBook
-
+from hitcount.models import HitCount
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
@@ -15,7 +15,7 @@ class BookAdmin(admin.ModelAdmin):
 
     @admin.display(description='Views')
     def get_count_views(self, obj):
-        return obj.count_views
+        return HitCount.objects.get_for_object(obj).hits
 
     @admin.display(description='genres', ordering='genre__name')
     def get_genres(self, obj):

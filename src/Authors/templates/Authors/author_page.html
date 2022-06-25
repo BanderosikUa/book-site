@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<section style="padding: 0px;">
+    <div class='row'>
+        <div class='col-2'></div>
+        <div class='col-8'>
+            <div style='margin-right:15px;'>
+                <ul class="row list-unstyled breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList">
+                    <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="" itemprop="item"><span itemprop="name">Main</span></a></li>
+                    <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="#" itemprop="item"><span itemprop="name">Authors</span></a></li>
+                    <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="#" itemprop="item"><span itemprop="name">Some Author</span></a></li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <h1>Author name</h1>
+                    <ul class="list-inline" style="width: 606.6px;height: 26px;padding: 0px;margin: 2px 0px 0px;text-align: left;">
+                        <li class="list-inline-item rounded" style="padding: 0px 1px;padding-right: 0px;padding-left: 1px;"><a class="text-center link d-block font-size-sm" href="#">genre</a></li>
+                        <li class="list-inline-item rounded" style="padding: 0px 1px;padding-right: 0px;padding-left: 1px;"><a class="text-center link d-block font-size-sm" href="#">genre2</a></li>
+                    </ul>
+                    <h2 style='padding-top:15px;'>Biography</h2>
+                    <div class='row border-top border-bottom'>
+                        Hello
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class='col-2'></div>
+    </div>
+</section>
+{% endblock %}

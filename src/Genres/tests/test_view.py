@@ -33,4 +33,4 @@ class TestBookViews(TestCase):
         response = self.client.get(self.genres_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Genres/genres.html')
+        self.assertTemplateUsed(response, 'Genres/genre_page.html')

@@ -21,4 +21,4 @@ def get_all_genres_json():
             'url': genre.get_absolute_url(),
         }
         data.append(item)
-    return {'data': data, 'all_genres_url': '#'}
+    return {'data': data, 'all_genres_url': reverse_lazy('all-genres')}

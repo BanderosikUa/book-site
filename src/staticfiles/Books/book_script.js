@@ -91,10 +91,15 @@ const RateBook = (rate_value) =>{
                 'value': rate_value,
             },
             success: function(response){
-                console.log(response)
-                getAvgRate()
-                setRatingActiveWidth(AvgRate)
-                },
+                console.log(response.user)
+                if(response.user){
+                    getAvgRate()
+                    setRatingActiveWidth(AvgRate)
+                    }
+                else{
+                    login_required()
+                }
+            },
             error: function(error){
                 console.log(error)
             }
@@ -110,7 +115,7 @@ const UserBookmarking = () =>{
         e.preventDefault()
         const ClickedBookmarkBtn = e.target
         const ClickedBookmark = ClickedBookmarkBtn.value
-
+        
         $.ajax({
             type: "POST",
             url: "/bookmark-book/",
@@ -120,6 +125,10 @@ const UserBookmarking = () =>{
                 'bookmarked': ClickedBookmark
             },
             success: function(response){
+                if(!response.user){
+                    login_required()
+                    return false
+                }
                 if (response.clicked){
                     $(ClickedBookmarkBtn).css('background-color', 'orange')
                     const html = ClickedBookmarkBtn.innerHTML
@@ -152,6 +161,9 @@ const SetUserBookmark = () => {
         type: "GET",
         url: `/get-bookmark-data/${BookPk}`,
         success: function(response){
+            if(!response.user){
+                return false
+            }
             if(response.bookmark_value){
                 const UserBookmark = BookmarkButtons[response.bookmark_value-1]
                 $(UserBookmark).css('background-color', 'orange')
@@ -169,7 +181,7 @@ function main(){
     getAvgRate();
     setRatingActiveWidth(AvgRate);
     SetRating();
-    getUserValue();
     SetUserBookmark();
+    getUserValue()
     UserBookmarking();
 }

@@ -3,9 +3,9 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView
 from django.db.models import Avg, Count, Q, Sum
 from django.contrib.auth.decorators import login_required
+from django.views.generic.list import ListView
 
 from hitcount.views import HitCountDetailView
-from django.views.generic.list import ListView
 
 from Books.services import *
 from Books.selectors import *
@@ -17,7 +17,7 @@ from .models import Book, UserBookRelation, CommentBook
 class BookView(HitCountDetailView):
     """Class-based view for displaying Book and UserBookRelation models"""
     model = Book
-    template_name = "Books/main.html"
+    template_name = "Books/book_page.html"
     slug_url_kwarg = 'book_slug'
     count_hit = True
 

@@ -1,0 +1,52 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block scripts %}
+<link rel="stylesheet" href="{% static 'OwlCarousel/owl.carousel.css' %}">
+<link rel="stylesheet" href="{% static 'OwlCarousel/owl.theme.default.min.css' %}">
+<link rel="stylesheet" href="{% static 'Genres/all_genres_style.css' %}">
+<link rel="stylesheet" href="{% static 'Books/book_style.css' %}">
+
+<script src="{% static 'OwlCarousel/owl.carousel.js' %}"></script>
+<script src="{% static 'Genres/all_genre_script.js' %}"></script>
+{% comment %} <script src="{% static 'Genres/genres_script.js' %}"></script> {% endcomment %}
+{% endblock %}
+
+{% block content %}
+<section id='all-genres' data-url='{% url 'all-genres' %}'>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-8">
+            <h1>All genres!</h1>
+            <div class="row">
+                <div class="col"><form action="#" method="GET">
+                    <ul class="nav nav-tabs mt-3">
+                        <li class="nav-item"><button class="nav-link genres" data-toggle="tab">Novelties</button></li>
+                        <li class="nav-item"><button class="nav-link genres active" data-toggle="tab">Popular</button></li>
+                    </ul>
+                </form></div>
+            </div>
+            <div class="row" style="padding-top: 20px;">
+                <div class="col">
+                    {% for genre in genres %}
+                        <div class='container'>
+                            <h3><a href='{{ genre.get_absolute_url }}' style='padding-left:12px;color:inherit;text-decoration:inherit;'>{{genre.name}}</a></h3>
+                            <div class="owl-carousel owl-theme">
+                                {% for book in genre.books %}
+                                    <div class="ms-2 me-2">
+                                        <a href="{% url 'book' book.slug %}"><img class='owl-lazy' data-src="{{book.photo.url}}"></a>
+                                    </div>
+                                {% endfor %}
+                            </div> 
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+        <div class="grid-img-right mt-4 text-right bg">
+            {% include 'pagination.html'%}
+        </div>
+    </div>
+</section>
+{% endblock content %}

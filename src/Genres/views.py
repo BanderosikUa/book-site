@@ -1,16 +1,10 @@
-from django.core.serializers import serialize
-from django.db.models import Count, F, Q
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect, render
-from django.urls import reverse, reverse_lazy
 from django.views.generic.list import ListView, MultipleObjectMixin
 
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
 
-from Books.models import Book
 from Books.selectors import *
-from users.forms import CustomUserFormCreate
 from .services import *
 from .models import Genre
 
@@ -47,6 +41,32 @@ class GenreDetailView(ListView):
         context['Genre'] = genre_slug
         context['ordering'] = self.request.GET.get('ordering')
         return context
+
+
+class GenreAllView(ListView):
+    template_name = "Genres/all_genre_page.html"
+    paginate_by = 10
+    context_object_name = 'genres'
+
+    def get_queryset(self):
+        qs = Genre.objects.prefetch_related('book_genres', 'hit_count_generic').all()
+        ordering_by = self.request.GET.get('ordering')
+        if ordering_by == "Novelties":
+            qs = qs.order_by('-time_created')
+        elif ordering_by == "Popular":
+            qs = qs.order_by('-hit_count_generic__hits')
+        return qs
+
+    def get_context_data(self):
+        context = super().get_context_data()
+
+        genres = context['genres']
+        for genre in genres:
+            genre.books = genre.book_genres.only('photo', 'slug')[:20]
+        context['genres'] = genres
+        context['ordering'] = self.request.GET.get('ordering')
+        return context
+    
 
 
 def get_genres_of_book_view(request, book_pk):

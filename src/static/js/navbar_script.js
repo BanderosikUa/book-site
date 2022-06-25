@@ -16,7 +16,7 @@ $(document).on('click', '#navbarDropdown-genres', function(){
             data.forEach(el => {
               html += `<li><a class="dropdown-item" href="${el.url}">${el.name}</a></li>`
             })
-            html += `<li><a class="dropdown-item" href="${response.all_genres_url}">All genres!</a></li>`
+            html += `<li><a class="dropdown-item" href="${response.all_genres_url}?ordering=Popular">All genres!</a></li>`
             $('#genres-menu').html(html)
           },
           error: function(error){
