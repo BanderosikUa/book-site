@@ -14,6 +14,7 @@ from .services import *
 from .models import Genre
 
 class GenreDetailView(HitCountDetailView, MultipleObjectMixin):
+    """Class-based view for displaying Genre"""
     model = Genre
     query_pk_and_slug = True
     template_name = "Genres/genres.html"

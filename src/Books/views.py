@@ -42,11 +42,6 @@ class BookView(HitCountDetailView):
         context['comment_create_form'] = create_comment_form
         return context
 
-
-def test(request):
-    return render(request, 'Books/main.html')
-
-
 def get_average_rating_view(request, book_pk):
     response = get_average_rating(book_pk=book_pk)
     return JsonResponse({'avg_rating': response})
