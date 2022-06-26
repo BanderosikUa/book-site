@@ -8,24 +8,10 @@ from Books.selectors import *
 from .services import *
 from .models import Genre
 
-<<<<<<< HEAD
 class GenreDetailView(ListView):
     template_name = "Genres/genre_page.html"
     paginate_by = 20
     context_object_name = 'books'
-=======
-class GenreDetailView(HitCountDetailView, MultipleObjectMixin):
-    """Class-based view for displaying Genre"""
-    model = Genre
-    query_pk_and_slug = True
-    template_name = "Genres/genres.html"
-    count_hit = True
-    paginate_by = 10
-
-    def get_object(self):
-        slug = self.kwargs.get('genre_slug')
-        return Genre.objects.get(slug=slug)
->>>>>>> Documentation
 
     def get_queryset(self):
         """Get queryset by url params"""

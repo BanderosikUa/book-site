@@ -44,7 +44,7 @@
                                                 {% endfor%}
                                             {% endif %}
                                             <div style="padding-top:10px"><a href="{{book.get_absolute_url}}" style="text-decoration: none; color: inherit;"><h4>{{ book.name }}</h4></a></div>
-                                            <div class="author-name" style="padding-top: 2px;padding-left: 0px;"><span style="opacity: 0.77;">Author:&nbsp;</span><a href="#"><span class="title-name" style="opacity: 0.77;color: rgb(192,220,25);">{% if book.author %} {{book.author.name}} {% else %} None {% endif %}</span></a></div>
+                                            <div class="author-name" style="padding-top: 2px;padding-left: 0px;"><span style="opacity: 0.77;">Author:&nbsp;</span><a href="{% url 'author' book.author.slug %}"><span class="title-name" style="opacity: 0.77;color: rgb(192,220,25);">{% if book.author %} {{book.author.name}} {% else %} None {% endif %}</span></a></div>
                                             <div id="rating" style="margin-left:-12px"><div class="rating rating_set col-xs-12">
                                                 <div class="rating__body">
                                                     <div class="rating__active"></div>

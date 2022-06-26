@@ -16,7 +16,7 @@ class Author(NameStampedModel, HitCountMixin):
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk',
                                         related_query_name='hit_count_author')
     photo = models.ImageField(upload_to="authors/%Y/%m/%d",
-                              null=True, blank=True)
+                              default='default/author/author.png')
     biography = models.TextField(blank=True)
 
     def __str__(self):

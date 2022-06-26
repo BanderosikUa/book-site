@@ -13,11 +13,21 @@ class AuthorView(HitCountDetailView):
     count_hit = True
     slug_url_kwarg = 'author_slug'
     model = Author
+    context_object_name = 'author'
 
     # def get_object(self):
-    #     slug = self.kwargs.get('author_slug')
-    #     print('ok')
-    #     return Author.objects.get(slug=slug)
+    #     author = super().get_object()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['genres'] = (context['author']
+                             .book_author
+                             .values('genre__name', 'genre__slug')
+                             .distinct()
+                             )
+        
+        return context
 
 # def test(request, author_slug):
 #     return HttpResponse('asdasd')
