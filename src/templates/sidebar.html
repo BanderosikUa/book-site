@@ -22,10 +22,10 @@
             <a href="{% if user.is_authenticated %}{% url 'profile-settings-information' user.pk %}{% else %}#{% endif %}">Information</a>
           </li>
           <li class='sidebar-link'>
-              <a href="#">Site's settings</a>
+              <a href="{% if user.is_authenticated %}{% url 'profile-settings-site' user.pk %}{% else %}#{% endif %}">Site's settings</a>
           </li>
           <li class='sidebar-link'>
-              <a href="#">Notifications</a>
+              <a href="{% if user.is_authenticated %}{% url 'profile-settings-notifications' user.pk %}{% else %}#{% endif %}">Notifications</a>
           </li>
           <li class='sidebar-link'>
               <a href="{% if user.is_authenticated %}{% url 'profile-settings-security' user.pk %}{% else %}#{% endif %}">Security</a>

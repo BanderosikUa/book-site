@@ -19,5 +19,3 @@ Write here code only that showing structure of model. Don't write business logic
 This extension is need for counting by ip users view for some model. Create a post_save signal
 that will add default hit for model if you want to sorting by "-hit_count_generic__hits" otherwise
 it will order incorrect.
-
-

@@ -2,6 +2,7 @@ from django.urls import path, include
 
 from Books.views import *
 
+
 urlpatterns = [
     path('book/<slug:book_slug>/', BookView.as_view(), name='book'),
     path('get-average-rating/<int:book_pk>/', get_average_rating_view, name='get-average-rating'),
@@ -12,5 +13,6 @@ urlpatterns = [
     path('bookmark-book/', bookmark_book_view, name='bookmark-book'),
     path('get-bookmark-data/<int:book_pk>/', get_bookmark_data_view, name='get-bookmark-data'),
     path('comment-book/', create_comment_view, name='comment-book'),
+    path('search/', Search.as_view(), name='search'),
     path('hitcount/', include(('hitcount.urls', 'hitcount'), namespace='hitcount'))
 ]

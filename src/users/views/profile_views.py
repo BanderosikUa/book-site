@@ -6,7 +6,7 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from ..forms import *
-from ..models import CustomUser
+from ..models import CustomUser, Profile
 
 
 class InformationSettingsView(UpdateView, LoginRequiredMixin):
@@ -21,6 +21,40 @@ class InformationSettingsView(UpdateView, LoginRequiredMixin):
     def get_success_url(self):
         user_id = self.kwargs.get('user_id')
         return reverse_lazy('profile-settings-information', kwargs={'user_id': user_id})
+
+
+class SiteSettingsView(UpdateView, LoginRequiredMixin):
+    model = Profile
+    template_name = 'users/settings/site_settings.html'
+    fields = ['description', 'age']
+
+    def get_object(self):
+        user_id = self.kwargs.get('user_id')
+        return self.model.objects.get(user__pk=user_id)
+
+    def get_success_url(self):
+        user_id = self.kwargs.get('user_id')
+        return reverse_lazy('profile-settings-site',
+                            kwargs={'user_id': user_id})
+
+class NotificationsSettingsView(UpdateView, LoginRequiredMixin):
+    model = Profile
+    template_name = 'users/settings/notifications.html'
+    fields = (
+        'notificate_planning',
+        'notificate_reading',
+        'notificate_read',
+        'notificate_abandonded'
+    )
+
+    def get_object(self):
+        user_id = self.kwargs.get('user_id')
+        return self.model.objects.get(user__pk=user_id)
+
+    def get_success_url(self):
+        user_id = self.kwargs.get('user_id')
+        return reverse_lazy('profile-settings-notifications',
+                            kwargs={'user_id': user_id})
 
 
 class SecuritySettingsView(PasswordChangeView, LoginRequiredMixin):

@@ -20,7 +20,7 @@
                     <h1>Author name</h1>
                     <ul class="list-inline" style="">
                         {% for genre in genres %}
-                        <li class="list-inline-item rounded" style="padding: 0px 1px;padding-right: 0px;padding-left: 1px;"><a class="text-center link d-block font-size-sm" href="{% url 'genres' genre.genre__slug%}">{{genre.genre__name}}</a></li>
+                        <li class="list-inline-item rounded" style="padding: 0px 1px;padding-right: 0px;padding-left: 1px;"><a class="text-center link d-block font-size-sm" href="{% url 'genre' genre.genre__slug %}">{{genre.genre__name}}</a></li>
                         {% endfor %}
                     </ul>
                     <h2 style='padding-top:10px'>Biography</h2>
@@ -38,7 +38,7 @@
                             <div class="owl-carousel owl-theme">
                                 {% for book in author.book_author.all %}
                                     <div class="ms-2 me-2">
-                                        <a href="{% url 'book' book.slug %}"><img class='owl-lazy' data-src="{{book.photo.url}}"></a>
+                                        <a href="{% url 'book' book.slug %}"><img class='owl-lazy' data-src="{{book.photo.url}}" height="300"></a>
                                     </div>
                                 {% endfor %}
                             </div> 

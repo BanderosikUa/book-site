@@ -34,6 +34,33 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
+# apps
+INSTALLED_APPS += [
+                   'Authors.apps.AuthorsConfig',
+                   'Genres.apps.GenresConfig',
+                   'Books.apps.BookConfig',
+                   'core.apps.CoreConfig',
+                   'users.apps.UsersConfig',
+                   'Chapters.apps.ChaptersConfig',
+
+                   ]
+
+# extension
+INSTALLED_APPS += [
+                   'debug_toolbar',
+                   'django_extensions',
+                   'hitcount',
+                   'crispy_forms',
+                   'bootstrap_modal_forms',
+                   'widget_tweaks',
+                   'ckeditor',
+                   'ckeditor_uploader',
+                    ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

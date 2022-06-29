@@ -6,14 +6,14 @@ from hitcount.models import HitCount
 
 from .models import Book, UserBookRelation, CommentBook
 from Authors.models import Author
-
+from Chapters.admin import ChapterInline
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'author',
                     'time_modified', 'get_genres',
                     'get_count_views')
-    search_fields = ('name', 'author')
+    search_fields = ('name', 'author__name')
     list_display_links = ('pk', 'name')
     fields = (
               'name', 'slug', 'about', 'photo',
@@ -25,6 +25,7 @@ class BookAdmin(admin.ModelAdmin):
                        'get_photo_url', 'url_on_site')
     
     prepopulated_fields = {"slug": ("name",)}
+    inlines = [ChapterInline]   
 
     @admin.display(description='Views')
     def get_count_views(self, obj):

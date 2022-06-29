@@ -6,10 +6,11 @@ from .models import Author
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
+    list_display = ('name', 'get_views')
     search_fields = ('name', 'slug')
-    fields = ("name", "slug", "photo", "get_photo_url", "biography", "get_author_books", "url_on_site")
+    fields = ("name", "slug", "photo", "get_photo_url", "biography", "get_author_books", "get_views", "url_on_site")
     prepopulated_fields = {"slug": ("name",)}
-    readonly_fields = ('get_photo_url', 'get_author_books', 'url_on_site')
+    readonly_fields = ('get_photo_url', 'get_author_books', 'url_on_site', 'get_views')
 
     @admin.display(description='Photo')
     def get_photo_url(self, obj):
@@ -31,4 +32,9 @@ class AuthorAdmin(admin.ModelAdmin):
     def url_on_site(self, obj):
         url = reverse('author', args=(obj.slug,))
         return mark_safe(f"<a href='{url}'>{url}</a>")
+
+    @admin.display(description='Views')
+    def get_views(self, obj):
+        return obj.hit_count.hits
+    
 # Register your models here.

@@ -2,12 +2,12 @@
     {% if page_obj.has_previous %}
         {% if page_obj.number|add:'-3' > 1 %}
             <li class="pagination__item">
-                <a href="?ordering={{ ordering }}&page=1">1</a>
+                <a href="?{% if q %}q={{ q }}&{% endif %}{% if ordering %}ordering={{ ordering }}&{% endif %}page=1">1</a>
             </li>
         {% endif %}
         {% if page_obj.number|add:'-3' >= 3 %}
             <li class="pagination__item pagination__item--dots">
-                    <a href="?ordering={{ ordering }}&page={{ page_obj.previous_page_number|add:'-3' }}">
+                    <a href="?{% if q %}q={{ q }}&{% endif %}{% if ordering %}ordering={{ ordering }}&{% endif %}page={{ page_obj.previous_page_number|add:'-3' }}">
                 <span class="pagination__link">• • •</span>
                 </a>
             </li>
@@ -21,7 +21,7 @@
                 </li>
             {% elif i > page_obj.number|add:'-4' and i < page_obj.number|add:'4' %}
                 <li class="pagination__item">
-                        <a class="pagination__link" href="?ordering={{ ordering }}&page={{ i }}">{{ i }}</a>
+                        <a class="pagination__link" href="?{% if q %}q={{ q }}&{% endif %}{% if ordering %}ordering={{ ordering }}&{% endif %}page={{ i }}">{{ i }}</a>
                 </li>
             {% endif %}
         {% endfor %}
@@ -29,14 +29,14 @@
     {% if page_obj.has_next %}
         {% if page_obj.number|add:'4' < page_obj.paginator.num_pages %}
             <li class="pagination__item pagination__item--dots">
-                    <a href="?ordering={{ ordering }}&page={{ page_obj.next_page_number|add:'3' }}">
+                    <a href="?{% if q %}q={{ q }}&{% endif %}{% if ordering %}ordering={{ ordering }}&{% endif %}page={{ page_obj.next_page_number|add:'3' }}">
                 <span class="pagination__link">• • •</span>
                 </a>
             </li>
         {% endif %}
         {% if page_obj.number|add:'3' < page_obj.paginator.num_pages %}
             <li class="pagination__item">
-                    <a class="pagination__link" href="?ordering={{ ordering }}&page={{ page_obj.paginator.num_pages }}">
+                    <a class="pagination__link" href="?{% if q %}q={{ q }}&{% endif %}{% if ordering %}ordering={{ ordering }}&{% endif %}page={{ page_obj.paginator.num_pages }}">
                         {{ page_obj.paginator.num_pages }}
                     </a>
             </li>

@@ -1,0 +1,18 @@
+{% extends 'sidebar.html' %}
+{% load crispy_forms_tags %}
+
+
+
+{% block settings-content %}
+    <h1> Site settings</h1>
+    <hr>
+    {% if user.pk == object.pk %}
+    <form role='form' method='post' enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success btn-rounded float-end mt-3" style='width:200px; font-size:'>Save settings</button>
+    </form>
+    {% else %}
+        You are not allowed to change another profile!
+    {% endif %}
+{% endblock settings-content %}

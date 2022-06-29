@@ -144,7 +144,7 @@ class TestBookServices(TestCase):
         expected_response = {'username': self.user.username,
                              'avatar': self.user.avatar.url,
                              'comment': "Test",
-                             'pk': 1,
+                             'pk': response['pk'],
                              'time_created': self.time_today,
                              'dislikes': 0,
                              'likes': 0,

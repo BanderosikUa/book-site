@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col" style="border-bottom-width: -3px;">
                         <div id="books">
-                            <form action = "{% url 'genres' Genre%}" method="GET">
+                            <form action = "{% url 'genre' Genre%}" method="GET">
                                 <ul class="nav nav-tabs mt-3">
                                     <li class="nav-item"><button class="nav-link bookmark active" data-toggle="tab">Novelties</button></li>
                                     <li class="nav-item"><button class="nav-link bookmark" data-toggle="tab">Popular</button></li>
@@ -32,19 +32,19 @@
                 </div>
                 <div class="row" style="padding-top: 0px;">
                     <div class="col">
-                        <div id="tabs-content" data-url="{% url 'genres' Genre %}">
+                        <div id="tabs-content" data-url="{% url 'genre' Genre %}">
                             {% for book in books %}
                                 <div id="book" style="border-bottom: 1px solid rgb(159,159,159) ;">
                                     <div class="row no-gutters" style="padding-top: 17px;padding-bottom: 30px;">
-                                        <div class="col-12 col-sm-auto"><a class="image-link d-block" href="{{book.get_absolute_url}}"><img class="rounded-sm ls-is-cached lazyloaded" src = {{ book.photo.url }} widht="160" height="240"></a></div>
+                                        <div class="col-12 col-sm-auto"><a class="image-link d-block" href="{{book.get_absolute_url}}"><img class="rounded-sm ls-is-cached lazyloaded" src = {{ book.photo.url }} style="object-fit: cover" height='260vh' weight='150'></a></div>
                                         <div class="col-12 col-sm ml-sm-5" style="padding-top: -1px;">
                                             {% if book.genre.all %}
                                                 {% for genre in book.genre.all %}
-                                                    <li class="list-inline-item rounded" style="padding: 0px 1px;padding-right: 0px;padding-left: 1px;"><a class="text-center link d-block font-size-sm" href="{{ genre.get_absolute_url }}">{{ genre }}</a></li>
+                                                    <li class="list-inline-item rounded"><a class="text-center link d-block font-size-sm" style="color:inherit;" href="{{ genre.get_absolute_url }}">{{ genre }}</a></li>
                                                 {% endfor%}
                                             {% endif %}
                                             <div style="padding-top:10px"><a href="{{book.get_absolute_url}}" style="text-decoration: none; color: inherit;"><h4>{{ book.name }}</h4></a></div>
-                                            <div class="author-name" style="padding-top: 2px;padding-left: 0px;"><span style="opacity: 0.77;">Author:&nbsp;</span><a href="{% url 'author' book.author.slug %}"><span class="title-name" style="opacity: 0.77;color: rgb(192,220,25);">{% if book.author %} {{book.author.name}} {% else %} None {% endif %}</span></a></div>
+                                            <div class="author-name" style="padding-top: 2px;padding-left: 0px;"><span style="opacity: 0.77;">Author:&nbsp;</span><a href="{% if book.author %}{% url 'author' book.author.slug %}{% else %}#{% endif %}"><span class="title-name" style="opacity: 0.77;color: rgb(192,220,25);">{% if book.author %} {{book.author.name}} {% else %} None {% endif %}</span></a></div>
                                             <div id="rating" style="margin-left:-12px"><div class="rating rating_set col-xs-12">
                                                 <div class="rating__body">
                                                     <div class="rating__active"></div>

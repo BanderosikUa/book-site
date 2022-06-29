@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load index %}
+
+{% block title %}{{chapter.0.title}}{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+<section>
+    <div class="row">
+        <div class='col-2'>
+            <a href="{% url 'book' chapter.0.book.slug %}"><button type="button" class="btn btn-secondary border rounded-pill" style='width:150px'><i class="fa fa-arrow-left" style="margin-right:10px"></i><span>Return</span></button></a>
+        </div>
+        <div class='col-8'>
+            <div class='row'>
+                <h2 class='text-center'>{{chapter.0.title}}<h2>
+            </div>
+            <hr>
+            <div class='row' style='font-size:26px'>
+                {{chapter.0.body|safe }}
+            </div>
+            <hr>
+        </div>
+        <div class='col-2'></div>
+        {% include 'pagination.html' %}
+    </div>
+</section>
+
+{% endblock %}

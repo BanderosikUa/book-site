@@ -1,3 +1,5 @@
+from typing import Union
+
 from django.contrib.auth.models import User
 from django.db.models import Avg, Count
 from Books.selectors import *
@@ -11,7 +13,7 @@ from ..models import Book
 #     return {'avg_rating': average_rating}
 
 
-def create_rate_book(book_pk: int, rate: int, user: User) -> dict:
+def create_rate_book(book_pk: int, rate: Union[int, None], user: User) -> dict:
     """Function, that add user rating into created or updated UserBookRealtion
     model and return json into ajax function with POST request"""
     if user:

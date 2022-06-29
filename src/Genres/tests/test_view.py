@@ -25,7 +25,7 @@ class TestBookViews(TestCase):
         self.book3.genre.add(self.genre3)
 
         self.user = CustomUser.objects.create(username='user1', password='username123')
-        self.genres_url = reverse('genres', args=(self.genre2,))
+        self.genres_url = reverse('genre', args=(self.genre2,))
 
     def test_genre_detail_view_GET(self):
         """Test working url of GenreDetaiView"""
@@ -34,3 +34,12 @@ class TestBookViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'Genres/genre_page.html')
+    
+
+    def test_hit_count_adding(self):
+        """Testing hitcount work"""
+        response = self.client.get(self.genres_url)
+        expected_hits = 2
+        real_hits = self.genre2.hit_count.hits
+
+        self.assertEquals(expected_hits, real_hits)

@@ -178,10 +178,9 @@ const SetUserBookmark = () => {
 main();
 
 function main(){
-    getAvgRate();
-    setRatingActiveWidth(AvgRate);
+    getUserValue()
+    setRatingActiveWidth(ratingValue.textContent);
     SetRating();
     SetUserBookmark();
-    getUserValue()
     UserBookmarking();
 }

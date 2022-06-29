@@ -25,14 +25,14 @@ class TestBookViews(TestCase):
         response = self.client.get(self.book_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Books/main.html')
+        self.assertTemplateUsed(response, 'Books/book_page.html')
 
     def test_unlogined_book_view_GET(self):
         """Test response from BookView based-class"""
         response = self.client.get(self.book_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Books/main.html')
+        self.assertTemplateUsed(response, 'Books/book_page.html')
 
     
     def test_rate_book_GET(self):
@@ -52,6 +52,17 @@ class TestBookViews(TestCase):
         response = self.client.get(self.get_avarage_rating_url)
 
         self.assertEquals(response.status_code, 200)
+
+    def test_hit_count_adding(self):
+        """Testing hitcount work"""
+        book = Book.objects.create(name='Test book')
+        url = reverse('book', args=(book.slug,))
+        response = self.client.get(url)
+        expected_hits = 2
+        real_hits = book.hit_count.hits
+
+        self.assertEquals(expected_hits, real_hits)
+
 
     # def test_get_avarage_rating_without_any_relations(self):
     #     """Testing function return rating 0, if any relation exists"""

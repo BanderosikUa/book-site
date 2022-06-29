@@ -1,3 +1,4 @@
+from typing import List
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView
@@ -24,10 +25,12 @@ class BookView(HitCountDetailView):
     def get_object(self, queryset=None):
         slug = self.kwargs.get('book_slug')
         book = get_users_bookmarks_and_rating()
-        return get_object_or_404(book\
-                                 .select_related('author')
-                                 .prefetch_related('genre', 'hit_count_generic'),
-                                 slug=slug)
+        return get_object_or_404(
+                                book
+                                .select_related('author')
+                                .prefetch_related('genre', 'hit_count_generic'),
+                                slug=slug
+                                )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -36,10 +39,41 @@ class BookView(HitCountDetailView):
         create_comment_form = CommentCreateForm()
         if self.request.user.is_authenticated:
             user_relation = get_book_relation(book=book)\
-                            .get_or_create(user=self.request.user, book=book)
+                            .get_or_create(
+                                user=self.request.user,
+                                book=book)
             context['user_relation'] = user_relation[0]
+        
         context['Book'] = book
         context['comment_create_form'] = create_comment_form
+        return context
+
+class Search(ListView):
+    """Search books"""
+    paginate_by = 20
+    context_object_name = 'books'
+
+    def get_queryset(self):
+        searching = self.request.GET.get('q')
+        ordering_by = self.request.GET.get('ordering')
+        qs = get_users_bookmarks_and_rating().select_related('author')\
+                                             .prefetch_related('genre', 'comments')
+        qs = qs.filter(
+            name__icontains=searching
+        )
+        if ordering_by == "Novelties":
+            qs = qs.order_by('-time_created')
+        elif ordering_by == "Rated":
+            qs = qs.order_by('-avg_rating')
+        elif ordering_by == "Popular":
+            qs = qs.order_by('-hit_count_generic__hits')
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['q'] = self.request.GET.get('q')
+        context['ordering'] = self.request.GET.get('ordering')
+        context['count'] = self.object_list.count()
         return context
 
 def get_average_rating_view(request, book_pk):
@@ -54,7 +88,11 @@ def rate_book_view(request):
         user = request.user
     else:
         user = None
-    response = create_rate_book(book_pk=book_pk, rate=rate_value, user=user)
+    response = create_rate_book(
+        book_pk=book_pk,
+        rate=rate_value,
+        user=user
+        )
     return JsonResponse(response)
 
 
@@ -63,8 +101,7 @@ def get_comment_data_view(request, book_pk, num_comments):
     user = request.user
     response = get_comment_data(book_pk=book_pk,
                                 num_comments=num_comments,
-                                user=user
-                                )
+                                user=user)
     return JsonResponse(response)
 
 
@@ -74,9 +111,8 @@ def like_book_comment_view(request):
     comment_pk = request.POST.get('comment_pk')
     book_pk = request.POST.get('book_pk')
     user = request.user if request.user.is_authenticated else None
-    
     if user:
-        response = like_book_comment(comment_pk=comment_pk, 
+        response = like_book_comment(comment_pk=comment_pk,
                                      book_pk=book_pk,
                                      user=user)
         return JsonResponse(response)

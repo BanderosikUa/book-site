@@ -6,12 +6,10 @@ from django.urls import reverse
 from django.contrib.contenttypes.fields import GenericRelation
 
 from hitcount.models import HitCountMixin, HitCount
-from hitcount.views import HitCountMixin
 
 from core.models import NameStampedModel
 from Authors.models import Author
 from Genres.models import Genre
-from users.models import CustomUser
 
 
 AGE_CATEGORY = [('12', '12+'),
@@ -21,17 +19,15 @@ AGE_CATEGORY = [('12', '12+'),
                 ]
 
 
-
 class Book(NameStampedModel, HitCountMixin):
     """
     The class for definition books.
     """
-
-    
     about = models.TextField(blank=True)
     # Delete null
     photo = models.ImageField(upload_to='books/%Y/%m/%d/', 
                               default='default/book/default_book_cover_2015.jpg')
+    author_is_user = models.BooleanField(default=False)
     author = models.ForeignKey(Author, on_delete=models.SET_NULL,
                                related_name="book_author", blank=True,
                                null=True)
@@ -57,17 +53,8 @@ class Book(NameStampedModel, HitCountMixin):
         return f"NAME: {self.name}, AUTHOR: {self.author}," \
                f"GENRE: {list(self.genre.values_list('name', flat=True))}"
 
-
     def get_absolute_url(self):
         return reverse("book", kwargs={"book_slug": self.slug})
-
-    # def save(self):
-    # #     self.user = CustomUser.objects.get(username='admin')
-    #     hit_count = HitCount.objects.get_for_object(self)
-    #     request = HttpRequest()
-    #     request.session = {}
-    #     HitCountMixin.hit_count(request, hit_count)
-
 
 
 RATE_CHOICES = [(1, 'Horrible'),
@@ -91,10 +78,10 @@ BOOKMARK_CHOICES = [(Planning, 'Plan to read'),
 
 class UserBookRelation(models.Model):
     """
-    The class for rating, liking, bookmarking Book model
+    The class for rating and bookmarking Book model
     """
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, 
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     bookmarks = models.PositiveSmallIntegerField(choices=BOOKMARK_CHOICES,

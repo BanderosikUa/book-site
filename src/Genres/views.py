@@ -1,14 +1,12 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.generic.list import ListView, MultipleObjectMixin
 
-from hitcount.models import HitCount
-from hitcount.views import HitCountMixin
-
+from core.custom_views import HitCountListView
 from Books.selectors import *
 from .services import *
 from .models import Genre
 
-class GenreDetailView(ListView):
+class GenreListView(HitCountListView):
     template_name = "Genres/genre_page.html"
     paginate_by = 20
     context_object_name = 'books'
@@ -31,13 +29,12 @@ class GenreDetailView(ListView):
         return qs
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
         genre_slug = self.kwargs.get('genre_slug')
         genre = Genre.objects.get(slug=genre_slug)
-        # add hitcount to genre
-        hit_count = HitCount.objects.get_for_object(genre)
-        hit_count_response = HitCountMixin.hit_count(self.request, hit_count)
+        kwargs['hitcount_object'] = genre
+        context = super().get_context_data(**kwargs)
 
+        context['count'] = self.object_list.count()
         context['Genre'] = genre_slug
         context['ordering'] = self.request.GET.get('ordering')
         return context
@@ -66,7 +63,6 @@ class GenreAllView(ListView):
         context['genres'] = genres
         context['ordering'] = self.request.GET.get('ordering')
         return context
-    
 
 
 def get_genres_of_book_view(request, book_pk):

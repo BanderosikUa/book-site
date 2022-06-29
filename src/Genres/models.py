@@ -24,7 +24,7 @@ class Genre(NameStampedModel, HitCountMixin):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("genres", kwargs={"genre_slug": self.slug})+'?ordering=Popular'
+        return reverse("genre", kwargs={"genre_slug": self.slug})+'?ordering=Popular'
 
 
 # class GenresShownInNavbar(models.Model):

@@ -1,5 +1,5 @@
 # Todo list for the Authors app
 - [] Make all_authors page:
-    - [] top by view
-    - [] top by rating
+    - [x] top by view
+    - [x] top by rating
     - [] new authors

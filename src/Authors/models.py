@@ -19,6 +19,9 @@ class Author(NameStampedModel, HitCountMixin):
                               default='default/author/author.png')
     biography = models.TextField(blank=True)
 
+    class Meta:
+        ordering = ('-hit_count_generic__hits',)
+
     def __str__(self):
         return self.name
 
