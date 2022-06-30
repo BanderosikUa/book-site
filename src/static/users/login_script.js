@@ -4,6 +4,14 @@ function InputActive(){
       $('#LoginModal').removeClass('show').css({'display': 'none'})
     }
   }
+  $('.form-outline input').each(function(){
+    if($(this).val()){
+      $(this).parent().find('input').addClass('active')
+    }
+    else{
+      $(this).parent().find('input').removeClass("active");
+    }
+  })
 }
 
 

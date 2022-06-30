@@ -30,7 +30,7 @@ $(document).ready(function(){
                       InputActive()
                   }
                   else{
-                      // $('#RegistrationModal').removeClass('show').css({'display': 'none'})
+                      $('#RegistrationModal').modal('hide')
                       $('#LoginModal').modal('show')
 
                   }

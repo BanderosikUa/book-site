@@ -5,6 +5,7 @@
 
 {% block scripts %}
 <link rel="stylesheet" href="{% static 'css/registration.css' %}">
+<script src="{% static 'users/registration_script.js' %}"></script>
 {% endblock scripts %}
 
 <div class="modal fade" id="RegistrationModal" tabindex="-1" aria-labelledby="RegistrationModalLabel" aria-hidden="true">
@@ -103,7 +104,6 @@
   </div>
 </div>
 
-<script src="{% static 'users/registration_script.js' %}"></script>
 {% comment %}           
     <div class="modal fade" id="RegistrationModal" tabindex="-1" aria-labelledby="RegistrationModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">

@@ -10,7 +10,6 @@ from Books.forms import CommentCreateForm
 from ..models import Book, UserBookRelation, CommentBook
 
 
-
 class BookView(HitCountDetailView):
     """Class-based view for displaying Book and UserBookRelation models"""
     model = Book

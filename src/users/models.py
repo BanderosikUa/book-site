@@ -13,16 +13,10 @@ class CustomUser(AbstractUser):
     slug = models.SlugField(null=True, blank=True,
                             max_length=255, validators=[validate_slug])
     
-    def clean(self, *args, **kwargs):
-        if not self.slug.strip():
-            raise ValidationError("Author name can't be null")
-        super().clean(*args, **kwargs)
-
     def save(self, *args, **kwargs):
         if not self.slug:
             name = unidecode(self.username)
             self.slug = slugify(name)
-        self.full_clean()
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
