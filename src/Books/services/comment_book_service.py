@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from ..models import CommentBook
 from ..selectors import CommentBookSelector
 
+
 def get_comment_data(*, book_pk: int, num_comments: int, user: User) -> dict:
     """Function, that return Json with limited(3) data of comments in GET ajax request"""
     visible = 3
@@ -16,12 +17,41 @@ def get_comment_data(*, book_pk: int, num_comments: int, user: User) -> dict:
             'pk': obj.pk,
             'username': obj.user.username,
             'avatar': obj.user.avatar.url,
+            'user_url': obj.user.get_absolute_url(),
             'comment': obj.body,
             'likes': obj.comment_likes,
             'dislikes': obj.comment_dislikes,
             'time_created': obj.time_created.strftime("%d %B %Y"),
             'liked': True if user in obj.liked.all() else False,
             'disliked': True if user in obj.disliked.all() else False,
+        }
+        data.append(item)
+    return {'data': data[lower:upper], 'size': size}
+
+def get_user_comments_data(*, num_comments: int, user: User) -> dict:
+    """Function, that return Json with limited(3) data of comments in GET ajax request"""
+    visible = 10
+    upper = num_comments
+    lower = upper - visible
+    qs = (
+        CommentBook.objects
+        .filter(user=user)
+        .order_by('-time_created')
+    )
+    size = qs.count()
+    data = []
+    for obj in qs:
+        item = {
+            'pk': obj.pk,
+            'username': obj.user.username,
+            'avatar': obj.user.avatar.url,
+            'book_photo': obj.book.photo.url,
+            'book_url': obj.book.get_absolute_url(),
+            'user_url': obj.user.get_absolute_url(),
+            'comment': obj.body,
+            'likes': obj.comment_likes,
+            'dislikes': obj.comment_dislikes,
+            'time_created': obj.time_created.strftime("%d %B %Y"),
         }
         data.append(item)
     return {'data': data[lower:upper], 'size': size}
@@ -83,6 +113,7 @@ def create_comment(*, book_pk: int, body: str, user: User) -> dict:
     response_data['comment'] = body
     response_data['pk'] = UserComment.pk
     response_data['time_created'] = UserComment.time_created.strftime("%d %B %Y")
+    response_data['user_url'] = user.get_absolute_url()
     response_data['likes'] = 0
     response_data['dislikes'] = 0
     response_data['avatar'] = user.avatar.url

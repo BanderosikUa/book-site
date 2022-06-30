@@ -38,6 +38,7 @@ class TestBookServices(TestCase):
             'pk': self.comment.pk,
             'username': self.user.username,
             'avatar': self.user.avatar.url,
+            'user_url': self.user.get_absolute_url()
             'comment': 'Test comment',
             'likes': 1,
             'dislikes': 1,
@@ -144,6 +145,7 @@ class TestBookServices(TestCase):
         expected_response = {'username': self.user.username,
                              'avatar': self.user.avatar.url,
                              'comment': "Test",
+                             'user_url': self.user.get_asolute_url(),
                              'pk': response['pk'],
                              'time_created': self.time_today,
                              'dislikes': 0,

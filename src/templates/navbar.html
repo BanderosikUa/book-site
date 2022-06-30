@@ -53,7 +53,7 @@
         <ul class="navbar-nav mb-2 mb-lg-0">
         {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="#">{% if user.is_authenticated %}{{user.username}}{% else %}guest{% endif %}</a>
+            <a class="nav-link" {% if user.is_authenticated %}href="{% url 'profile' user.slug %}">{{user.username}}{% else %}href="#"> guest{% endif %}</a>
           </li>
           <!-- Navbar dropdown -->
           <li class="nav-item dropdown">
@@ -74,7 +74,7 @@
                 </a>
                 <!-- Dropdown menu -->
                 <ul class="dropdown-menu dropdown-menu-end p-1" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'profile' user.slug %}">Profile</a></li>
                 <li><a class="dropdown-item" href="{% url 'profile-settings-information' user.pk %}">Settings</a></li>
                 <li>
                   <hr class="dropdown-divider" />

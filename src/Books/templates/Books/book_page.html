@@ -29,7 +29,8 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div id="book" class="row text-md-left text-center mb-5 book" book-id="{{ Book.pk }}">
-                            <div id="book_picture" class="col-auto mx-auto"><span class="image"><img class="rounded d-block mx-auto tooltip-title lazyloaded" title="#" width="200" height="300" {% if Book.photo %} src = {{ Book.photo.url }} {% else %} src={% static 'bootstrap/assets/img/default_book_cover_2015.jpg'%} {% endif %}></span>
+                            <div id="book_picture" class="col-auto mx-auto"><span class="image"><img class="rounded d-block mx-auto tooltip-title 
+                                " title="#" width="200" height="300" {% if Book.photo %} src = {{ Book.photo.url }} {% else %} src={% static 'bootstrap/assets/img/default_book_cover_2015.jpg'%} {% endif %}></span>
                                 <form method="POST" class="rating-form" >
                                 <div class="rating rating_set col-xs-12">
                                     <div class="rating__body">

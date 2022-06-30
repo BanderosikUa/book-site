@@ -1,13 +1,32 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
-# Create your models here.
-
+from django.urls import reverse
+from unidecode import unidecode
+from django.utils.text import slugify
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_slug
 
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to='users/%Y/%m/%d/',
                                default='default/user/b7647bef0d7011489f1c129bf01a2190.jpg')
+    slug = models.SlugField(null=True, blank=True,
+                            max_length=255, validators=[validate_slug])
+    
+    def clean(self, *args, **kwargs):
+        if not self.slug.strip():
+            raise ValidationError("Author name can't be null")
+        super().clean(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            name = unidecode(self.username)
+            self.slug = slugify(name)
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('profile', args=(self.pk,))
 
 
 class Profile(models.Model):

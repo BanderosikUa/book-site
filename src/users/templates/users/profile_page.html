@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ profile_user.username }}{% endblock %}
+
+{% block content %}
+<section>
+    <div class='row'>
+        <div class='col-3'></div>
+        <div class='col-6'>
+            <div class="row">
+                <div class="col-2">
+                    <div id="user-username" username="{{profile_user.username}}"></div>
+                    <span class='image'><img class="rounded lazyloaded" src="{{ profile_user.avatar.url }}" height="200" width="150"></span>
+                </div>
+                <div class="col-10">
+                    <h2>{{profile_user.username}}</h2>
+                    <hr>
+                    <div class='description'>
+                        <span class='font-weight-normal '><b>Description: </b>{{ profile_user.profile.description }}</span>            
+                    </div>
+                </div>
+            </div>
+            <!-- User's reading book-->
+            <div class="row" style='padding-top:20px'>
+                <div class="col">
+                    <h2>Book's, that user reading</h2>
+                    <hr>
+                    <div class='container'>
+                        <div class="owl-carousel owl-theme">
+                            {% for book in books_reading %}
+                                <div class="ms-2 me-2">
+                                    <div class='card'>
+                                        <a href="{% url 'book' book.slug %}"><img class='owl-lazy' data-src="{{book.photo.url}}" height='20vh'></a>
+                                        <div class='card-body text-center'>
+                                            <h5 class='card-title'><a href='{% url 'book' book.slug %}' style='color:inherit;text-decoration:inherit;'>{{book.name}}</a></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="row" style='padding-top:20px'>
+                <div class="col">
+                    <h2>User's comments</h2>
+                    <hr>
+                    <div id="user-comments-box" class="item">
+                    </div>
+                    <div id='spinner-box' class="text-center">
+                        <div class="spinner-border text-secondary" role="status"></div>
+                    </div>
+                    <div class="text-center mb-3" id="end-box" style="padding-top: 20px">
+                        <button class="btn btn-secondary not-visible" id="load-btn">Load More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='col-3'></div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block scripts %}
+<link rel="stylesheet" href="{% static 'OwlCarousel/owl.carousel.css' %}">
+<link rel="stylesheet" href="{% static 'OwlCarousel/owl.theme.default.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/owl-carousel.css' %}">
+<link rel="stylesheet" href="{% static 'Books/book_style.css' %}">
+
+<script src="{% static 'users/profile_script.js' %}" defer></script>
+<script src="{% static 'OwlCarousel/owl.carousel.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        $(".owl-carousel").owlCarousel({
+            nav: true,
+            lazyLoad: true,
+            margin: 5,
+            padding: 5,
+            stagePadding: 5,
+            loop: true,
+            responsive:{
+                0 : {
+                    items: 1,
+                    dots: false
+                },
+                485 : {
+                    items: 1,
+                    dots: false
+                },
+                728: {
+                    items: 2,
+                    dots: false
+                },
+                960: {
+                    items: 3,
+                    dots: true,
+                },
+                1200: {
+                    items: 4,
+                    dots: true
+                }
+            }
+        })
+    })
+</script>
+{% endblock %}

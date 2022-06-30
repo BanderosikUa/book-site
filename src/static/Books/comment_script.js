@@ -174,7 +174,7 @@ $(document).on('submit', '#CommentForm', function(e){
 
 function comment_html(el){
     return `<div class="border rounded-0 review" style="margin-top: 18px;">
-                    <div class="user-info"><a class="avatar" href="#"
+                    <div class="user-info"><a class="avatar" href="${el.user_url}"
                             style="padding-right: -18px;margin-right: 0px;">
                             <ul class="list-inline">
                                 <li class="d-xxl-flex justify-content-xxl-start list-inline-item"
