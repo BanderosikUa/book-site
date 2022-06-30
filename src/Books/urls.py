@@ -4,6 +4,7 @@ from Books.views import *
 
 
 urlpatterns = [
+    path('book/all/', AllBookView.as_view(), name='all-books'),
     path('book/<slug:book_slug>/', BookView.as_view(), name='book'),
     path('get-average-rating/<int:book_pk>/', get_average_rating_view, name='get-average-rating'),
     path('rate-book/', rate_book_view, name='rate-book'),

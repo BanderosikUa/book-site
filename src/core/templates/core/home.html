@@ -1,0 +1,158 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% load time_verbally %}
+
+{% block content %}
+<section id='home'>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-8">
+            <h1>Home</h1>
+            <hr>
+            <div class="row" style="padding-top: 20px;">
+                <div class="col">
+                    <!-- Novelties -->
+                    <div class='row'>
+                        <h2 style="padding-left:30px">New books!</h2>
+                            <div class='container'>
+                                <div class="owl-carousel owl-theme">
+                                    {% for book in book_novelties %}
+                                        <div class="ms-2 me-2">
+                                            <div class='card'>
+                                                <a href="{% url 'book' book.slug %}"><img class='owl-lazy' data-src="{{book.photo.url}}" height='20vh'></a>
+                                                <div class='card-body text-center'>
+                                                    <h5 class='card-title'><a href='{% url 'book' book.slug %}' style='color:inherit;text-decoration:inherit;'>{{book.name}}</a></h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div> 
+                            </div>
+                    </div>
+                    <hr>
+                    <!-- Top book-->
+                    <div class='row'>
+                        <h2 style="padding-left:30px">Top books!</h2>
+                            <div class='container'>
+                                <div class="owl-carousel owl-theme">
+                                    {% for book in top_books %}
+                                        <div class="ms-2 me-2">
+                                            <div class='card'>
+                                                <a href="{% url 'book' book.slug %}"><img class='owl-lazy' data-src="{{book.photo.url}}" height='20vh'></a>
+                                                <div class='card-body text-center'>
+                                                    <h5 class='card-title'><a href='{% url 'book' book.slug %}' style='color:inherit;text-decoration:inherit;'>{{book.name}}</a></h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div> 
+                            </div>
+                    </div>
+                    <hr>
+                    <!-- Popular authors -->
+                    <div class='row'>
+                        <h2 style="padding-left:30px">Popular authors!</h2>
+                            <div class='container'>
+                                <div class="owl-carousel owl-theme">
+                                    {% for author in top_authors %}
+                                        <div class="ms-2 me-2">
+                                            <div class='card'>
+                                                <a href="{% url 'author' author.slug %}"><img class='owl-lazy' data-src="{{author.photo.url}}"></a>
+                                                <div class='card-body text-center'>
+                                                    <h5 class='card-title'><a href='{% url 'author' author.slug %}' style='color:inherit;text-decoration:inherit;'>{{author.name}}</a></h5>
+                                                    <p>{{author.book_author.count}} books</p>
+                                                    <ul class="list-group text-center" style="">
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div> 
+                            </div>
+                    </div>
+                    <hr>
+                    <!-- New chapters -->
+                    <div class='row'>
+                        <h2 style="padding-left:30px">New chapters!</h2>
+                        <div class='col'>
+                    {% for book in chapters_books %}
+                        <div class='row' style='padding-top:20px'>
+                            <div class='col-2' style=''>
+                                <span class="image"><a href="{{ book.get_absolute_url }}"><img class="rounded d-block mx-auto tooltip-title lazyloaded" title="#" width="100" height="150" src="{{ book.photo.url }}"></a></span>
+                            </div>
+                            <div class='col' style='font-size:12px'>
+                                <div class='row'>
+                                    <h5><a href="{{ book.get_absolute_url }}" class='href-unstyle'>{{book.name}}</a></h5>
+                                    <hr>
+                                    <div class='col-10'>
+                                        <a href="{{ book.get_absolute_url }}" class='href-unstyle'>
+                                            <ul class="list-group">
+                                                {% for chapter in book.chapters.all %}
+                                                <li class="list-group-item">{{ chapter.title }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </a>
+                                    </div>
+                                    <div class='col-2 text-right'>
+                                        <small>{{book.time|time_verbally }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+        </div>
+</section>
+{% endblock content %}
+
+{% block scripts %}
+<link rel="stylesheet" href="{% static 'OwlCarousel/owl.carousel.css' %}">
+<link rel="stylesheet" href="{% static 'OwlCarousel/owl.theme.default.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/owl-carousel.css' %}">
+
+<script src="{% static 'OwlCarousel/owl.carousel.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        $(".owl-carousel").owlCarousel({
+            nav: true,
+            lazyLoad: true,
+            margin: 5,
+            padding: 5,
+            stagePadding: 5,
+            loop: true,
+            autoplay: true,
+            autoplayTimeout: 2000,
+            autoplayHoverPause: true,
+            responsive:{
+                0 : {
+                    items: 1,
+                    dots: false
+                },
+                485 : {
+                    items: 2,
+                    dots: false
+                },
+                728: {
+                    items: 3,
+                    dots: false
+                },
+                960: {
+                    items: 4,
+                    dots: true,
+                },
+                1200: {
+                    items: 6,
+                    dots: true
+                }
+            }
+        })
+    })
+</script>
+{% endblock %}

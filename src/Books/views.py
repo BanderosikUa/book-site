@@ -61,13 +61,7 @@ class Search(ListView):
         qs = qs.filter(
             name__icontains=searching
         )
-        if ordering_by == "Novelties":
-            qs = qs.order_by('-time_created')
-        elif ordering_by == "Rated":
-            qs = qs.order_by('-avg_rating')
-        elif ordering_by == "Popular":
-            qs = qs.order_by('-hit_count_generic__hits')
-        return qs
+        return order_queryset(qs=qs, ordering_by=ordering_by)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -75,6 +69,26 @@ class Search(ListView):
         context['ordering'] = self.request.GET.get('ordering')
         context['count'] = self.object_list.count()
         return context
+
+class AllBookView(ListView):
+    """Display all books"""
+    paginate_by = 20
+    context_object_name = 'books'
+
+    def get_queryset(self):
+        ordering_by = self.request.GET.get('ordering')
+        qs = get_users_bookmarks_and_rating().select_related('author')\
+                                             .prefetch_related('genre', 'comments')
+        qs = qs.all()
+        return order_queryset(qs=qs, ordering_by=ordering_by)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['q'] = self.request.GET.get('q')
+        context['ordering'] = self.request.GET.get('ordering')
+        context['count'] = self.object_list.count()
+        return context
+
 
 def get_average_rating_view(request, book_pk):
     response = get_average_rating(book_pk=book_pk)

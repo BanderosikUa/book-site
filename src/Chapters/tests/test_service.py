@@ -94,7 +94,7 @@ class TestBookServices(TestCase):
             )
         
         expected_response = 'Yesterday'
-        real_response = get_time(time_yesterday)
+        real_response = get_time_verbally(time_yesterday)
         self.assertEquals(expected_response, real_response)
     
     def test_get_time_today(self):
@@ -104,8 +104,19 @@ class TestBookServices(TestCase):
             )
         
         expected_response = 'Today'
-        real_response = get_time(time)
+        real_response = get_time_verbally(time)
         self.assertEquals(expected_response, real_response)
+
+    def test_get_time_today(self):
+        tz = timezone.get_current_timezone()
+        time = datetime.now(tz=tz) - timedelta(
+            hours=15,
+            )
+        
+        expected_response = '15 hours ago'
+        real_response = get_time_verbally(time)
+        self.assertEquals(expected_response, real_response)
+
 
     def test_get_time_week_ago(self):
         tz = timezone.get_current_timezone()
@@ -115,7 +126,7 @@ class TestBookServices(TestCase):
             )
         
         expected_response = 'Week ago'
-        real_response = get_time(time)
+        real_response = get_time_verbally(time)
         self.assertEquals(expected_response, real_response)
 
     def test_get_time_two_weeks_ago(self):
@@ -126,7 +137,7 @@ class TestBookServices(TestCase):
             )
         
         expected_response = '2 weeks ago'
-        real_response = get_time(time)
+        real_response = get_time_verbally(time)
         self.assertEquals(expected_response, real_response)
     
     def test_get_time_month_ago(self):
@@ -137,7 +148,7 @@ class TestBookServices(TestCase):
             )
         
         expected_response = 'Month ago'
-        real_response = get_time(time)
+        real_response = get_time_verbally(time)
         self.assertEquals(expected_response, real_response)
 
     def test_get_time_two_month_ago(self):
@@ -148,5 +159,5 @@ class TestBookServices(TestCase):
             )
         
         expected_response = '2 months ago'
-        real_response = get_time(time)
+        real_response = get_time_verbally(time)
         self.assertEquals(expected_response, real_response)

@@ -6,7 +6,8 @@ from .models import Chapter
 
 @admin.register(Chapter)
 class ChapterAdmin(admin.ModelAdmin):
-    pass
+    fields = ('pk', 'book', 'title', 'body', 'time_created', 'time_modified')
+    readonly_fields = ('pk', 'book','time_created', 'time_modified')
 
 
 class ChapterInline(admin.StackedInline):

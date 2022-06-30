@@ -1,20 +1,17 @@
 from django.views.generic.list import ListView
 
-
 from hitcount.views import HitCountDetailView
 
 from .models import Author
 from .service import get_tops_dict
 
+
 class AuthorView(HitCountDetailView):
+    model = Author
     template_name = 'Authors/author_page.html'
     count_hit = True
     slug_url_kwarg = 'author_slug'
-    model = Author
     context_object_name = 'author'
-
-    # def get_object(self):
-    #     author = super().get_object()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -26,6 +23,7 @@ class AuthorView(HitCountDetailView):
                              )
         
         return context
+
 
 class AuthorAllView(ListView):
     template_name = 'Authors/all_author_page.html'

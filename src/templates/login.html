@@ -20,12 +20,12 @@
         <div class="text-center mb-3">
           <p>Sign in with:</p>
         <ul class="list-group list-group-horizontal d-flex justify-content-center">
-          <li class="list-group-item" style="border: none;border-style: none;">
+          {% comment %} <li class="list-group-item" style="border: none;border-style: none;">
             <form action="{% provider_login_url 'google' %}" class='form-inline'>
             <button type="submit" class="btn btn-primary btn-floating mx-1"> 
               <i class="fa fa-facebook"></i>
             </button>
-        </form></li>
+        </form></li> {% endcomment %}
 
         <li class="list-group-item" style="border: none;border-style: none;">
           <form action="{% provider_login_url 'google' %}" class='form-inline'>
@@ -34,12 +34,12 @@
           </button>
         </form></li>
         
-        <li class="list-group-item" style="border: none;border-style: none;">
+        {% comment %} <li class="list-group-item" style="border: none;border-style: none;">
           <form action="" class='form-inline'>
           <button type="submit" class="btn btn-primary btn-floating mx-1">
             <i class="fa fa-github"></i>
           </button>
-        </form></li>
+        </form></li> {% endcomment %}
       </ul>
     </div>
       <p class="text-center">or:</p>

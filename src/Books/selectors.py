@@ -1,9 +1,16 @@
+from datetime import timedelta
+
 from django.http import JsonResponse
-from Books.models import Book, CommentBook, UserBookRelation
-from django.db.models import Count, Q, QuerySet, Avg, FloatField, F
+from django.db.models import Count, Q, QuerySet, Avg, FloatField, F, Value
 from django.contrib.auth.models import User
 from django.db.models.functions import Round, Coalesce, Cast
 from django.contrib.postgres.aggregates import ArrayAgg
+from django.db.models import Min, Prefetch, Max
+from django.utils import timezone
+
+from Chapters.service import get_time_verbally
+from Books.models import Book, CommentBook, UserBookRelation
+from Chapters.models import Chapter
 
 class CommentBookSelector:
     """Class that fetch comment`s data from db"""
@@ -67,6 +74,37 @@ def get_users_bookmarks_and_rating() -> Book:
         avg_rating=Cast(Coalesce(Round(Avg('userbookrelation__rate'),
                         precision=1), 0), output_field=FloatField()),
         )
+
+
+def select_books_by_chapters_created(books: QuerySet[Book]) -> QuerySet[Book]:
+    three_days_ago = timezone.now()-timedelta(days=1, hours=15, seconds=3)
+    chapters_with_only = (
+        Chapter.objects
+        .filter(time_created__gt=three_days_ago)
+        .defer('body')
+        )
+    books = (
+            books
+            .filter(chapters__isnull=False)
+            .prefetch_related(Prefetch('chapters',
+                                       queryset=chapters_with_only))
+            .annotate(order_time=Max('chapters__time_created'),
+                      time=Min('chapters__time_created'),)
+            .filter(order_time__gt=three_days_ago)
+            .defer('about')
+            .order_by('-order_time')
+        )
+    return books
+
+
+def order_queryset(*, qs: QuerySet, ordering_by: str):
+    if ordering_by == "Novelties":
+        qs = qs.order_by('-time_created')
+    elif ordering_by == "Rated":
+        qs = qs.order_by('-avg_rating')
+    elif ordering_by == "Popular":
+        qs = qs.order_by('-hit_count_generic__hits')
+    return qs
 
 
 def get_average_rating(*, book_pk: int) -> int:

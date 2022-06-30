@@ -1,6 +1,7 @@
 from datetime import date, datetime, timedelta, tzinfo
 
 from django.utils import timezone
+from django.db.models import *  
 
 from Books.models import UserBookRelation, Book
 from users.models import CustomUser
@@ -48,13 +49,14 @@ def add_notification_to_navbar(user: CustomUser) -> list[dict]:
             'url': notification.book.get_absolute_url(),
             'photo': notification.book.photo.url,
             'message': notification.text_notification,
-            'time': get_time(notification.time),
+            'time': get_time_verbally(notification.time),
             'pk': notification.pk,
         }
         data.append(item)
     return {'data': data, 'size': size}
 
-def get_time(time_comparing: datetime):
+
+def get_time_verbally(time_comparing: datetime):
     time_now = timezone.now()
     time_ago = time_now - time_comparing
     days = time_ago.days
@@ -67,4 +69,7 @@ def get_time(time_comparing: datetime):
             return f'{weeks} weeks ago' if weeks > 1 else 'Week ago'
         return f'{days} days ago' if days >= 2 else 'Yesterday'
     else:
+        hours = time_ago.seconds // 3600
+        if hours >= 2:
+            return f'{hours} hours ago'
         return 'Today'

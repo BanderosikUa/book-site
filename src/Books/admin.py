@@ -16,12 +16,12 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ('name', 'author__name')
     list_display_links = ('pk', 'name')
     fields = (
-              'name', 'slug', 'about', 'photo',
+              'pk', 'name', 'slug', 'about', 'photo',
               'get_photo_url', 'author', 'genre',
               'age_category', 'time_created',
               'time_modified', 'url_on_site')
     
-    readonly_fields = ('time_modified', 'time_created',
+    readonly_fields = ('pk', 'time_modified', 'time_created',
                        'get_photo_url', 'url_on_site')
     
     prepopulated_fields = {"slug": ("name",)}

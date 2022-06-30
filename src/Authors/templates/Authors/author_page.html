@@ -11,7 +11,7 @@
             <div style='margin-right:15px;'>
                 <ul class="row list-unstyled breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList">
                     <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="" itemprop="item"><span itemprop="name">Main</span></a></li>
-                    <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="#" itemprop="item"><span itemprop="name">Authors</span></a></li>
+                    <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="{% url 'all-authors' %}" itemprop="item"><span itemprop="name">Authors</span></a></li>
                     <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="{{authors.get_absolute_url}}" itemprop="item"><span itemprop="name">{{author.name}}</span></a></li>
                 </ul>
             </div>
