@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, reverse_lazy
+from django.contrib.auth.views import *
 from .views import *
 
 urlpatterns = [
@@ -10,5 +11,9 @@ urlpatterns = [
     # ajax
     path('validate-login-form/', login_validation_view, name='validate-login-form'),
     path('validate-registration-form/', registration_validation_view, name='validate-registration-form'),
-    path('get-user-comments/<slug:user_slug>/<int:num_comments>', get_user_comments_view, name='get-user-comments')
+    path('validate-email-form/', email_send_reset_view, name='validate-email-form'),
+    path('get-user-comments/<slug:user_slug>/<int:num_comments>', get_user_comments_view, name='get-user-comments'),
+    # password reset
+    # path('reset-password/', PasswordResetView.as_view(template_name="password_reset_page.html"), name='reset_password'),
+    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='password_reset/password_reset_page.html', success_url=reverse_lazy('home')), name='password-reset-confirmation'),
 ]

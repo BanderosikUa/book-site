@@ -87,8 +87,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # my context_processors
                 'users.context_processors.add_registration_form',
                 'users.context_processors.add_login_form',
+                'users.context_processors.send_reset_email_form',
 
             ],
         },
@@ -183,7 +185,7 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 # allauth
 
-SITE_ID = 2
+SITE_ID = 3
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -204,6 +206,19 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.CustomUserFormCreate'
 
-#Capthca
+# Capthca
 RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
+
+# SMPT Configuration
+EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+ADMINS = (
+    ('admin', 'grigorcool6@gmail.com'),
+)
+MANAGERS = ADMINS

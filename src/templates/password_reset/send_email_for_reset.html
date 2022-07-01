@@ -1,0 +1,57 @@
+{% load static %}
+{% load widget_tweaks %}
+
+{% block scripts %}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
+<script src="{% static 'users/send_email_script.js' %}"></script>
+{% endblock scripts %}
+
+<div class="modal fade" id="SendEmailModal" tabindex="-1" aria-labelledby="SendEmailLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="alert alert-danger col-12 text-center" id='email-alert' role="alert" style="display:none;">
+        </div>
+      </div>
+      <h2 class="text-uppercase text-center mb-2">Reset password</h2>
+      <div class="modal-body p-5">
+          
+          <div id='messages-email' class='text-center'>
+          </div>
+        <form action="" method="POST" id='email-form' url={{request.path}}>
+          {% csrf_token %}
+
+          <div class="{% if send_reset_email_form.non_field_errors %}invalid{% endif %} mb-2 text-danger">
+            {% for error in send_reset_email_form.non_field_errors %}
+              {{ error }}
+            {% endfor %}  
+          </div>
+          
+          {% for field in send_reset_email_form %}
+          <div class="form-outline mt-1">
+              {{field|add_class:"form-control form-control-lg"}}<label class="form-label" for="{{field.id_for_label}}">{{field.label}}</label>
+              <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 71.2px;"></div><div class="form-notch-trailing"></div></div>
+            </div>
+          
+          <div class="{% if field.errors %} invalid{% endif %}">
+                {% if not field.errors %}<p></p>{% endif %}
+                {% for error in field.errors %}
+                  <p class="help-block">{{ error }}</p>
+                {% endfor %}
+          </div>
+          {% endfor %}
+
+          <div class="d-flex justify-content-center">
+            <button type="submit" 
+              class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Send</button>
+          </div>
+
+          <p class="text-center text-muted mt-5 mb-0">Not a member? 
+              <a id="signup-link" href="javascript:void(null);" data-mdb-target="#RegistrationModal" data-mdb-toggle="modal"
+                class="fw-bold text-body"><u>Register</u></a></p>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

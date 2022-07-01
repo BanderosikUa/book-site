@@ -7,7 +7,10 @@ load_dotenv()
 
 DEBUG = True
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 DATABASES = {
     'default': {

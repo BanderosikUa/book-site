@@ -17,7 +17,6 @@ function InputActive(){
 
 $(document).ready(function(){
     $('#LoginModal').on('hide.bs.modal', () => {
-      console.log('need to hide')
       $('#login-alert').hide()
     })
     $('#signup-link').click(function(event){
@@ -33,6 +32,7 @@ $(document).ready(function(){
         $.ajax({
             type: "POST",
             url: '/validate-login-form/',
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
             data: $(this).serialize(),
             success: function(response){
                 if (response.error){

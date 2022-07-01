@@ -39,26 +39,6 @@
           </ul>
           </div>
           <p class="text-center">or:</p>
-
-          {% comment %} <div class="form-outline mb-4">
-            <input type="text" id="form3Example1cg" class="form-control form-control-lg" />
-            <label class="form-label" for="form3Example1cg">Your Username</label>
-          </div>
-
-          <div class="form-outline mb-4">
-            <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
-            <label class="form-label" for="form3Example3cg">Your Email</label>
-          </div>
-
-          <div class="form-outline mb-4">
-            <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
-            <label class="form-label" for="form3Example4cg">Password</label>
-          </div>
-
-          <div class="form-outline mb-4>
-            <input type="password" id="form3Example4cdg" class="form-control form-control-lg" />
-            <label class="form-label" for="form3Example4cdg">Repeat your password</label>
-          </div> {% endcomment %}
         <form action="" method="POST" id='registration-form'>
         {% csrf_token %}
           <div class="{% if registration_form.non_field_errors %}invalid{% endif %} mb-2">

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.views.generic.list import ListView
 
 from hitcount.views import HitCountDetailView
@@ -39,6 +40,7 @@ class AuthorAllView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        print(self.request.COOKIES.get(settings.SESSION_COOKIE_NAME))
         context['tops'] = get_tops_dict(self.object_list)
         
         return context
