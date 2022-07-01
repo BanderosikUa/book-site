@@ -23,6 +23,7 @@ Db used in this project is a PostgresSQL.
 
 #### Env
 Collect all your secret keys in config/settings/.env file.
+For template .env check env_example file in config/settings, don't forget to rename the file.
 
 #### Random data fill script
 If you wanna fill your database with data, then just download book database from here: https://www.kaggle.com/datasets/lukaanicin/book-covers-dataset.

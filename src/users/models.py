@@ -20,7 +20,7 @@ class CustomUser(AbstractUser):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('profile', args=(self.pk,))
+        return reverse('profile', args=(self.slug,))
 
 
 class Profile(models.Model):
