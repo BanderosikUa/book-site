@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 
+from ..models import CommentBook
 from Books.services import *
 from Books.selectors import *
 
@@ -74,3 +75,13 @@ def get_bookmark_data_view(request, book_pk):
         return JsonResponse(response)
     else:
         return JsonResponse({'user': False})
+
+def delete_comment_view(request, comment_pk):
+    """Function that delete comment"""
+    user = request.user
+    response = delete_book(
+        comment_pk=comment_pk,
+        user=user
+        )
+    return JsonResponse(response)
+    

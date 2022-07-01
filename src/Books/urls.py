@@ -16,4 +16,5 @@ urlpatterns = [
     path('dislike-book-comment/', dislike_book_comment_view, name='dislike-book-comment'),
     path('bookmark-book/', bookmark_book_view, name='bookmark-book'),
     path('comment-book/', create_comment_view, name='comment-book'),
+    path('delete-comment/<int:comment_pk>/', delete_comment_view, name='delete-comment'),
 ]

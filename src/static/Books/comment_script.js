@@ -4,7 +4,6 @@ const ToCommentBox = document.getElementById('to-comment-book')
 const LoadBtn = document.getElementById('load-btn')
 const EndBox = document.getElementById('end-box')
 
-console.log('comment_script')
 
 const LikeComment = () =>{
     const LikeForm=[...document.getElementsByClassName('like-form-comment')];
@@ -136,17 +135,63 @@ LoadBtn.addEventListener('click', ()=>{
     GetCommentData()
 })
 
-GetCommentData();
 $(document).ready(function(){
+    GetCommentData();
     $('.like-form-comment').submit(function(e){
         e.preventDefault();
         const CommentId=$('.btn d-inline d-xxl-flex justify-content-xxl-start')
         console.log(CommentId)
     })
+    $('#delete-comment').on("click", function(e){
+        e.preventDefault()
+        console.log('clicked')
+        var comment_pk = $(this).attr('delete_id')
+        $.ajax({
+          type: 'GET',
+          url: `/delete-comment/${comment_pk}/`,
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          success: function(response){
+            if(response.deleted){
+              $(`#comment-${comment_pk}`).remove()
+            }
+            else{
+                console.log('else')
+            }
+          },
+          error: function(error){
+            console.log(error)
+          }
+        })
+        })
+    
+    
+    
 })
 
-
 const CommentForm = document.getElementById('CommentForm')
+
+$(document).on('click', '#delete-comment', function(e){
+    e.preventDefault()
+        console.log('clicked')
+        var comment_pk = $(this).attr('delete_id')
+        $.ajax({
+          type: 'GET',
+          url: `/delete-comment/${comment_pk}/`,
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          success: function(response){
+            if(response.deleted){
+              $(`#comment-${comment_pk}`).remove()
+            }
+            else{
+                console.log('else')
+            }
+          },
+          error: function(error){
+            console.log(error)
+          }
+        })
+})
+
 
 $(document).on('submit', '#CommentForm', function(e){
     e.preventDefault()
@@ -173,55 +218,41 @@ $(document).on('submit', '#CommentForm', function(e){
 })
 
 function comment_html(el){
-    return `<div class="border rounded-0 review" style="margin-top: 18px;">
-                    <div class="user-info"><a class="avatar" href="${el.user_url}"
-                            style="padding-right: -18px;margin-right: 0px;">
-                            <ul class="list-inline">
-                                <li class="d-xxl-flex justify-content-xxl-start list-inline-item"
-                                    style="margin-top: 0px;margin-left: 38px;"><img
-                                        class="border rounded-circle d-xxl-flex align-items-xxl-start"
-                                        src="${el.avatar}"
-                                        style="width: 80px;height: 60px;margin-right: 0px;">
-                                    <ul class="list-unstyled">
-                                        <li style="margin-left: 9px;"><span
-                                                class="d-xxl-flex justify-content-xxl-start">${el.username}</span><span
-                                                class="d-xxl-flex align-items-xxl-end disabled"
-                                                style="height: 30px; padding-down: 20px">${el.time_created}
-                                                </span></li>
-                                                <br>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </a>
-                        <div class="comment" style="margin-left: 90px;">
-                            <div><span class="d-xxl-flex justify-content-xxl-start"
-                                    style="margin-top: -20px;padding-left: 37px;">${el.comment}
-                                </span>
-                                <ul class="list-inline d-xxl-flex justify-content-xxl-start"
-                                    style="padding-top: 20px;padding-left: 33px;">
-                                    <li class="list-inline-item"><form action="" method="POST" class="like-form-comment" data-form-id="${el.pk}"><button
-                                            class="d-inline d-xxl-flex justify-content-xxl-start" id="like-${el.pk}"
-                                            type="submit"
-                                            style="background-color: Transparent; background-repeat:no-repeat;border: none;">
-                                                <i
-                                                class="fa fa-thumbs-up d-xxl-flex justify-content-xxl-end align-items-xxl-start"></i><span id="span-like-${el.pk}"
-                                                class="border rounded-0 shadow-sm d-xxl-flex align-items-xxl-center"
-                                                style="margin-left: 10px;margin-top: -3$spx;transform: scale(1.10);opacity: 0.86;filter: brightness(135%);--bs-body-bg: var(--bs-red);">${el.likes}</span></button></form>
-                                    </li>
-                                    <li class="list-inline-item"><form action="" method="POST" class="dislike-form-comment" data-form-id="${el.pk}"><button
-                                            class="d-inline d-xxl-flex justify-content-xxl-start" id="dislike-${el.pk}"
-                                            type="submit"
-                                            style="background-color: Transparent; background-repeat:no-repeat;border: none;">
-
-                                            <i
-                                                class="fa fa-thumbs-down d-xxl-flex justify-content-xxl-end align-items-xxl-start"></i><span id="span-dislike-${el.pk}"
-                                                class="border rounded-0 shadow-sm d-xxl-flex align-items-xxl-center"
-                                                style="margin-left: 10px;margin-top: -3px;transform: scale(1.10);opacity: 0.86;filter: brightness(135%);--bs-body-bg: var(--bs-red);">${el.dislikes}</span></button></form>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                </div>`
+    html = `<div id='comment-${el.pk}' style='padding-top:20px'><div class="row border">
+            <div class="col-1 border-right text-center">
+                <a href="${el.user_url}}" style='href-unstyle'><img class="border rounded-circle"
+                src="${el.avatar}" style="width: 80px;height: 60px;"></a>
+            </div>
+                <div class="col-11">
+                <div class="row">
+                        <span><a href="${el.user_url}}" class='href-unstyle'>${el.username}</a></span>
+                        <span style="padding-top:10px">${el.time_created}</span>
+                    <hr style='margin: 0em; border-width: 2px'>
+                </div>
+                <div class='row' style='padding-top:10px'>
+                    <div class="comment">
+                        ${el.comment}
+                        <ul class="list-inline"
+                            style="padding-top: 20px">
+                            <li class="list-inline-item">
+                                <form action="" method="POST" class="like-form-comment" data-form-id="${el.pk}"><button
+                                class="" id="like-${el.pk}" type="submit"
+                                style="background-color: Transparent; background-repeat:no-repeat;border: none;">
+                                    <i class="fa fa-thumbs-up"></i>
+                                    <span id="span-like-${el.pk}" class="" style="">${el.likes}</span>
+                                </button></form>
+                            </li>
+                            <li class="list-inline-item">
+                                <form action="" method="POST" class="dislike-form-comment" data-form-id="${el.pk}">
+                                    <button class="" id="dislike-${el.pk}" type="submit"
+                                    style="background-color: Transparent; background-repeat:no-repeat;border: none;">
+                                        <i class="fa fa-thumbs-down"></i>
+                                        <span id="span-dislike-${el.pk}" class="" style="">${el.dislikes}</span>
+                                    </button></form>
+                            </li>`
+    if(el.is_creator){
+        html += `<li class="list-inline-item"><a href="#" class='href-unstyle' id='delete-comment' style='color:red' delete_id=${el.pk}>Delete</a></li>`
+    }
+    html += `</ul></div></div></div></div></div></div>`
+    return html
 }

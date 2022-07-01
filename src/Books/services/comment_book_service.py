@@ -24,6 +24,7 @@ def get_comment_data(*, book_pk: int, num_comments: int, user: User) -> dict:
             'time_created': obj.time_created.strftime("%d %B %Y"),
             'liked': True if user in obj.liked.all() else False,
             'disliked': True if user in obj.disliked.all() else False,
+            'is_creator': obj.user == user,
         }
         data.append(item)
     return {'data': data[lower:upper], 'size': size}
@@ -117,7 +118,17 @@ def create_comment(*, book_pk: int, body: str, user: User) -> dict:
     response_data['likes'] = 0
     response_data['dislikes'] = 0
     response_data['avatar'] = user.avatar.url
-    response_data['pk'] = user.pk
     response_data['user'] = True
+    response_data['is_creator'] = user == UserComment.user
 
     return response_data
+
+def delete_book(comment_pk: int, user: User) -> dict:
+    """Function that delete comment"""
+    if CommentBook.objects.filter(pk=comment_pk).exists():
+        comment = CommentBook.objects.get(pk=comment_pk)
+        if comment.user == user:
+            comment.delete()
+            return {'deleted': True}
+    return {'deleted': False}
+    

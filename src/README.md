@@ -1,6 +1,3 @@
-# Book-site
-This site designed to buy, search and rating books.
-
 ## Requirements
 To install all libraries run the following:
 `pip install -r requirements.txt`
