@@ -8,16 +8,16 @@ from Books.views import *
 class TestBookViews(TestCase):
 
     @classmethod
-    def setUp(self):
-        self.client = Client()
+    def setUp(cls):
+        cls.client = Client()
 
-        self.model1 = Book.objects.create(name='some book')
-        self.user = CustomUser.objects.create(username='user1', password='username123', email='admifn@gmail.com')
+        cls.model1 = Book.objects.create(name='some book')
+        cls.user = CustomUser.objects.create(username='user1', password='username123', email='admifn@gmail.com')
 
-        self.book_url = reverse('book', args=(self.model1.slug,))
-        self.rate_book_url = reverse('rate-book',)
-        self.get_avarage_rating_url = reverse('get-average-rating',
-                                              args=(self.model1.pk,))
+        cls.book_url = reverse('book', args=(cls.model1.slug,))
+        cls.rate_book_url = reverse('rate-book',)
+        cls.get_avarage_rating_url = reverse('get-average-rating',
+                                             args=(cls.model1.pk,))
         
     def test_logined_book_view_GET(self):
         """Test response from BookView based-class with logined user"""
