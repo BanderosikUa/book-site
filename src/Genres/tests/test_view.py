@@ -10,22 +10,22 @@ from Genres.views import *
 class TestBookViews(TestCase):
 
     @classmethod
-    def setUp(self):
-        self.client = Client()
+    def setUp(cls):
+        cls.client = Client()
 
-        self.genre1 = Genre.objects.create(name='genre1')
-        self.genre2 = Genre.objects.create(name='genre2')
-        self.genre3 = Genre.objects.create(name='genre3')
+        cls.genre1 = Genre.objects.create(name='genre1')
+        cls.genre2 = Genre.objects.create(name='genre2')
+        cls.genre3 = Genre.objects.create(name='genre3')
 
-        self.book1 = Book.objects.create(name='some book')
-        self.book1.genre.add(self.genre1, self.genre2)
-        self.book2 = Book.objects.create(name='Book2')
-        self.book2.genre.add(self.genre2)
-        self.book3 = Book.objects.create(name='third book')
-        self.book3.genre.add(self.genre3)
+        cls.book1 = Book.objects.create(name='some book')
+        cls.book1.genre.add(cls.genre1, cls.genre2)
+        cls.book2 = Book.objects.create(name='Book2')
+        cls.book2.genre.add(cls.genre2)
+        cls.book3 = Book.objects.create(name='third book')
+        cls.book3.genre.add(cls.genre3)
 
-        self.user = CustomUser.objects.create(username='user1', password='username123')
-        self.genres_url = reverse('genre', args=(self.genre2,))
+        cls.user = CustomUser.objects.create(username='user1', password='username123')
+        cls.genres_url = reverse('genre', args=(cls.genre2,))
 
     def test_genre_detail_view_GET(self):
         """Test working url of GenreDetaiView"""

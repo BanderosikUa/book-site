@@ -13,20 +13,20 @@ from ..selectors import *
 class TestBookServices(TestCase):
 
     @classmethod
-    def setUp(self):
-        self.client = Client()
+    def setUp(cls):
+        cls.client = Client()
 
-        self.book = Book.objects.create(name='some book')
-        self.user = CustomUser.objects.create(username='user1', password='username123', email='admin@gmail.com')
-        self.comment = CommentBook.objects.create(book=self.book,
-                                                  user=self.user,
+        cls.book = Book.objects.create(name='some book')
+        cls.user = CustomUser.objects.create(username='user1', password='username123', email='admin@gmail.com')
+        cls.comment = CommentBook.objects.create(book=cls.book,
+                                                  user=cls.user,
                                                   body="Test comment")
-        self.user2 = CustomUser.objects.create(username='user2', password='username123', email='admin1@gmail.com')
-        self.user3 = CustomUser.objects.create(username='user3', password='username123', email='admin2@gmail.com')
-        self.user4 = CustomUser.objects.create(username='user4', password='username123', email='admin3@gmail.com')
-        self.user5 = CustomUser.objects.create(username='user5', password='username123', email='admin4@gmail.com')
-        self.user6 = CustomUser.objects.create(username='user6', password='username123', email='admin5@gmail.com')
-        self.time_today = datetime.now().strftime("%d %B %Y")
+        cls.user2 = CustomUser.objects.create(username='user2', password='username123', email='admin1@gmail.com')
+        cls.user3 = CustomUser.objects.create(username='user3', password='username123', email='admin2@gmail.com')
+        cls.user4 = CustomUser.objects.create(username='user4', password='username123', email='admin3@gmail.com')
+        cls.user5 = CustomUser.objects.create(username='user5', password='username123', email='admin4@gmail.com')
+        cls.user6 = CustomUser.objects.create(username='user6', password='username123', email='admin5@gmail.com')
+        cls.time_today = datetime.now().strftime("%d %B %Y")
 
 
     def test_get_comment_data(self):

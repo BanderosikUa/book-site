@@ -12,14 +12,14 @@ from ..service import *
 class TestBookServices(TestCase):
 
     @classmethod
-    def setUp(self):
-        self.client = Client()
+    def setUp(cls):
+        cls.client = Client()
 
-        self.book = Book.objects.create(name='some book')
-        self.user = CustomUser.objects.create(username='user1',
+        cls.book = Book.objects.create(name='some book')
+        cls.user = CustomUser.objects.create(username='user1',
                                               password='username123')
-        self.chapter = Chapter.objects.create(
-            book=self.book,
+        cls.chapter = Chapter.objects.create(
+            book=cls.book,
             title='Something',
             body='There is something too',
         )

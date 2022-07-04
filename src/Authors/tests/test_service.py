@@ -12,22 +12,22 @@ from ..service import (
 class TestAuthorServices(TestCase):
 
     @classmethod
-    def setUp(self):
-        self.client = Client()
-        self.client2 = Client()
-        self.client3 = Client()
-        self.client4 = Client()
-        self.client5 = Client()
+    def setUp(cls):
+        cls.client = Client()
+        cls.client2 = Client()
+        cls.client3 = Client()
+        cls.client4 = Client()
+        cls.client5 = Client()
 
-        self.author = Author.objects.create(name='Author1')
-        self.author2 = Author.objects.create(name='Author2')
-        self.author3 = Author.objects.create(name='Author3')
-        self.author4 = Author.objects.create(name='Author4')
+        cls.author = Author.objects.create(name='Author1')
+        cls.author2 = Author.objects.create(name='Author2')
+        cls.author3 = Author.objects.create(name='Author3')
+        cls.author4 = Author.objects.create(name='Author4')
 
-        self.author_url = reverse('author', args=(self.author.slug,))
-        self.author_url2 = reverse('author', args=(self.author2.slug,))
-        self.author_url3 = reverse('author', args=(self.author3.slug,))
-        self.author_url4 = reverse('author', args=(self.author4.slug,))
+        cls.author_url = reverse('author', args=(cls.author.slug,))
+        cls.author_url2 = reverse('author', args=(cls.author2.slug,))
+        cls.author_url3 = reverse('author', args=(cls.author3.slug,))
+        cls.author_url4 = reverse('author', args=(cls.author4.slug,))
 
 
     def test_working_hit_count(self):
