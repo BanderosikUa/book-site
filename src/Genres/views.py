@@ -14,9 +14,12 @@ class GenreListView(HitCountListView):
     def get_queryset(self):
         """Get queryset by url params"""
         slug = self.kwargs.get('genre_slug')
-        qs = get_users_bookmarks_and_rating().select_related('author')\
-                                             .prefetch_related('genre', 'comments',
-                                                               'hit_count_generic')
+        qs = (
+            get_users_bookmarks_and_rating()
+            .select_related('author')
+            .prefetch_related('genre', 'comments',
+                              'hit_count_generic')
+                              )
         qs = qs.defer('readers', 'time_created', 'age_category')
         qs = qs.filter(genre__slug=slug)
         ordering_by = self.request.GET.get('ordering')
@@ -46,7 +49,11 @@ class GenreAllView(ListView):
     context_object_name = 'genres'
 
     def get_queryset(self):
-        qs = Genre.objects.prefetch_related('book_genres', 'hit_count_generic').all()
+        qs = (
+            Genre.objects
+            .prefetch_related('book_genres', 'hit_count_generic')
+            .all()
+        )
         ordering_by = self.request.GET.get('ordering')
         if ordering_by == "Novelties":
             qs = qs.order_by('-time_created')

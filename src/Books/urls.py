@@ -1,6 +1,10 @@
 from django.urls import path, include
+from rest_framework import routers
 
 from Books.views import *
+
+router = routers.SimpleRouter()
+router.register(r'book', BookViewSet)
 
 
 urlpatterns = [
@@ -17,4 +21,6 @@ urlpatterns = [
     path('bookmark-book/', bookmark_book_view, name='bookmark-book'),
     path('comment-book/', create_comment_view, name='comment-book'),
     path('delete-comment/<int:comment_pk>/', delete_comment_view, name='delete-comment'),
+    # api
+    path('api/v1/', include(router.urls))
 ]
