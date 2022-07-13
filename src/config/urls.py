@@ -20,11 +20,14 @@ urlpatterns = [
     path('', include('Authors.urls'))
 ]
 
-if settings.local.DEBUG:
-    import debug_toolbar
+try:
+    if settings.local.DEBUG:
+        import debug_toolbar
 
-    urlpatterns += [
-        path('__debug__/', include('debug_toolbar.urls')),
-    ]
-    urlpatterns += static(settings.base.MEDIA_URL,
-                          document_root=settings.base.MEDIA_ROOT)
+        urlpatterns += [
+            path('__debug__/', include('debug_toolbar.urls')),
+        ]
+        urlpatterns += static(settings.base.MEDIA_URL,
+                              document_root=settings.base.MEDIA_ROOT)
+except:
+    print('error')
