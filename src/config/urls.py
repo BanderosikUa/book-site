@@ -12,6 +12,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('hitcount/', include(('hitcount.urls', 'hitcount'), namespace='hitcount')),
+    path('api/v1/', include('apiv1.urls')),
     path('', include('core.urls')),
     path('', include('Chapters.urls')),
     path('', include('Books.urls')),

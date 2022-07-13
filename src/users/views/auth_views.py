@@ -2,7 +2,6 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template.loader import render_to_string
 from django.contrib.auth import login
 from django.contrib import messages
-from django.contrib.auth.views import PasswordResetView
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.tokens import default_token_generator
 
@@ -65,6 +64,7 @@ def login_validation_view(request):
             rendered_template = render_to_string('login.html', {'login_form': form},
                                                  request=request)
             return JsonResponse({'error': True, 'form': rendered_template})
+
 
 def login_view(request):
     print(request.path)

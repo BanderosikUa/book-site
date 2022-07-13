@@ -13,4 +13,4 @@ class UserBookRelationSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        exclude = ('author_is_user', 'slug')
+        exclude = ('author_is_user', 'slug', 'readers')

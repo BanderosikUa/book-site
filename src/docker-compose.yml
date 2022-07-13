@@ -1,0 +1,20 @@
+
+services:
+  book-site_db:
+    image: postgres:14-alpine3.16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+  web:
+    build: .
+    command: python /usr/src/book-site/manage.py runserver 0.0.0.0:8000 --setting=config.settings.local
+    volumes:
+      - .:/usr/src/book-site
+    ports:
+      - 8000:8000
+    depends_on:
+      - book-site_db
+
+volumes:
+  postgres_data:

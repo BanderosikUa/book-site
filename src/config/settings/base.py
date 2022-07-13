@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
 # apps
 INSTALLED_APPS += [
+                   'apiv1.apps.Apiv1Config',
                    'Authors.apps.AuthorsConfig',
                    'Genres.apps.GenresConfig',
                    'Books.apps.BookConfig',
