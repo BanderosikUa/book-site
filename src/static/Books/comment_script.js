@@ -197,18 +197,23 @@ $(document).on('submit', '#CommentForm', function(e){
     e.preventDefault()
     $.ajax({
         type: "POST",
-        url: "/comment-book/",
-        csrfmiddlewaretoken: csrftoken,
-        data:{
-            'csrfmiddlewaretoken': csrftoken,
-            'book_pk': BookPk,  
-            'comment': $('#body-comment').val()
+        url: "/api/v1/comment/",
+        credentials: 'include',
+        headers: {
+            'X-CSRFToken': csrftoken
         },
+        contentType: 'application/json',
+        data:JSON.stringify({
+              'book': BookPk,
+              'body': $('#body-comment').val()
+        }),
+        dataType: 'json',
         success: function(response){
             if(!response.user){
                 login_required()
                 return false
             }
+            console.log(response)
             ReviewBox.insertAdjacentHTML('afterbegin', comment_html(response))
                 LikeComment();
                 DislikeComment();
@@ -220,13 +225,13 @@ $(document).on('submit', '#CommentForm', function(e){
 function comment_html(el){
     html = `<div id='comment-${el.pk}' style='padding-top:20px'><div class="row border">
             <div class="col-1 border-right text-center">
-                <a href="${el.user_url}}" style='href-unstyle'><img class="border rounded-circle"
-                src="${el.avatar}" style="width: 80px;height: 60px;"></a>
+                <a href="${el.user.url}}" style='href-unstyle'><img class="border rounded-circle"
+                src="${el.user.avatar}" style="width: 80px;height: 60px;"></a>
             </div>
                 <div class="col-11">
                 <div class="row">
-                        <span><a href="${el.user_url}}" class='href-unstyle'>${el.username}</a></span>
-                        <span style="padding-top:10px">${el.time_created}</span>
+                        <span><a href="${el.user.url}}" class='href-unstyle'>${el.user.username}</a></span>
+                        <span style="padding-top:10px">${new Date(el.time_created).toLocaleString("en-US")}</span>
                     <hr style='margin: 0em; border-width: 2px'>
                 </div>
                 <div class='row' style='padding-top:10px'>

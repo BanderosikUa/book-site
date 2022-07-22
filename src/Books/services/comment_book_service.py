@@ -29,6 +29,7 @@ def get_comment_data(*, book_pk: int, num_comments: int, user: User) -> dict:
         data.append(item)
     return {'data': data[lower:upper], 'size': size}
 
+
 def like_book_comment(*, comment_pk: int, book_pk: int, user: User):
     """Function, that add or remove user like to book's comment"""
     comment = CommentBookSelector(book_pk=book_pk, comment_pk=comment_pk)
@@ -93,6 +94,7 @@ def create_comment(*, book_pk: int, body: str, user: User) -> dict:
     response_data['is_creator'] = user == UserComment.user
 
     return response_data
+
 
 def delete_book(comment_pk: int, user: User) -> dict:
     """Function that delete comment"""

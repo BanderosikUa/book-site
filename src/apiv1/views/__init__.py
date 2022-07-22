@@ -1,1 +1,1 @@
-from .book import *
+from .book_viewsets import *
