@@ -1,8 +1,8 @@
 from django.http import JsonResponse
 
 from ..models import CommentBook
-from Books.services import *
-from Books.selectors import *
+from books.services import *
+from books.selectors import *
 
 from ..services.comment_book_service import get_comment_data, like_book_comment
 

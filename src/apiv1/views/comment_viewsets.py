@@ -5,7 +5,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
-from Books.models import CommentBook
+from books.models import CommentBook
 from apiv1.serializers import CommentBookSerializer
 
 

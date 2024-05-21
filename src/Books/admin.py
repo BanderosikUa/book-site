@@ -5,8 +5,8 @@ from django.utils.safestring import mark_safe
 from hitcount.models import HitCount
 
 from .models import Book, UserBookRelation, CommentBook
-from Authors.models import Author
-from Chapters.admin import ChapterInline
+from authors.models import Author
+from chapters.admin import ChapterInline
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):

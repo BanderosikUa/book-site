@@ -4,9 +4,9 @@ from django.views.generic.list import ListView
 
 from hitcount.views import HitCountDetailView
 
-from Books.services import *
-from Books.selectors import *
-from Books.forms import CommentCreateForm
+from books.services import *
+from books.selectors import *
+from books.forms import CommentCreateForm
 from ..models import Book, UserBookRelation, CommentBook
 
 

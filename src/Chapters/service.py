@@ -3,7 +3,7 @@ from datetime import date, datetime, timedelta, tzinfo
 from django.utils import timezone
 from django.db.models import *  
 
-from Books.models import UserBookRelation, Book
+from books.models import UserBookRelation, Book
 from users.models import CustomUser
 from .models import Chapter, BookNotification
 

@@ -1,8 +1,8 @@
 from django.urls import reverse
 from django.test import RequestFactory, TestCase, Client
 
-from Authors.models import Author
-from Books.models import Book, UserBookRelation, CommentBook
+from authors.models import Author
+from books.models import Book, UserBookRelation, CommentBook
 from users.models import CustomUser
 from ..service import (
     _get_more_rated_authors,

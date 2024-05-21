@@ -1,5 +1,5 @@
 from django import template
-from Chapters.service import get_time_verbally
+from chapters.service import get_time_verbally
 
 register = template.Library()
 

@@ -8,9 +8,9 @@ from django.contrib.postgres.aggregates import ArrayAgg
 from django.db.models import Min, Prefetch, Max
 from django.utils import timezone
 
-from Chapters.service import get_time_verbally
-from Books.models import Book, CommentBook, UserBookRelation
-from Chapters.models import Chapter
+from chapters.service import get_time_verbally
+from books.models import Book, CommentBook, UserBookRelation
+from chapters.models import Chapter
 
 class CommentBookSelector:
     """Class that fetch comment`s data from db"""

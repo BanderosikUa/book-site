@@ -2,11 +2,11 @@ from django.db.models import Prefetch
 from django.shortcuts import render
 from django.views.generic.list import ListView
 
-from Books.selectors import select_books_by_chapters_created
-from Authors.models import Author
-from Books.models import Book
-from Authors.service import _get_most_viewed_authors
-from Chapters.models import Chapter
+from books.selectors import select_books_by_chapters_created
+from authors.models import Author
+from books.models import Book
+from authors.service import _get_most_viewed_authors
+from chapters.models import Chapter
 
 
 class HomeView(ListView):

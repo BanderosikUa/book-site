@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 
-from Books.models import CommentBook
+from books.models import CommentBook
 
 
 def get_user_comments_data(*, num_comments: int, user: User) -> dict:

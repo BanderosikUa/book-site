@@ -1,7 +1,7 @@
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-from Books.models import UserBookRelation
+from books.models import UserBookRelation
 from users.models import CustomUser
 from .models import Chapter, BookNotification
 from .service import create_notification

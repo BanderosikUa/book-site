@@ -3,7 +3,7 @@ from ckeditor import fields
 from django.urls import reverse
 from django.conf import settings
 
-from Books.models import Book
+from books.models import Book
 # Create your models here.
 
 

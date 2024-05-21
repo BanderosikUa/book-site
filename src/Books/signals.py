@@ -4,9 +4,9 @@ from django.conf import settings
 from django.urls import reverse
 from django.test import Client
 
-from Books.models import Book, UserBookRelation
-from Genres.models import Genre
-from Authors.models import Author
+from books.models import Book, UserBookRelation
+from genres.models import Genre
+from authors.models import Author
 
 
 @receiver(post_save, sender=Book)

@@ -2,9 +2,9 @@ from django.urls import reverse
 from django.test import TestCase, Client
 
 from users.models import CustomUser
-from Books.models import Book, UserBookRelation
-from Genres.models import Genre
-from Genres.views import *
+from books.models import Book, UserBookRelation
+from genres.models import Genre
+from genres.views import *
 
 
 class TestBookViews(TestCase):

@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.generic.list import ListView, MultipleObjectMixin
 
 from core.custom_views import HitCountListView
-from Books.selectors import *
+from books.selectors import *
 from .services import *
 from .models import Genre
 

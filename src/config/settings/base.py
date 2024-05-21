@@ -43,13 +43,12 @@ INSTALLED_APPS = [
 # apps
 INSTALLED_APPS += [
                    'apiv1.apps.Apiv1Config',
-                   'Authors.apps.AuthorsConfig',
-                   'Genres.apps.GenresConfig',
-                   'Books.apps.BookConfig',
+                   'authors.apps.AuthorsConfig',
+                   'genres.apps.GenresConfig',
+                   'books.apps.BookConfig',
                    'core.apps.CoreConfig',
                    'users.apps.UsersConfig',
-                   'Chapters.apps.ChaptersConfig',
-
+                   'chapters.apps.ChaptersConfig',
                    ]
 
 # extension
@@ -212,8 +211,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.CustomUserFormCreate'
 
 # Capthca
-RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
-RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY', 'RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY', 'RECAPTCHA_PUBLIC_KEY')
 
 # SMPT Configuration
 EMAIL_FILE_PATH = BASE_DIR / "sent_emails"

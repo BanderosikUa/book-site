@@ -2,7 +2,7 @@ from typing import Union
 
 from django.contrib.auth.models import User
 from django.db.models import Avg, Count
-from Books.selectors import *
+from books.selectors import *
 from ..models import Book
 
 

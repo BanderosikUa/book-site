@@ -2,7 +2,7 @@ import datetime
 from django.utils import timezone
 from django.test import TestCase
 
-from Books.models import Book
+from books.models import Book
 from apiv1.serializers import BookSerializer
 
 

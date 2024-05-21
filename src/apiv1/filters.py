@@ -1,9 +1,7 @@
 from django_filters import BaseInFilter, CharFilter, FilterSet
 
-from Books.models import Book
+from books.models import Book
 
 
 class SlugInFilter(BaseInFilter, CharFilter):
     pass
-
-

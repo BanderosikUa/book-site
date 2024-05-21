@@ -4,8 +4,8 @@ from django.test import TestCase, Client
 from django.utils import timezone
 
 from users.models import CustomUser, Profile
-from Books.models import Book, UserBookRelation, CommentBook
-from Chapters.models import Chapter, BookNotification
+from books.models import Book, UserBookRelation, CommentBook
+from chapters.models import Chapter, BookNotification
 
 from ..service import *
 

@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from Books.views import *
+from books.views import *
 
 urlpatterns = [
     path('book/all/', AllBookView.as_view(), name='all-books'),

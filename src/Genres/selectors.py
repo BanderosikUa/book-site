@@ -1,2 +1,2 @@
-from Books.models import UserBookRelation
+from books.models import UserBookRelation
 from django.db import models

@@ -12,9 +12,9 @@ from django.test import Client
 from django.core.files import File  # you need this somewhere
 from django.core.exceptions import MultipleObjectsReturned
 
-from Genres.models import Genre
-from Authors.models import Author
-from Books.models import Book, UserBookRelation
+from genres.models import Genre
+from authors.models import Author
+from books.models import Book, UserBookRelation
 from users.models import CustomUser
 
 

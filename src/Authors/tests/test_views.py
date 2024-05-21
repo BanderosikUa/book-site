@@ -2,8 +2,8 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from users.models import CustomUser
-from Books.models import Book
-from Books.views import *
+from books.models import Book
+from books.views import *
 
 class TestBookViews(TestCase):
 

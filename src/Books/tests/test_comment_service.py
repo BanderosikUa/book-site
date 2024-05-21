@@ -3,8 +3,8 @@ from datetime import datetime
 from django.test import Client, RequestFactory, TestCase
 from django.urls import reverse
 
-from Books.models import Book, CommentBook, UserBookRelation
-from Books.views import *
+from books.models import Book, CommentBook, UserBookRelation
+from books.views import *
 from django.contrib.auth.models import User
 from users.models import CustomUser
 from ..selectors import *

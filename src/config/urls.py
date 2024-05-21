@@ -15,11 +15,11 @@ urlpatterns = [
     path('hitcount/', include(('hitcount.urls', 'hitcount'), namespace='hitcount')),
     path('api/v1/', include('apiv1.urls')),
     path('', include('core.urls')),
-    path('', include('Chapters.urls')),
-    path('', include('Books.urls')),
-    path('', include('Genres.urls')),
+    path('', include('chapters.urls')),
+    path('', include('books.urls')),
+    path('', include('genres.urls')),
     path('', include('users.urls')),
-    path('', include('Authors.urls'))
+    path('', include('authors.urls'))
 ]
 
 try:

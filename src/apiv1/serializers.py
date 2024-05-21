@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from rest_framework.reverse import reverse_lazy
 
-from Books.models import Book, CommentBook
-from Books.models import UserBookRelation
-from Genres.models import Genre
+from books.models import Book, CommentBook
+from books.models import UserBookRelation
+from genres.models import Genre
 from users.models import Profile, CustomUser
 
 

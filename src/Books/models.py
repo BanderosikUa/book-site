@@ -8,8 +8,8 @@ from django.contrib.contenttypes.fields import GenericRelation
 from hitcount.models import HitCountMixin, HitCount
 
 from core.models import NameStampedModel
-from Authors.models import Author
-from Genres.models import Genre
+from authors.models import Author
+from genres.models import Genre
 
 
 AGE_CATEGORY = [('12', '12+'),
