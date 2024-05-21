@@ -4,6 +4,8 @@ from ..models import CommentBook
 from Books.services import *
 from Books.selectors import *
 
+from ..services.comment_book_service import get_comment_data, like_book_comment
+
 
 def get_comment_data_view(request, book_pk, num_comments):
     """Function, that return Json with limited(3) data of comments in GET ajax request"""

@@ -18,8 +18,8 @@
         <div class='col-9'>
             <div style='margin-right:15px;'>
                 <ul class="row list-unstyled breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList">
-                    <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="" itemprop="item"><span itemprop="name">Main</span></a></li>
-                    <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="#" itemprop="item"><span itemprop="name">Books</span></a></li>
+                    <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="{% url 'home' %}" itemprop="item"><span itemprop="name">Main</span></a></li>
+                    <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="{% url "all-books" %}" itemprop="item"><span itemprop="name">Books</span></a></li>
                     {% if Book.genre.all %}
                         <li class="col-auto item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="{{Book.genre.first.get_absolute_url}}" itemprop="item"><span itemprop="name">{{ Book.genre.all|first }}</span></a></li>
                     {% endif %}

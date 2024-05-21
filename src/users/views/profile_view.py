@@ -1,9 +1,7 @@
 from django.http import JsonResponse
 from django.views.generic import DetailView
-from Books.models import Book, UserBookRelation
 
-from Books.services import get_user_comments_data
-from django.contrib.auth.mixins import LoginRequiredMixin
+from ..services import get_user_comments_data
 
 from ..models import CustomUser
 

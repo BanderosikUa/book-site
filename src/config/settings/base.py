@@ -28,6 +28,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
+    'rest_framework',
+    'django_filters',
+
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -38,6 +42,7 @@ INSTALLED_APPS = [
 
 # apps
 INSTALLED_APPS += [
+                   'apiv1.apps.Apiv1Config',
                    'Authors.apps.AuthorsConfig',
                    'Genres.apps.GenresConfig',
                    'Books.apps.BookConfig',
@@ -222,3 +227,21 @@ ADMINS = (
     ('admin', 'grigorcool6@gmail.com'),
 )
 MANAGERS = ADMINS
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer'
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}

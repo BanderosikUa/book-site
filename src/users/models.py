@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_slug
 
+
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to='users/%Y/%m/%d/',

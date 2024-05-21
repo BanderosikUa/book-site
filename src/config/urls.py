@@ -8,10 +8,12 @@ from users.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('allauth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('hitcount/', include(('hitcount.urls', 'hitcount'), namespace='hitcount')),
+    path('api/v1/', include('apiv1.urls')),
     path('', include('core.urls')),
     path('', include('Chapters.urls')),
     path('', include('Books.urls')),
