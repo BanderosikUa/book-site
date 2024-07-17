@@ -1,0 +1,34 @@
+<div class="reviews-list" style="">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="text-start">Comments</h2><span
+                class="text-start d-xxl-flex justify-content-xxl-start"
+                style="margin-top: -9px;">Add and read other comments here!</span>
+                
+<div id="review-box" class="item">
+</div>
+<div id='spinner-box' class="text-center">
+    <div class="spinner-border text-secondary" role="status"></div>
+</div>
+<div class="text-center mb-3" id="end-box" style="padding-top: 20px">
+    <button class="btn btn-secondary not-visible" id="load-btn">Load More</button>
+</div>
+<div id="post-comment" class="post-comment" style="padding-top: 30px">
+    <form type="POST" id="CommentForm">
+        {% csrf_token %}
+        <div class="card text-black bg- mb-1">
+        <div class="card-header">
+            <span class='d-flex align-item-center user-name'>{% if user.is_authenticated %} {{ user.get_username}} {% else %} Guest {% endif %}</span>
+        </div>
+        <div class="card-body">
+            {{ comment_create_form }}
+            <div class="d-flex justify-content-center">
+            <button type="submit" class="float-right btn btn-dark submit-comment-form"> <i class="fa fa-comment"></i>Comment</button>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+    </div>
+        </div>
+</section>
