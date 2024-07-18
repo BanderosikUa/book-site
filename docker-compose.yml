@@ -3,13 +3,13 @@ version: '3.7'
 services:
   web:
     build: 
-      context: .
+      context: src/
       dockerfile: Dockerfile
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.local
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/usr/src/book-site/
+      - ./src:/usr/src/book-site/
     ports:
       - 8000:8000
     depends_on:
