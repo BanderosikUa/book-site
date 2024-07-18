@@ -78,6 +78,7 @@ def get_bookmark_data_view(request, book_pk):
     else:
         return JsonResponse({'user': False})
 
+
 def delete_comment_view(request, comment_pk):
     """Function that delete comment"""
     user = request.user
