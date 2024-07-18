@@ -21,10 +21,12 @@ class ChaptersListView(ListView):
 
         return context
 
+
 def add_notification_to_navbar_view(request):
     user = request.user
     response = add_notification_to_navbar(user)
     return JsonResponse(response)
+
 
 def delete_notification(request, notification_pk):
     user = request.user
