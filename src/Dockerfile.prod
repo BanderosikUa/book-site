@@ -1,4 +1,4 @@
-FROM python:3.11.4-slim-bullseye AS BASE
+FROM python:3.11.4-slim-buster
 
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -12,7 +12,8 @@ RUN apt-get update && \
       gcc \
       default-libmysqlclient-dev \
       pkg-config \
-      curl && \
+      curl \
+      psycopg-binary && \
     pip install --no-cache-dir -r requirements.txt && \
     apt-get remove -y \
       gcc \
