@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% load genre_tags %}
+{% load static %}
+
+{% block title %}{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" href="{% static 'Books/book_style.css' %}">
+<script src="{% static 'Genres/genres_script.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<section>
+    <div class="row">
+        <div class="col"></div>
+            <div class="col-7">
+                <h1 style="" id='Genre name'>{{Genre|capfirst }}</h1>
+                <p>Was found {{ count }} books</p>
+                <div class="row">
+                    <div class="col" style="border-bottom-width: -3px;">
+                        <div id="books">
+                            <form action = "{% url 'genre' Genre%}" method="GET">
+                                <ul class="nav nav-tabs mt-3">
+                                    <li class="nav-item"><button class="nav-link bookmark active" data-toggle="tab">Novelties</button></li>
+                                    <li class="nav-item"><button class="nav-link bookmark" data-toggle="tab">Popular</button></li>
+                                    <li class="nav-item"><button class="nav-link bookmark" data-toggle="tab">Rated</button></li>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 0px;">
+                    <div class="col">
+                        <div id="tabs-content" data-url="{% url 'genre' Genre %}">
+                            {% for book in books %}
+                                <div id="book" style="border-bottom: 1px solid rgb(159,159,159) ;">
+                                    <div class="row no-gutters" style="padding-top: 17px;padding-bottom: 30px;">
+                                        <div class="col-12 col-sm-auto"><a class="image-link d-block" href="{{book.get_absolute_url}}"><img class="rounded-sm ls-is-cached lazyloaded" src = {{ book.photo.url }} style="object-fit: cover" height='260vh' weight='150'></a></div>
+                                        <div class="col-12 col-sm ml-sm-5" style="padding-top: -1px;">
+                                            {% if book.genre.all %}
+                                                {% for genre in book.genre.all %}
+                                                    <li class="list-inline-item rounded"><a class="text-center link d-block font-size-sm" style="color:inherit;" href="{{ genre.get_absolute_url }}">{{ genre }}</a></li>
+                                                {% endfor%}
+                                            {% endif %}
+                                            <div style="padding-top:10px"><a href="{{book.get_absolute_url}}" style="text-decoration: none; color: inherit;"><h4>{{ book.name }}</h4></a></div>
+                                            <div class="author-name" style="padding-top: 2px;padding-left: 0px;"><span style="opacity: 0.77;">Author:&nbsp;</span><a href="{% if book.author %}{% url 'author' book.author.slug %}{% else %}#{% endif %}"><span class="title-name" style="opacity: 0.77;color: rgb(192,220,25);">{% if book.author %} {{book.author.name}} {% else %} None {% endif %}</span></a></div>
+                                            <div id="rating" style="margin-left:-12px"><div class="rating rating_set col-xs-12">
+                                                <div class="rating__body">
+                                                    <div class="rating__active"></div>
+                                                    <div class="rating__items">
+                                                        <span class="rating__item" name="rating">
+                                                        <span class="rating__item" name="rating">
+                                                        <span class="rating__item" name="rating">
+                                                        <span class="rating__item" name="rating">
+                                                        <span class="rating__item" name="rating">
+                                                    </div>
+                                                </div>
+                                                        <div class="rating__value" style="padding-bottom:2px">{{ book.avg_rating }}</div>
+                                                    </div>
+                                                </div>
+                                            <div id="bookmarks" style="">
+                                                <ul class="list-inline">
+                                                    <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-clock-o d-xxl-flex align-items-xxl-center"></i><span class="d-inline-block" href="#" style="margin-left: 5px; margin-bottom:-2px">{{book.plan_to_read}}</span></li>
+                                                    <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-book d-xxl-flex align-items-xxl-center"></i><span class="d-inline-block" href="#" style="margin-left: 5px; margin-bottom:-2px">{{book.reading}}</span></li>
+                                                    <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-check-circle d-xxl-flex align-items-xxl-center"></i><span class="d-inline-block" href="#" style="margin-left: 5px; margin-bottom:-2px">{{book.read}}</span></li>
+                                                    <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-remove d-xxl-flex align-items-xxl-center"></i><span class="d-inline-block" href="#" style="margin-left: 5px; margin-bottom:-2px">{{book.abandonded}}</span></li>
+                                                    <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-comments-o d-xxl-flex align-items-xxl-center"></i><span class="d-inline-block" href="#" style="margin-left: 5px; margin-bottom:-2px">{{book.comments.count}}</span></li>
+
+                                                </ul>
+                                            </div>
+                                            <div class="" style="margin-top:-7px">
+                                                <span style="padding-top: 9px;"></a>{{book.about|truncatewords:30}} <a href="{{book.get_absolute_url}}">More</a></span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                            {% endfor %}
+                        </div>
+                        <div class="grid-img-right mt-4 text-right bg">
+                            {% include 'pagination.html'%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="col"></div>
+    </div>
+</section>
+
+{% endblock %}
