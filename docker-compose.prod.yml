@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.9'
 
 services:
   web:
@@ -7,9 +7,10 @@ services:
       dockerfile: Dockerfile.prod
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.production
-    command: sh -c "python3 manage.py makemigrations && python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && gunicorn --config gunicorn_config.py aurigaone.wsgi:application"
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - ./src:/usr/src/book-site/
+      - static_volume:/usr/src/book-site/staticfiles
+      - media_volume:/usr/src/book-site/mediafiles
     expose:
       - 8000
     depends_on:
@@ -20,9 +21,12 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - certs:/etc/letsencrypt
-      - certs-data:/data/letsencrypt
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf 
+      - static_volume:/usr/src/book-site/staticfiles
+      - media_volume:/usr/src/book-site/mediafiles
+      - ./etc/letsencrypt:/etc/letsencrypt
+      - ./certbot/data:/var/www/certbot
+
     ports:
       - 80:80
       - 443:443
@@ -32,11 +36,17 @@ services:
       - djangonetwork
 
   certbot:
-    image: certbot/certbot
+    container_name: certbot
+    image: certbot/certbot:latest
+    depends_on:
+      - nginx
+    command: >-
+             certonly --reinstall --webroot --webroot-path=/var/www/certbot
+             --email asd@gmail.com --agree-tos --no-eff-email
+             -d bookify.banderosik.click
     volumes:
-      - certs:/etc/letsencrypt
-      - certs-data:/data/letsencrypt
-    entrypoint: /bin/sh -c 'trap exit TERM; while :; do sleep 12h & wait $${!}; certbot renew; done;'
+      - ./etc/letsencrypt:/etc/letsencrypt
+      - ./certbot/data:/var/www/certbot
 
   db:
     image: postgres:14-alpine3.16
@@ -56,6 +66,8 @@ volumes:
   postgres_data:
   certs:
   certs-data:
+  static_volume:
+  media_volume:
 
 networks:
   djangonetwork:
