@@ -1,3 +1,4 @@
 certbot/
 etc/
 .DS_Store
+venv/
