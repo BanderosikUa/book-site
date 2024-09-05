@@ -27,5 +27,10 @@ For template .env check env_example file in config/settings, don't forget to ren
 
 #### Random data fill script
 If you wanna fill your database with data, then just download book database from here: https://www.kaggle.com/datasets/lukaanicin/book-covers-dataset.
-After unzip files in statitcfiles dir and run __python manage.py fill_db [--books] [--genres]__. Where --books and --genres is optional params that
+After unzip files in statitcfiles dir and run 
+```python
+python manage.py fill_db [--books] [--genres]. 
+```
+Where --books and --genres is optional params that
+
 define amount of genres and amount of books in separate genre.
