@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
-from config import settings
+from django.conf import settings
 from django.views.generic import TemplateView
 
 from users.views import *
@@ -22,7 +22,7 @@ urlpatterns = [
     path('', include('authors.urls'))
 ]
 
-if settings.local.DEBUG:
+if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns += [
