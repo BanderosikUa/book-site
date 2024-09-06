@@ -1,11 +1,74 @@
+from django.http import JsonResponse
+
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.pagination import LimitOffsetPagination, get_paginated_response
 
-from .models import CommentBook
-from .services.comment_book_service import get_comment_data, like_book_comment
+from .models import CommentBook, Book, AGE_CATEGORY
+from .services import get_comment_data, like_book_comment, list_books
+
+
+class BookListApi(APIView):
+    class Pagination(LimitOffsetPagination):
+        default_limit = 100
+    
+    class OutputSerializer(serializers.ModelSerializer):
+        author = serializers.SerializerMethodField()
+        genres = serializers.SerializerMethodField()
+        views = serializers.SerializerMethodField()
+        rating = serializers.SerializerMethodField()
+        
+        class Meta:
+            model = Book
+            fields = ['id', 'name', 'author', 'genres', 
+                      'age_category', 'time_created',
+                      'time_modified', 'views', 'rating']
+            
+        def get_author(self, obj):
+            if obj.author:
+                return obj.author.name
+            else:
+                return None
+        
+        def get_genres(self, obj):
+            return list(obj.genre.values_list("name", flat=True))
+        
+        def get_views(self, obj):
+            return obj.hit_count.hits
+        
+        def get_rating(self, obj):
+            return obj.avg_rating
+    
+    class FilterSerializer(serializers.Serializer):
+        from_date = serializers.DateTimeField(required=False)
+        to_date = serializers.DateTimeField(required=False)
+        sorting = serializers.ChoiceField(required=False, choices=(1, 2, 3))
+        genre = serializers.CharField(required=False)
+        name = serializers.CharField(required=False)
+        author = serializers.CharField(required=False)
+        age_category = serializers.ChoiceField(required=False, choices=AGE_CATEGORY)
+        views = serializers.IntegerField(required=False, min_value=0)
+        rating = serializers.DecimalField(required=False, max_digits=3, decimal_places=2,
+                                          min_value=0, max_value=5)
+        
+    def get(self, request):
+        # Make sure the filters are valid, if passed
+        filters_serializer = self.FilterSerializer(data=request.query_params)
+        filters_serializer.is_valid(raise_exception=True)
+
+        books = list_books(filters=filters_serializer.validated_data)
+
+        response = get_paginated_response(
+            pagination_class=self.Pagination,
+            serializer_class=self.OutputSerializer,
+            queryset=books,
+            request=request,
+            view=self
+        )
+
+        return response
 
 
 class CommentListApi(APIView):
