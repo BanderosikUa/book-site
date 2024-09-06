@@ -6,11 +6,11 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from ..forms import *
-from ..models import CustomUser, Profile
+from ..models import User, Profile
 
 
 class InformationSettingsView(UpdateView, LoginRequiredMixin):
-    model = CustomUser
+    model = User
     template_name = 'users/settings/information.html'
     fields = ['avatar', 'username', 'email']
 
@@ -58,7 +58,7 @@ class NotificationsSettingsView(UpdateView, LoginRequiredMixin):
 
 
 class SecuritySettingsView(PasswordChangeView, LoginRequiredMixin):
-    model = CustomUser
+    model = User
     template_name = 'users/settings/security.html'
     form_class = ChangePasswordForm
 

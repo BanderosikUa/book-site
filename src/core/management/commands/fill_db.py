@@ -15,7 +15,7 @@ from django.core.exceptions import MultipleObjectsReturned
 from genres.models import Genre
 from authors.models import Author
 from books.models import Book, UserBookRelation
-from users.models import CustomUser
+from users.models import User
 
 
 class Command(BaseCommand):
@@ -119,7 +119,7 @@ class Command(BaseCommand):
             username = "".join(random.choices(string.ascii_lowercase, k=8))
             email = f'{username}@gmail.com'
             password = '12345678'
-            user = CustomUser.objects.create(username=username,
+            user = User.objects.create(username=username,
                                              password=password,
                                              email=email)
             users_pk.append(user.pk)
@@ -127,14 +127,14 @@ class Command(BaseCommand):
     
     def __create_userbookrelation(self, book):
         """Creating random bookmark and rate"""
-        for user in CustomUser.objects.filter(pk__in=self.users_pk):
+        for user in User.objects.filter(pk__in=self.users_pk):
             bookmark = random.choice([1, 2, 3, 4])
             rate = random.choice(list(range(6)))
             UserBookRelation.objects.create(book=book, user=user,
                                             bookmarks=bookmark, rate=rate)
 
     def __delete_old_users(self):
-        CustomUser.objects.all().exclude(pk__lt=7).delete()
+        User.objects.all().exclude(pk__lt=7).delete()
 
     def __delete_old_genres(self):
         Genre.objects.all().exclude(pk__in=[1, 2]).delete()

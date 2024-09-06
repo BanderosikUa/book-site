@@ -3,11 +3,11 @@ from django.views.generic import DetailView
 
 from ..services import get_user_comments_data
 
-from ..models import CustomUser
+from ..models import User
 
 
 class ProfileView(DetailView):
-    model = CustomUser
+    model = User
     context_object_name = 'profile_user'
     slug_url_kwarg = 'user_slug'
     template_name = 'users/profile_page.html'
@@ -25,7 +25,7 @@ class ProfileView(DetailView):
 
 
 def get_user_comments_view(request, user_slug, num_comments):
-    user = CustomUser.objects.get(slug=user_slug)
+    user = User.objects.get(slug=user_slug)
     response = get_user_comments_data(user=user,
                                       num_comments=num_comments)
     return JsonResponse(response)

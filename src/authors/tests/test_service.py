@@ -3,7 +3,7 @@ from django.test import RequestFactory, TestCase, Client
 
 from authors.models import Author
 from books.models import Book, UserBookRelation, CommentBook
-from users.models import CustomUser
+from users.models import User
 from ..service import (
     _get_more_rated_authors,
     _get_most_viewed_authors
@@ -68,10 +68,10 @@ class TestAuthorServices(TestCase):
         """Testing if service function return correct author
         rated books"""
         expected_ordering = [self.author4, self.author3, self.author2, self.author]
-        user1 = CustomUser.objects.create(username='abs', password='12345678', email='abs@gmail.com')
-        user2 = CustomUser.objects.create(username='abs2', password='12345678', email='abs2@gmail.com') 
-        user3 = CustomUser.objects.create(username='abs3', password='12345678', email='abs3@gmail.com') 
-        user4 = CustomUser.objects.create(username='abs4', password='12345678', email='abs4@gmail.com') 
+        user1 = User.objects.create(username='abs', password='12345678', email='abs@gmail.com')
+        user2 = User.objects.create(username='abs2', password='12345678', email='abs2@gmail.com') 
+        user3 = User.objects.create(username='abs3', password='12345678', email='abs3@gmail.com') 
+        user4 = User.objects.create(username='abs4', password='12345678', email='abs4@gmail.com') 
 
         book1 = Book.objects.create(name='book1', author=self.author)
         book2 = Book.objects.create(name='book2', author=self.author2)
@@ -79,7 +79,7 @@ class TestAuthorServices(TestCase):
         book4 = Book.objects.create(name='book4', author=self.author4)
 
         for book_index, book in enumerate(Book.objects.all()):
-            for user_index, user in enumerate(CustomUser.objects.all()):
+            for user_index, user in enumerate(User.objects.all()):
                 UserBookRelation.objects.create(user=user, book=book, rate=book_index+1)
 
         all_authors = Author.objects.all()

@@ -173,7 +173,7 @@ INTERNAL_IPS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.User'
 
 # allauth
 
@@ -196,7 +196,7 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 LOGIN_REDIRECT_URL = 'home'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.CustomUserFormCreate'
+ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.UserFormCreate'
 
 # Capthca
 RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY', 'RECAPTCHA_PUBLIC_KEY')

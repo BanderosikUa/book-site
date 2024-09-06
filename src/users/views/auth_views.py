@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.tokens import default_token_generator
 
-from ..forms import CustomAuthenticationForm, CustomUserFormCreate
+from ..forms import CustomAuthenticationForm, UserFormCreate
 
 
 def email_send_reset_view(request):
@@ -41,7 +41,7 @@ def reset_password_confirm_view(request):
 
 def registration_validation_view(request):
     if request.method == 'POST':
-        form = CustomUserFormCreate(request.POST)
+        form = UserFormCreate(request.POST)
         if not form.is_valid():
             rendered_template = render_to_string('registration.html',
                                                  {'registration_form': form},

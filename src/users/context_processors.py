@@ -1,10 +1,10 @@
-from .forms import CustomUserFormCreate, CustomAuthenticationForm
+from .forms import UserFormCreate, CustomAuthenticationForm
 from django.contrib.auth.forms import PasswordResetForm
 
 
 def add_registration_form(request):
     return {
-        'registration_form': CustomUserFormCreate(),
+        'registration_form': UserFormCreate(),
     }
 
 

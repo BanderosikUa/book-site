@@ -25,5 +25,6 @@ class Author(NameStampedModel, HitCountMixin):
     def __str__(self):
         return self.name
 
+    @property
     def get_absolute_url(self):
         return reverse("author", kwargs={"author_slug": self.slug})

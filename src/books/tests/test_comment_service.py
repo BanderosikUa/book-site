@@ -6,7 +6,7 @@ from django.urls import reverse
 from books.models import Book, CommentBook, UserBookRelation
 from books.views import *
 from django.contrib.auth.models import User
-from users.models import CustomUser
+from users.models import User
 from ..selectors import *
 
 
@@ -17,15 +17,15 @@ class TestBookServices(TestCase):
         cls.client = Client()
 
         cls.book = Book.objects.create(name='some book')
-        cls.user = CustomUser.objects.create(username='user1', password='username123', email='admin@gmail.com')
+        cls.user = User.objects.create(username='user1', password='username123', email='admin@gmail.com')
         cls.comment = CommentBook.objects.create(book=cls.book,
                                                   user=cls.user,
                                                   body="Test comment")
-        cls.user2 = CustomUser.objects.create(username='user2', password='username123', email='admin1@gmail.com')
-        cls.user3 = CustomUser.objects.create(username='user3', password='username123', email='admin2@gmail.com')
-        cls.user4 = CustomUser.objects.create(username='user4', password='username123', email='admin3@gmail.com')
-        cls.user5 = CustomUser.objects.create(username='user5', password='username123', email='admin4@gmail.com')
-        cls.user6 = CustomUser.objects.create(username='user6', password='username123', email='admin5@gmail.com')
+        cls.user2 = User.objects.create(username='user2', password='username123', email='admin1@gmail.com')
+        cls.user3 = User.objects.create(username='user3', password='username123', email='admin2@gmail.com')
+        cls.user4 = User.objects.create(username='user4', password='username123', email='admin3@gmail.com')
+        cls.user5 = User.objects.create(username='user5', password='username123', email='admin4@gmail.com')
+        cls.user6 = User.objects.create(username='user6', password='username123', email='admin5@gmail.com')
         cls.time_today = datetime.now().strftime("%d %B %Y")
 
 
@@ -38,7 +38,7 @@ class TestBookServices(TestCase):
             'pk': self.comment.pk,
             'username': self.user.username,
             'avatar': self.user.avatar.url,
-            'user_url': self.user.get_absolute_url(),
+            'user_url': self.user.get_absolute_url,
             'comment': 'Test comment',
             'likes': 1,
             'dislikes': 1,
@@ -146,7 +146,7 @@ class TestBookServices(TestCase):
         expected_response = {'username': self.user.username,
                              'avatar': self.user.avatar.url,
                              'comment': "Test",
-                             'user_url': self.user.get_absolute_url(),
+                             'user_url': self.user.get_absolute_url,
                              'pk': response['pk'],
                              'time_created': self.time_today,
                              'is_creator': True,

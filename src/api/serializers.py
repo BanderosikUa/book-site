@@ -4,7 +4,7 @@ from rest_framework.reverse import reverse_lazy
 from books.models import Book, CommentBook
 from books.models import UserBookRelation
 from genres.models import Genre
-from users.models import Profile, CustomUser
+from users.models import Profile, User
 
 
 class UserBookRelationSerializer(serializers.ModelSerializer):
@@ -40,7 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
     url = serializers.URLField(source='get_absolute_url', read_only=True)
 
     class Meta:
-        model = CustomUser
+        model = User
         fields = ('id', 'avatar', 'url',
                   'username')
 

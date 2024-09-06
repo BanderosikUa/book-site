@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_slug
 
 
-class CustomUser(AbstractUser):
+class User(AbstractUser):
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to='users/%Y/%m/%d/',
                                default='default/user/b7647bef0d7011489f1c129bf01a2190.jpg')
@@ -20,15 +20,15 @@ class CustomUser(AbstractUser):
             self.slug = slugify(name)
         super().save(*args, **kwargs)
 
+    @property
     def get_absolute_url(self):
         return reverse('profile', args=(self.slug,))
 
 
 class Profile(models.Model):
     user = models.OneToOneField(
-        CustomUser,
-        on_delete=models.CASCADE,
-        primary_key=True
+        User, on_delete=models.CASCADE,
+        primary_key=True, related_name="profile"
     )
     age = models.PositiveSmallIntegerField(default=12)
     description = models.TextField(max_length=1000, blank=True)

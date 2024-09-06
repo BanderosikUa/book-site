@@ -8,13 +8,13 @@ from django.contrib.auth import authenticate
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox
 
-from .models import CustomUser
+from .models import User
 
 
-class CustomUserFormCreate(UserCreationForm):
+class UserFormCreate(UserCreationForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
-        super(CustomUserFormCreate, self).__init__(*args, **kwargs)
+        super(UserFormCreate, self).__init__(*args, **kwargs)
     
     username = forms.CharField(
         label='Your Username', widget=forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
@@ -33,7 +33,7 @@ class CustomUserFormCreate(UserCreationForm):
     captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox, label='')
 
     class Meta:
-        model = CustomUser
+        model = User
         fields = ('username', 'email', 'password1', 'password2')
 
     def singup(self, request, user):
@@ -53,11 +53,11 @@ class CustomAuthenticationForm(AuthenticationForm):
     )
 
     class Meta:
-        model = CustomUser
+        model = User
         fields = ['username', 'password']
 
 
 class ChangePasswordForm(PasswordChangeForm):
     
     class Meta:
-        model = CustomUser
+        model = User

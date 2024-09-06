@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.test import TestCase, Client
 
-from users.models import CustomUser
+from users.models import User
 from books.models import Book, UserBookRelation
 from genres.models import Genre
 from genres.views import *
@@ -24,7 +24,7 @@ class TestBookViews(TestCase):
         cls.book3 = Book.objects.create(name='third book')
         cls.book3.genre.add(cls.genre3)
 
-        cls.user = CustomUser.objects.create(username='user1', password='username123')
+        cls.user = User.objects.create(username='user1', password='username123')
         cls.genres_url = reverse('genre', args=(cls.genre2,))
 
     def test_genre_detail_view_GET(self):

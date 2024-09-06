@@ -1,5 +1,5 @@
 # users model
-CustomUser is remade AbstractUser
+User is remade AbstractUser
 ## New fields
 - email(required when register)
 - avatar(img, not required)

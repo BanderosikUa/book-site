@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.db.models import *  
 
 from books.models import UserBookRelation, Book
-from users.models import CustomUser
+from users.models import User
 from .models import Chapter, BookNotification
 
 
@@ -31,7 +31,7 @@ def create_notification(book: Book, time: datetime, message: str) -> None:
                 )
 
 
-def add_notification_to_navbar(user: CustomUser) -> list[dict]:
+def add_notification_to_navbar(user: User) -> list[dict]:
     notifications = BookNotification.objects.filter(user=user)\
                                             .select_related('book')\
                                             .only(

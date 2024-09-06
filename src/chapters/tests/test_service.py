@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.test import TestCase, Client
 from django.utils import timezone
 
-from users.models import CustomUser, Profile
+from users.models import User, Profile
 from books.models import Book, UserBookRelation, CommentBook
 from chapters.models import Chapter, BookNotification
 
@@ -16,7 +16,7 @@ class TestBookServices(TestCase):
         cls.client = Client()
 
         cls.book = Book.objects.create(name='some book')
-        cls.user = CustomUser.objects.create(username='user1',
+        cls.user = User.objects.create(username='user1',
                                               password='username123')
         cls.chapter = Chapter.objects.create(
             book=cls.book,

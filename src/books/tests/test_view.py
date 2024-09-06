@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from users.models import CustomUser
+from users.models import User
 from books.models import Book, UserBookRelation
 from books.views import *
 
@@ -12,7 +12,7 @@ class TestBookViews(TestCase):
         cls.client = Client()
 
         cls.model1 = Book.objects.create(name='some book')
-        cls.user = CustomUser.objects.create(username='user1', password='username123', email='admifn@gmail.com')
+        cls.user = User.objects.create(username='user1', password='username123', email='admifn@gmail.com')
 
         cls.book_url = reverse('book', args=(cls.model1.slug,))
         cls.rate_book_url = reverse('rate-book',)

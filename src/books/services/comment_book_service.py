@@ -17,7 +17,7 @@ def get_comment_data(*, book_pk: int, num_comments: int, user: User) -> dict:
             'pk': obj.pk,
             'username': obj.user.username,
             'avatar': obj.user.avatar.url,
-            'user_url': obj.user.get_absolute_url(),
+            'user_url': obj.user.get_absolute_url,
             'comment': obj.body,
             'likes': obj.comment_likes,
             'dislikes': obj.comment_dislikes,
