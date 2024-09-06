@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from books.views import *
+from apis import BookListApi
 
 urlpatterns = [
     path('book/all/', AllBookView.as_view(), name='all-books'),
@@ -17,4 +18,5 @@ urlpatterns = [
     path('bookmark-book/', bookmark_book_view, name='bookmark-book'),
     path('comment-book/', create_comment_view, name='comment-book'),
     path('delete-comment/<int:comment_pk>/', delete_comment_view, name='delete-comment'),
+    path('books/', BookListApi.as_view(), name="get-books")
 ]
