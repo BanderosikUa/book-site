@@ -1,8 +1,8 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from books.views import *
-from apis import BookListApi
+from .views import *
+from .apis import BookListApi
 
 urlpatterns = [
     path('book/all/', AllBookView.as_view(), name='all-books'),

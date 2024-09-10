@@ -9,7 +9,6 @@ app_name = 'apiv1'
 router = routers.SimpleRouter()
 router.register(r'book', BookViewSet)
 router.register(r'comment', CommentBookViewSet, basename='comment')
-print(router.urls)
 
 urlpatterns = [
     path('', include(router.urls)),

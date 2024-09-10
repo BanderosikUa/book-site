@@ -46,13 +46,13 @@ INSTALLED_APPS = [
 
 # apps
 INSTALLED_APPS += [
-                   'api.apps.Apiv1Config',
-                   'authors.apps.AuthorsConfig',
-                   'genres.apps.GenresConfig',
-                   'books.apps.BookConfig',
-                   'core.apps.CoreConfig',
-                   'users.apps.UsersConfig',
-                   'chapters.apps.ChaptersConfig',
+                   'api',
+                   'authors',
+                   'genres',
+                   'books',
+                   'core',
+                   'users',
+                   'chapters',
                    ]
 
 # extension

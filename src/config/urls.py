@@ -13,7 +13,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('hitcount/', include(('hitcount.urls', 'hitcount'), namespace='hitcount')),
-    path('api/v1/', include('apiv1.urls')),
+    path('api/v1/', include('api.urls')),
     path('', include('core.urls')),
     path('', include('chapters.urls')),
     path('', include('books.urls')),
@@ -28,5 +28,5 @@ if settings.DEBUG:
     urlpatterns += [
         path('__debug__/', include('debug_toolbar.urls')),
     ]
-    urlpatterns += static(settings.base.MEDIA_URL,
-                            document_root=settings.base.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                            document_root=settings.MEDIA_ROOT)
