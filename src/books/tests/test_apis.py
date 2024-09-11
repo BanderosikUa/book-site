@@ -17,7 +17,7 @@ class BookAPITests(APITestCase):
             settings.DEBUG = True
     
     def setUp(cls):
-        cls.books_url = reverse("books")
+        cls.books_url = reverse("get-books")
 
     def test_correct_age_category(self):
         age_category = '12'

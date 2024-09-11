@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from django.http import JsonResponse
 from django.db.models import Count, Q, QuerySet, Avg, FloatField, F, Value
-from django.contrib.auth.models import User
+from users.models import User
 from django.db.models.functions import Round, Coalesce, Cast
 from django.contrib.postgres.aggregates import ArrayAgg
 from django.db.models import Min, Prefetch, Max

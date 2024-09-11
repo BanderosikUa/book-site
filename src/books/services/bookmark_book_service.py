@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from users.models import User
 from ..models import CommentBook
 from ..selectors import CommentBookSelector, get_user_book_relation
 

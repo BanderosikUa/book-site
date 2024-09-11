@@ -5,7 +5,6 @@ from django.urls import reverse
 
 from books.models import Book, CommentBook, UserBookRelation
 from books.views import *
-from django.contrib.auth.models import User
 from users.models import User
 from ..selectors import *
 

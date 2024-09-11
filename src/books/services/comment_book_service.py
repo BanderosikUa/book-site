@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from users.models import User
 from ..models import CommentBook
 from ..selectors import CommentBookSelector
 
@@ -86,7 +86,7 @@ def create_comment(*, book_pk: int, body: str, user: User) -> dict:
     response_data['comment'] = body
     response_data['pk'] = UserComment.pk
     response_data['time_created'] = UserComment.time_created.strftime("%d %B %Y")
-    response_data['user_url'] = user.get_absolute_url()
+    response_data['user_url'] = user.get_absolute_url
     response_data['likes'] = 0
     response_data['dislikes'] = 0
     response_data['avatar'] = user.avatar.url
