@@ -1,10 +1,12 @@
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.pagination import LimitOffsetPagination, get_paginated_response
+from users.serializers import UserSerializer
 
 from .models import CommentBook, Book, AGE_CATEGORY
 from .services import get_comment_data, like_book_comment, list_books
@@ -76,18 +78,47 @@ class CommentListApi(APIView):
         default_limit = 3
     
     class OutputSerializer(serializers.ModelSerializer):
-        username = serializers.CharField(source="user.username")
-        avatar = serializers.URLField(source="user.avatar.url")
-        user_url = serializers.URLField(source="user.get_absolute_url")
+        def __init__(self, instance=None, data=..., **kwargs):
+            super().__init__(instance, data, **kwargs)
+            request = self.context.get('request', None)
+            self.user = request.user if request else None
+        
+        user = UserSerializer()
+        comment = serializers.CharField(source="body")
+        likes = serializers.IntegerField(source="comment_likes")
+        dislikes = serializers.IntegerField(source="comment_dislikes")
+        liked = serializers.SerializerMethodField()
+        disliked = serializers.SerializerMethodField()
+        is_creator = serializers.SerializerMethodField()
         
         class Meta:
             model = CommentBook
-            fields = ['id', 'username', 'avatar', 'user_url', 'body',
-                      ]
-    
-    
-    def get(self, request):
-        pass
+            fields = ['id', 'user', 'comment',
+                      'likes', 'dislikes', 'time_created',
+                      'liked', 'disliked', 'is_creator']
+        
+        def get_liked(self, obj):
+            return True if self.user in obj.liked.all() else False
+        
+        def get_disliked(self, obj):
+            return True if self.user in obj.disliked.all() else False
+        
+        def get_is_creator(self, obj):
+            return obj.user == self.user
+        
+    def get(self, request, book_id):
+        comments = CommentBook.objects.select_related('user').filter(book=book_id)
+        # print(comments.values())
+
+        response = get_paginated_response(
+            pagination_class=self.Pagination,
+            serializer_class=self.OutputSerializer,
+            queryset=comments,
+            request=request,
+            view=self
+        )
+
+        return response
 
 
 def get_comment_data_view(request, book_pk, num_comments):

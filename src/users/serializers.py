@@ -5,11 +5,9 @@ from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
     avatar = serializers.URLField(source="avatar.url")
-    url = serializers.SerializerMethodField()
+    url = serializers.URLField(source="get_absolute_url")
     
     class Meta:
         model = User
         fields = ['username', 'avatar', 'url']
         
-    def get_url(self, obj):
-        return obj.get_absolute_url

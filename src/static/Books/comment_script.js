@@ -85,40 +85,43 @@ const DislikeComment = () =>{
 }
 
 
-var visible = 3
+var visible = 0
 
 const GetCommentData = () =>{
     $.ajax({
         type: "GET",
-        url: `/book-comments/${BookPk}/${visible}`,
+        url: `/books/${BookPk}/comments`,
         csrfmiddlewaretoken: csrftoken,
+        dataType: 'json',
+        data: {offset: visible},
         success: function(response){
-            const data = response.data
+            const data = response.results
+            console.log(data)
             setTimeout(()=>{
                 SpinnerBox.classList.add('not-visible')
                 LoadBtn.classList.remove('not-visible')
                 data.forEach(el => {
                     ReviewBox.innerHTML += comment_html(el)
                 if (el.liked){
-                    $(`#like-${el.pk}`).find('i').css("color", "blue")
+                    $(`#like-${el.id}`).find('i').css("color", "blue")
                 }
                 else{
-                    $(`#like-${el.pk}`).find('i').css("color", "black")
+                    $(`#like-${el.id}`).find('i').css("color", "black")
                 }
                 if (el.disliked){
-                    $(`#dislike-${el.pk}`).find('i').css("color", "blue")
+                    $(`#dislike-${el.id}`).find('i').css("color", "blue")
                 }
                 else{
-                    $(`#dislike-${el.pk}`).find('i').css("color", "black")
+                    $(`#dislike-${el.id}`).find('i').css("color", "black")
                 }
                 });
             LikeComment();
             DislikeComment();
             }, 100)
-            if (response.size === 0){
+            if (response.results.length === 0){
                 EndBox.textContent = "No comments under this book"
             }
-            else if (response.size <= visible){
+            else if (response.results.length <= visible){
                 LoadBtn.classList.add('not-visible')
                 EndBox.textContent = "No more comments"
             }
@@ -223,7 +226,7 @@ $(document).on('submit', '#CommentForm', function(e){
 })
 
 function comment_html(el){
-    html = `<div id='comment-${el.pk}' style='padding-top:20px'><div class="row border">
+    html = `<div id='comment-${el.id}' style='padding-top:20px'><div class="row border">
             <div class="col-1 border-right text-center">
                 <a href="${el.user.url}}" style='href-unstyle'><img class="border rounded-circle"
                 src="${el.user.avatar}" style="width: 80px;height: 60px;"></a>
@@ -240,23 +243,23 @@ function comment_html(el){
                         <ul class="list-inline"
                             style="padding-top: 20px">
                             <li class="list-inline-item">
-                                <form action="" method="POST" class="like-form-comment" data-form-id="${el.pk}"><button
-                                class="" id="like-${el.pk}" type="submit"
+                                <form action="" method="POST" class="like-form-comment" data-form-id="${el.id}"><button
+                                class="" id="like-${el.id}" type="submit"
                                 style="background-color: Transparent; background-repeat:no-repeat;border: none;">
                                     <i class="fa fa-thumbs-up"></i>
-                                    <span id="span-like-${el.pk}" class="" style="">${el.likes}</span>
+                                    <span id="span-like-${el.id}" class="" style="">${el.likes}</span>
                                 </button></form>
                             </li>
                             <li class="list-inline-item">
-                                <form action="" method="POST" class="dislike-form-comment" data-form-id="${el.pk}">
-                                    <button class="" id="dislike-${el.pk}" type="submit"
+                                <form action="" method="POST" class="dislike-form-comment" data-form-id="${el.id}">
+                                    <button class="" id="dislike-${el.id}" type="submit"
                                     style="background-color: Transparent; background-repeat:no-repeat;border: none;">
                                         <i class="fa fa-thumbs-down"></i>
-                                        <span id="span-dislike-${el.pk}" class="" style="">${el.dislikes}</span>
+                                        <span id="span-dislike-${el.id}" class="" style="">${el.dislikes}</span>
                                     </button></form>
                             </li>`
     if(el.is_creator){
-        html += `<li class="list-inline-item"><a href="#" class='href-unstyle' id='delete-comment' style='color:red' delete_id=${el.pk}>Delete</a></li>`
+        html += `<li class="list-inline-item"><a href="#" class='href-unstyle' id='delete-comment' style='color:red' delete_id=${el.id}>Delete</a></li>`
     }
     html += `</ul></div></div></div></div></div></div>`
     return html

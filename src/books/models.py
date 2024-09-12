@@ -107,9 +107,13 @@ class CommentBook(models.Model):
     disliked = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
                                       related_name='comment_dislikes')
     time_created = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ["-time_created"]
 
     def __str__(self):
         return f'{self.user.username}: {self.book}, {self.body[:20]}'
+    
 
     @property
     def comment_likes(self):
