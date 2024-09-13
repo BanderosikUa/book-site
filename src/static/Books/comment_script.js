@@ -141,54 +141,30 @@ $(document).ready(function(){
         const CommentId=$('.btn d-inline d-xxl-flex justify-content-xxl-start')
         console.log(CommentId)
     })
-    $('#delete-comment').on("click", function(e){
-        e.preventDefault()
-        console.log('clicked')
-        var comment_pk = $(this).attr('delete_id')
-        $.ajax({
-          type: 'GET',
-          url: `/delete-comment/${comment_pk}/`,
-          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-          success: function(response){
-            if(response.deleted){
-              $(`#comment-${comment_pk}`).remove()
-            }
-            else{
-                console.log('else')
-            }
-          },
-          error: function(error){
-            console.log(error)
-          }
-        })
-        })
-    
-    
-    
 })
 
 const CommentForm = document.getElementById('CommentForm')
 
 $(document).on('click', '#delete-comment', function(e){
     e.preventDefault()
-        console.log('clicked')
-        var comment_pk = $(this).attr('delete_id')
-        $.ajax({
-          type: 'GET',
-          url: `/delete-comment/${comment_pk}/`,
-          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-          success: function(response){
-            if(response.deleted){
-              $(`#comment-${comment_pk}`).remove()
-            }
-            else{
-                console.log('else')
-            }
-          },
-          error: function(error){
-            console.log(error)
-          }
-        })
+    console.log('clicked')
+    var comment_pk = $(this).attr('delete_id')
+    $.ajax({
+      type: 'GET',
+      url: `/comments/${comment_pk}/delete`,
+      csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+      success: function(response){
+        if(response.deleted){
+          $(`#comment-${comment_pk}`).remove()
+        }
+        else{
+            console.log('else')
+        }
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
 })
 
 
@@ -196,27 +172,27 @@ $(document).on('submit', '#CommentForm', function(e){
     e.preventDefault()
     $.ajax({
         type: "POST",
-        url: "/api/v1/comment/",
+        url: "/comments/create/",
         credentials: 'include',
         headers: {
             'X-CSRFToken': csrftoken
         },
-        contentType: 'application/json',
-        data:JSON.stringify({
+        data:{
               'book': BookPk,
               'body': $('#body-comment').val()
-        }),
+        },
         dataType: 'json',
         success: function(response){
-            if(!response.user){
-                login_required()
-                return false
-            }
-            console.log(response)
             ReviewBox.insertAdjacentHTML('afterbegin', comment_html(response))
                 LikeComment();
                 DislikeComment();
+        },
+        error: function(xhr, status, error) {
+            // Handle authentication error
+            if (xhr.status === 401 || xhr.status === 403) {
+                login_required();  // Redirect to login or handle auth error
             }
+        }
         
     })
 })

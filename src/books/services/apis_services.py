@@ -1,11 +1,12 @@
 from users.models import User
+from django.db.models import QuerySet
 
 from ..models import Book, CommentBook
 from ..selectors import get_users_bookmarks_and_rating
 
 from ..filters import BaseBookFilter
 
-def list_books(*, filters=None):
+def list_books(*, filters=None) -> QuerySet[Book]:
     filters = filters or {}
     
     qs = (get_users_bookmarks_and_rating()
@@ -48,4 +49,10 @@ def dislike_comment(comment: CommentBook, user: User) -> CommentBook:
         comment.disliked.add(user)
     else:
         comment.disliked.add(user)
+    return comment
+
+
+def create_comment(user: User, book: int, body: str) -> CommentBook:
+    comment = CommentBook.objects.create(book_id=book, user=user,
+                                         body=body)
     return comment

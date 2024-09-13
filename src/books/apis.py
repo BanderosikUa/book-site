@@ -7,12 +7,13 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
 from api.pagination import LimitOffsetPagination, get_paginated_response
+from api.permissions import IsAuthor
 from users.serializers import UserSerializer
 
 from .models import CommentBook, Book, AGE_CATEGORY
-from .serializers import OutputReactionSerializer
+from .serializers import OutputReactionSerializer, SingleCommentSerializer
 from .services import (list_books, like_comment, dislike_comment,
-                       )
+                       create_comment)
 
 
 class BookListApi(APIView):
@@ -81,11 +82,10 @@ class CommentListApi(APIView):
         default_limit = 3
     
     class OutputSerializer(serializers.ModelSerializer):
-        def __init__(self, instance=None, data=..., **kwargs):
-            super().__init__(instance, data, **kwargs)
-            request = self.context.get('request', None)
-            self.user = request.user if request else None
-        
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.user = self.context['request'].user if 'request' in self.context else None
+            
         user = UserSerializer()
         comment = serializers.CharField(source="body")
         likes = serializers.IntegerField(source="comment_likes")
@@ -149,37 +149,37 @@ class CommentDislikeApi(APIView):
         data = OutputReactionSerializer(comment, context={'request': request}).data
         
         return Response(data)
+
+
+class CommentCreateApi(APIView):
+    permission_classes = (IsAuthenticated, )
+    
+    class InputSerializer(serializers.Serializer):
+        body = serializers.CharField()
+        book = serializers.IntegerField()
+    
+    def post(self, request):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         
-
-# def like_book_comment_view(request):
-#     """Function, that add or remove user like to book's comment
-#     and return Json in POST ajax request"""
-#     comment_pk = request.POST.get('comment_pk')
-#     book_pk = request.POST.get('book_pk')
-#     user = request.user if request.user.is_authenticated else None
-#     if user:
-#         response = like_book_comment(comment_pk=comment_pk,
-#                                      book_pk=book_pk,
-#                                      user=user)
-#         return JsonResponse(response)
-#     else:
-#         return JsonResponse({'user': False})
+        comment = create_comment(request.user,
+                                 **serializer.validated_data)
+        
+        data = SingleCommentSerializer(comment, context={'request': request}).data
+        
+        return Response(data)
 
 
-# def dislike_book_comment_view(request):
-#     """Function, that add or remove user dislike to book's comment
-#     and return Json in POST ajax request"""
-#     comment_pk = request.POST.get('comment_pk')
-#     book_pk = request.POST.get('book_pk')
-#     user = request.user if request.user.is_authenticated else None
-#     if user:
-#         response = dislike_book_comment(comment_pk=comment_pk, 
-#                                         book_pk=book_pk,
-#                                         user=user)
-#         return JsonResponse(response)
-#     else:
-#         return JsonResponse({'user': False})
+class CommentDeleteApi(APIView):
+    permission_classes = (IsAuthenticated, IsAuthor)
 
+    def get(self, request, comment_id):
+        comment = get_object_or_404(CommentBook, id=comment_id)
+        self.check_object_permissions(self.request, comment)
+        comment.delete()
+        
+        return Response({"deleted": True})
+    
 
 # def create_comment_view(request):
 #     """Function, that create comment model from AJAX post request"""
