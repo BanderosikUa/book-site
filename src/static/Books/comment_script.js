@@ -13,17 +13,10 @@ const LikeComment = () =>{
         const ClickedBtn = document.getElementById(`like-${ClickedId}`)
 
         $.ajax({
-            type: "POST",
-            url: "/like-book-comment/",
-            data: {
-                'csrfmiddlewaretoken': csrftoken,
-                'comment_pk': ClickedId,
-            },
+            type: "GET",
+            url: `/comments/${ClickedId}/like`,
+            csrfmiddlewaretoken: csrftoken,
             success: function(response){
-                if(!response.user){
-                    login_required()
-                    return false
-                }
                 $(`#like-${ClickedId}`).find('span').text(response.likes)
                 $(`#dislike-${ClickedId}`).find('span').text(response.dislikes)
                 if (response.liked){
@@ -37,6 +30,12 @@ const LikeComment = () =>{
                 }
                 else{
                     $(`#dislike-${ClickedId}`).find('i').css("color", "black")
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle authentication error
+                if (xhr.status === 401 || xhr.status === 403) {
+                    login_required();  // Redirect to login or handle auth error
                 }
             }
         })
@@ -52,18 +51,10 @@ const DislikeComment = () =>{
         const ClickedBtn = document.getElementById(`dislike-${ClickedId}`)
 
         $.ajax({
-            type: "POST",
-            url: "/dislike-book-comment/",
-            data: {
-                'csrfmiddlewaretoken': csrftoken,
-                'comment_pk': ClickedId,
-                'book_pk': BookPk,
-            },
+            type: "GET",
+            url: `/comments/${ClickedId}/dislike`,
+            csrfmiddlewaretoken: csrftoken,
             success: function(response){
-                if(!response.user){
-                    login_required()
-                    return false
-                }
                 $(`#dislike-${ClickedId}`).find('span').text(response.dislikes)
                 $(`#like-${ClickedId}`).find('span').text(response.likes)
                 if (response.liked){
@@ -77,6 +68,12 @@ const DislikeComment = () =>{
                 }
                 else{
                     $(`#dislike-${ClickedId}`).find('i').css("color", "black")
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle authentication error
+                if (xhr.status === 401 || xhr.status === 403) {
+                    login_required();  // Redirect to login or handle auth error
                 }
             }
         })
@@ -96,7 +93,6 @@ const GetCommentData = () =>{
         data: {offset: visible},
         success: function(response){
             const data = response.results
-            console.log(data)
             setTimeout(()=>{
                 SpinnerBox.classList.add('not-visible')
                 LoadBtn.classList.remove('not-visible')
