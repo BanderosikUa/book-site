@@ -30,7 +30,7 @@ class UserFormCreate(UserCreationForm):
         label='Repeat your password', widget=forms.PasswordInput(attrs={'class': 'form-control form-control-lg'}),
         min_length=8
     )
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox, label='')
+    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox, label='')
 
     class Meta:
         model = User
