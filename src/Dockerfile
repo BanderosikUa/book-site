@@ -8,7 +8,7 @@ WORKDIR /usr/src/book-site
 RUN apt-get update -y && \
     apt-get upgrade -y
 
-COPY ./requirements.txt /usr/src/requirements.txt
+COPY ../requirements.txt /usr/src/requirements.txt
 RUN pip install -r /usr/src/requirements.txt
 
 COPY . /usr/src/book-site
