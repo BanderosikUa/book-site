@@ -11,7 +11,7 @@ from api.permissions import IsAuthor
 from users.serializers import UserSerializer
 
 from .models import CommentBook, Book, AGE_CATEGORY
-from .serializers import OutputReactionSerializer, SingleCommentSerializer
+from .serializers import SingleCommentSerializer
 from .services import (list_books, like_comment, dislike_comment,
                        create_comment)
 
@@ -132,7 +132,7 @@ class CommentLikeApi(APIView):
                                      .get(id=comment_id)
         comment = like_comment(comment, request.user)
         
-        data = OutputReactionSerializer(comment, context={'request': request}).data
+        data = SingleCommentSerializer(comment, context={'request': request}).data
         
         return Response(data)
     
@@ -146,7 +146,7 @@ class CommentDislikeApi(APIView):
                                      .get(id=comment_id)
         comment = dislike_comment(comment, request.user)
         
-        data = OutputReactionSerializer(comment, context={'request': request}).data
+        data = SingleCommentSerializer(comment, context={'request': request}).data
         
         return Response(data)
 
@@ -180,17 +180,6 @@ class CommentDeleteApi(APIView):
         
         return Response({"deleted": True})
     
-
-# def create_comment_view(request):
-#     """Function, that create comment model from AJAX post request"""
-#     book_pk = request.POST.get('book_pk')
-#     body = request.POST.get('comment')
-#     user = request.user if request.user.is_authenticated else None
-#     if user:
-#         response = create_comment(book_pk=book_pk, body=body, user=user)
-#         return JsonResponse(response)
-#     else:
-#         return JsonResponse({'user': False})
     
 
 # def bookmark_book_view(request):
@@ -212,14 +201,3 @@ class CommentDeleteApi(APIView):
 #         return JsonResponse(response)
 #     else:
 #         return JsonResponse({'user': False})
-
-
-# def delete_comment_view(request, comment_pk):
-#     """Function that delete comment"""
-#     user = request.user
-#     response = delete_book(
-#         comment_pk=comment_pk,
-#         user=user
-#         )
-#     return JsonResponse(response)
-    
