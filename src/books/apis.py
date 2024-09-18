@@ -10,10 +10,11 @@ from api.pagination import LimitOffsetPagination, get_paginated_response
 from api.permissions import IsAuthor
 from users.serializers import UserSerializer
 
-from .models import CommentBook, Book, AGE_CATEGORY
+from .models import CommentBook, Book, AGE_CATEGORY, UserBookRelation
 from .serializers import SingleCommentSerializer
 from .services import (list_books, like_comment, dislike_comment,
-                       create_comment)
+                       create_comment, create_bookmark, create_rate)
+from .selectors import get_average_rating
 
 
 class BookListApi(APIView):
@@ -181,23 +182,94 @@ class CommentDeleteApi(APIView):
         return Response({"deleted": True})
     
     
+class BookmarkGetApi(APIView):
+    permission_classes = (IsAuthenticated, )
+    
+    class OutputSerializer(serializers.Serializer):
+        bookmarks = serializers.IntegerField()
+    
+    def get(self, request, book_id):
+        relation = get_object_or_404(UserBookRelation, book=book_id,
+                                     user=request.user)
+        self.check_object_permissions(self.request, relation)
+        
+        data = self.OutputSerializer(relation).data
+        
+        return Response(data)
+    
+    
+class BookmarkCreateApi(APIView):
+    permission_classes = (IsAuthenticated, )
+    
+    class InputSerializer(serializers.Serializer):
+        bookmarks = serializers.IntegerField()
+        book = serializers.IntegerField()
+        
+    class OutputSerializer(serializers.Serializer):
+        bookmarks = serializers.IntegerField(required=False)
+    
+    def post(self, request):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        relation = create_bookmark(**serializer.validated_data, user=request.user)
+        
+        data = self.OutputSerializer(relation).data
+        
+        return Response(data)
+    
 
-# def bookmark_book_view(request):
-#     """Function, that add or remove user bookmark and return selected bookmark"""
-#     book_pk = request.POST.get('book_pk')
-#     bookmark = int(request.POST.get('bookmarked'))
-#     user = request.user if request.user.is_authenticated else None
-#     if user:
-#         response = bookmark_book(book_pk=book_pk, bookmark=bookmark, user=user)
-#         return JsonResponse(response)
-#     else:
-#         return JsonResponse({'user': False})
+class RatingGetApi(APIView):
+    
+    class OutputSerializer(serializers.Serializer):
+        avg_rating = serializers.FloatField()
+    
+    def get(self, request, book_id):
+        relation = get_average_rating(book_id)
+        
+        data = self.OutputSerializer(relation).data
+        
+        return Response(data)
+    
+    
+class RatingCreateApi(APIView):
+    permission_classes = (IsAuthenticated, )
+    
+    class InputSerializer(serializers.Serializer):
+        rate = serializers.IntegerField()
+        book = serializers.IntegerField()
+        
+    class OutputSerializer(serializers.Serializer):
+        avg_rating = serializers.FloatField()
+    
+    def post(self, request):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        create_rate(**serializer.validated_data, user=request.user)
+        
+        relation = get_average_rating(serializer.validated_data['book'])
+        
+        data = self.OutputSerializer(relation).data
+        
+        return Response(data)
 
 
-# def get_bookmark_data_view(request, book_pk):
-#     """Function, that return selected user bookmark"""
+# def get_average_rating_view(request, book_pk):
+#     response = get_average_rating(book_pk=book_pk)
+#     return JsonResponse({'avg_rating': response})
+
+
+# def rate_book_view(request):
+#     book_pk = request.POST.get('pk')
+#     rate_value = request.POST.get('value')
 #     if request.user.is_authenticated:
-#         response = get_bookmark_data(book_pk=book_pk, user=request.user)
-#         return JsonResponse(response)
+#         user = request.user
 #     else:
-#         return JsonResponse({'user': False})
+#         user = None
+#     response = create_rate_book(
+#         book_pk=book_pk,
+#         rate=rate_value,
+#         user=user
+#         )
+#     return JsonResponse(response)

@@ -11,7 +11,7 @@ from authors.models import Author
 
 @receiver(post_save, sender=Book)
 def post_save_book(created, **kwargs):
-    """Create default hitcount and add genre is author is user"""
+    """Create default hitcount and add genre if author is user"""
     instance = kwargs.get('instance')
     client = Client()
     if created:

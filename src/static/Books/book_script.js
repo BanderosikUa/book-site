@@ -29,18 +29,18 @@ const getCookie=(name)=> {
 const csrftoken = getCookie('csrftoken');
 
 
-const getAvgRate = () =>{
-    $.ajax({
-        async: false,
-        type: 'GET',
-        url: `/get-average-rating/${BookPk}`,
-        success: function(response){
-            ratingValue.textContent = response.avg_rating
-            avarage_rating = response.avg_rating
-            UpdateRate(avarage_rating)
-        },
-    });
-}
+// const getAvgRate = () =>{
+//     $.ajax({
+//         async: false,
+//         type: 'GET',
+//         url: `/books/${BookPk}/rating`,
+//         success: function(response){
+//             ratingValue.textContent = response.avg_rating
+//             avarage_rating = response.avg_rating
+//             UpdateRate(avarage_rating)
+//         },
+//     });
+// }
 
 var AvgRate;
 function UpdateRate(data){
@@ -84,24 +84,25 @@ const RateBook = (rate_value) =>{
         
         $.ajax({
             type: 'POST',
-            url: '/rate-book/',
+            url: '/rating/create',
+            headers: {
+                'X-CSRFToken': csrftoken
+            },
             data: {
-                'csrfmiddlewaretoken': csrftoken,
-                'pk': BookPk,
-                'value': rate_value,
+                'book': BookPk,
+                'rate': rate_value,
             },
             success: function(response){
-                console.log(response.user)
-                if(response.user){
-                    getAvgRate()
-                    setRatingActiveWidth(AvgRate)
-                    }
-                else{
-                    login_required()
-                }
+                ratingValue.textContent = response.avg_rating
+                UpdateRate(response.avg_rating)
+                setRatingActiveWidth(response.avg_rating)
+
             },
-            error: function(error){
-                console.log(error)
+            error: function(xhr, status, error) {
+                // Handle authentication error
+                if (xhr.status === 401 || xhr.status === 403) {
+                    login_required();  // Redirect to login or handle auth error
+                }
             }
         })
 
@@ -118,18 +119,19 @@ const UserBookmarking = () =>{
         
         $.ajax({
             type: "POST",
-            url: "/bookmark-book/",
+            url: "/bookmarks/create",
+            headers: {
+                'X-CSRFToken': csrftoken
+            },
             data:{
-                'csrfmiddlewaretoken': csrftoken,
-                'book_pk': BookPk,
-                'bookmarked': ClickedBookmark
+                'book': BookPk,
+                'bookmarks': ClickedBookmark
             },
             success: function(response){
-                if(!response.user){
-                    login_required()
-                    return false
+                for(let index=0; index < BookmarkButtons.length; index++){
+                    $(BookmarkButtons[index]).css('background-color', 'white')
                 }
-                if (response.clicked){
+                if (response.bookmarks){
                     $(ClickedBookmarkBtn).css('background-color', 'orange')
                     const html = ClickedBookmarkBtn.innerHTML
                     $('.btn.btn-secondary.dropdown-toggle.border.rounded-pill').html(html)
@@ -139,16 +141,12 @@ const UserBookmarking = () =>{
                     $(ClickedBookmarkBtn).css('background-color', 'white')
                     $('.btn.btn-secondary.dropdown-toggle.border.rounded-pill').html(AddTheBookHtml)
                 }
-                if (response.previous_bookmark){
-                    for(let index=0; index < BookmarkButtons.length; index++){
-                        if (BookmarkButtons[index].value == response.previous_bookmark){
-                            $(BookmarkButtons[index]).css('background-color', 'white')
-                      }
-                    }
-                }
             },
-            error: function(error){
-                console.log(error)
+            error: function(xhr, status, error) {
+                // Handle authentication error
+                if (xhr.status === 401 || xhr.status === 403) {
+                    login_required();  // Redirect to login or handle auth error
+                }
             }
         })
     }))
@@ -159,16 +157,19 @@ const SetUserBookmark = () => {
 
     $.ajax({
         type: "GET",
-        url: `/get-bookmark-data/${BookPk}`,
+        url: `/books/${BookPk}/bookmarks`,
         success: function(response){
-            if(!response.user){
-                return false
-            }
-            if(response.bookmark_value){
-                const UserBookmark = BookmarkButtons[response.bookmark_value-1]
+            if(response.bookmarks){
+                const UserBookmark = BookmarkButtons[response.bookmarks-1]
                 $(UserBookmark).css('background-color', 'orange')
                 const html = UserBookmark.innerHTML
                 $('.btn.btn-secondary.dropdown-toggle.border.rounded-pill').html(html)
+            }
+        },
+        error: function(xhr, status, error) {
+            // Handle authentication error
+            if (xhr.status === 401 || xhr.status === 403) {
+                login_required();  // Redirect to login or handle auth error
             }
         }
     })

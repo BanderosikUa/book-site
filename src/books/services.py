@@ -1,10 +1,12 @@
-from users.models import User
 from django.db.models import QuerySet
+from django.shortcuts import get_object_or_404
 
-from ..models import Book, CommentBook
-from ..selectors import get_users_bookmarks_and_rating
+from users.models import User
 
-from ..filters import BaseBookFilter
+from .models import Book, CommentBook, UserBookRelation
+from .selectors import get_users_bookmarks_and_rating
+
+from .filters import BaseBookFilter
 
 def list_books(*, filters=None) -> QuerySet[Book]:
     filters = filters or {}
@@ -56,3 +58,22 @@ def create_comment(user: User, book: int, body: str) -> CommentBook:
     comment = CommentBook.objects.create(book_id=book, user=user,
                                          body=body)
     return comment
+
+
+def create_bookmark(user: User, book: int, bookmarks: int) -> UserBookRelation:
+    relation = get_object_or_404(UserBookRelation, book=book, user=user)
+    
+    if relation.bookmarks == bookmarks:
+        relation.bookmarks = None
+    else:
+        relation.bookmarks = bookmarks
+    relation.save(update_fields=["bookmarks"])
+    return relation
+
+
+def create_rate(user: User, book: int, rate: int) -> UserBookRelation:
+    relation = get_object_or_404(UserBookRelation, book=book, user=user)
+    
+    relation.rate = rate
+    relation.save(update_fields=["rate"])
+    return relation

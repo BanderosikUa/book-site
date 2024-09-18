@@ -3,7 +3,7 @@ from rest_framework import serializers
 from users.serializers import UserSerializer
 
 
-from .models import CommentBook
+from .models import CommentBook, Book
 
 
 class SingleCommentSerializer(serializers.ModelSerializer):
@@ -33,3 +33,31 @@ class SingleCommentSerializer(serializers.ModelSerializer):
     
     def get_is_creator(self, obj):
         return obj.user == self.user
+
+
+class ShortBookSerializer(serializers.ModelSerializer):
+    author = serializers.SerializerMethodField()
+    genres = serializers.SerializerMethodField()
+    views = serializers.SerializerMethodField()
+    rating = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Book
+        fields = ['id', 'name', 'author', 'genres', 
+                  'age_category', 'time_created',
+                  'time_modified', 'views', 'rating']
+        
+    def get_author(self, obj):
+        if obj.author:
+            return obj.author.name
+        else:
+            return None
+    
+    def get_genres(self, obj):
+        return list(obj.genre.values_list("name", flat=True))
+    
+    def get_views(self, obj):
+        return obj.hit_count.hits
+    
+    def get_rating(self, obj):
+        return obj.avg_rating

@@ -2,12 +2,12 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.list import ListView
 
-from hitcount.views import HitCountDetailView
+from hitcount.views import HitCountDetailView, HitCountMixin
 
 from books.services import *
 from books.selectors import *
 from books.forms import CommentCreateForm
-from ..models import Book, UserBookRelation, CommentBook
+from .models import Book, UserBookRelation, CommentBook
 
 
 class BookView(HitCountDetailView):
@@ -33,7 +33,7 @@ class BookView(HitCountDetailView):
 
         create_comment_form = CommentCreateForm()
         if self.request.user.is_authenticated:
-            user_relation = get_book_relation(book=book)\
+            user_relation = UserBookRelation.objects.filter(book=book)\
                             .get_or_create(
                                 user=self.request.user,
                                 book=book)
@@ -85,23 +85,3 @@ class AllBookView(ListView):
         context['ordering'] = self.request.GET.get('ordering')
         context['count'] = self.object_list.count()
         return context
-
-
-def get_average_rating_view(request, book_pk):
-    response = get_average_rating(book_pk=book_pk)
-    return JsonResponse({'avg_rating': response})
-
-
-def rate_book_view(request):
-    book_pk = request.POST.get('pk')
-    rate_value = request.POST.get('value')
-    if request.user.is_authenticated:
-        user = request.user
-    else:
-        user = None
-    response = create_rate_book(
-        book_pk=book_pk,
-        rate=rate_value,
-        user=user
-        )
-    return JsonResponse(response)

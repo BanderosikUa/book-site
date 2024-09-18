@@ -172,7 +172,7 @@ $(document).on('submit', '#CommentForm', function(e){
     e.preventDefault()
     $.ajax({
         type: "POST",
-        url: "/comments/create/",
+        url: "/comments/create",
         credentials: 'include',
         headers: {
             'X-CSRFToken': csrftoken
