@@ -4,14 +4,14 @@ from django.shortcuts import get_object_or_404
 from users.models import User
 
 from .models import Book, CommentBook, UserBookRelation
-from .selectors import get_users_bookmarks_and_rating
+from .selectors import get_books
 
 from .filters import BaseBookFilter
 
 def list_books(*, filters=None) -> QuerySet[Book]:
     filters = filters or {}
     
-    qs = (get_users_bookmarks_and_rating()
+    qs = (get_books()
           .select_related('author')
           .prefetch_related('genre', 'comments', 'hit_count_generic'))
       
@@ -61,7 +61,7 @@ def create_comment(user: User, book: int, body: str) -> CommentBook:
 
 
 def create_bookmark(user: User, book: int, bookmarks: int) -> UserBookRelation:
-    relation = get_object_or_404(UserBookRelation, book=book, user=user)
+    relation, _ = UserBookRelation.objects.get_or_create(book_id=book, user=user)
     
     if relation.bookmarks == bookmarks:
         relation.bookmarks = None
@@ -72,7 +72,7 @@ def create_bookmark(user: User, book: int, bookmarks: int) -> UserBookRelation:
 
 
 def create_rate(user: User, book: int, rate: int) -> UserBookRelation:
-    relation = get_object_or_404(UserBookRelation, book=book, user=user)
+    relation, _ = UserBookRelation.objects.get_or_create(book_id=book, user=user)
     
     relation.rate = rate
     relation.save(update_fields=["rate"])

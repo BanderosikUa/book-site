@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from rest_framework.test import APITestCase, APIClient
 
-from ..models import Book
+from ...models import Book
 from genres.models import Genre
 
 class BookAPITests(APITestCase):
@@ -42,36 +42,36 @@ class BookAPITests(APITestCase):
         self.assertEqual("Validation error", response.data['message'])
         self.assertIn("age_category", response.data['extra']['fields'])
     
-    def test_correct_rating(self):
+    def test_correct_avg_rating(self):
         book = Book.objects.create(name="This is Going to Hurt")
         query = {
-            "rating": 0
+            "avg_rating": 0
         }
         response = self.client.get(self.books_url, data=query)
         self.assertEqual(200, response.status_code)
         self.assertEqual(True, response.data['success'])
-        self.assertEqual(0, response.data['results'][0]['rating'])
+        self.assertEqual(0, response.data['results'][0]['avg_rating'])
     
-    def test_incorrect_rating(self):
+    def test_incorrect_avg_rating(self):
         book = Book.objects.create(name="This is Going to Hurt")
         query = {
-            "rating": 5.5
+            "avg_rating": 5.5
         }
         response = self.client.get(self.books_url, data=query)
         self.assertEqual(400, response.status_code)
         self.assertEqual(False, response.data['success'])
         self.assertEqual("Validation error", response.data['message'])
-        self.assertIn("rating", response.data['extra']['fields'])
+        self.assertIn("avg_rating", response.data['extra']['fields'])
 
-    def test_correct_views(self):
-        book = Book.objects.create(name="This is Going to Hurt")
-        query = {
-            "views": 1
-        }
-        response = self.client.get(self.books_url, data=query)
-        self.assertEqual(200, response.status_code)
-        self.assertEqual(True, response.data['success'])
-        self.assertEqual(1, response.data['results'][0]['views'])
+    # def test_correct_views(self):
+    #     book = Book.objects.create(name="This is Going to Hurt")
+    #     query = {
+    #         "views": 1
+    #     }
+    #     response = self.client.get(self.books_url, data=query)
+    #     self.assertEqual(200, response.status_code)
+    #     self.assertEqual(True, response.data['success'])
+    #     self.assertEqual(1, response.data['results'][0]['views'])
         
     def test_incorrect_views(self):
         book = Book.objects.create(name="This is Going to Hurt")

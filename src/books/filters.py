@@ -30,7 +30,7 @@ class BaseBookFilter(filters.FilterSet):
     views = filters.NumberFilter(field_name='hit_count_generic__hits', lookup_expr='gte')
     # sorting = filters.ChoiceFilter(choices=[1, 2, 3])
     age_category = filters.ChoiceFilter(choices=AGE_CATEGORY)
-    rating = filters.NumberFilter(method=filter_by_avg_rating)
+    avg_rating = filters.NumberFilter(method=filter_by_avg_rating)
     genre = filters.CharFilter(method=filter_by_genre)
     
     class Meta:

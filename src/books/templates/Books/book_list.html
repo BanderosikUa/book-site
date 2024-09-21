@@ -34,6 +34,7 @@
                         <div id="tabs-content" data-url="{{ request.path }}">
                             {% for book in books %}
                                 <div id="book" style="border-bottom: 1px solid rgb(159,159,159) ;">
+                                    
                                     <div class="row no-gutters" style="padding-top: 17px;padding-bottom: 30px;">
                                         <div class="col-12 col-sm-auto"><a class="image-link d-block" href="{{book.get_absolute_url}}"><img class="rounded-sm ls-is-cached lazyloaded" src = {{ book.photo.url }} style="object-fit: cover" height='260vh' weight='150'></a></div>
                                         <div class="col-12 col-sm ml-sm-5" style="padding-top: -1px;">
@@ -64,7 +65,7 @@
                                                     <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-book d-xxl-flex align-items-xxl-center"></i><span class="d-inline-block" href="#" style="margin-left: 5px; margin-bottom:-2px">{{book.reading}}</span></li>
                                                     <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-check-circle d-xxl-flex align-items-xxl-center"></i><span class="d-inline-block" href="#" style="margin-left: 5px; margin-bottom:-2px">{{book.read}}</span></li>
                                                     <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-remove d-xxl-flex align-items-xxl-center"></i><span class="d-inline-block" href="#" style="margin-left: 5px; margin-bottom:-2px">{{book.abandonded}}</span></li>
-                                                    <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-comments-o d-xxl-flex align-items-xxl-center"></i><span class="d-inline-block" href="#" style="margin-left: 5px; margin-bottom:-2px">{{book.comments.count}}</span></li>
+                                                    <li class="d-inline-flex justify-content-xxl-center list-inline-item"><i class="fa fa-comments-o d-xxl-flex align-items-xxl-center"></i><span class="d-inline-block" href="#" style="margin-left: 5px; margin-bottom:-2px">{{book.comments_count}}</span></li>
 
                                                 </ul>
                                             </div>

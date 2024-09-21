@@ -29,22 +29,22 @@ class Book(NameStampedModel, HitCountMixin):
                               default='default/book/default_book_cover_2015.jpg')
     author_is_user = models.BooleanField(default=False)
     author = models.ForeignKey(Author, on_delete=models.SET_NULL,
-                               related_name="book_author", blank=True,
+                               related_name="books", blank=True,
                                null=True)
     genre = models.ManyToManyField(Genre, blank=True,
-                                   related_name="book_genres")
+                                   related_name="books")
     age_category = models.CharField(max_length=3, choices=AGE_CATEGORY,
                                      default='12')
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk',
                                         related_query_name='hit_count_generic_relation')
     time_created = models.DateTimeField(auto_now_add=True)
     time_modified = models.DateTimeField(auto_now=True)
-    readers = models.ManyToManyField(settings.AUTH_USER_MODEL,
-                                     through='UserBookRelation',
-                                     related_name="books")
-    comments = models.ManyToManyField(settings.AUTH_USER_MODEL,
-                                      through='CommentBook',
-                                      related_name="comments")
+    # readers = models.ManyToManyField(settings.AUTH_USER_MODEL,
+    #                                  through='UserBookRelation',
+    #                                  related_name="books")
+    # comments = models.ManyToManyField(settings.AUTH_USER_MODEL,
+    #                                   through='CommentBook',
+    #                                   related_name="comments")
 
     class Meta:
         ordering = ['-hit_count_generic__hits']
@@ -83,8 +83,10 @@ class UserBookRelation(models.Model):
     """
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+                             on_delete=models.CASCADE,
+                             related_name="bookrelations")
+    book = models.ForeignKey(Book, on_delete=models.CASCADE,
+                             related_name="userrelations")
     bookmarks = models.PositiveSmallIntegerField(choices=BOOKMARK_CHOICES,
                                                  default=None, blank=True,
                                                  null=True)
@@ -99,8 +101,10 @@ class UserBookRelation(models.Model):
 
 class CommentBook(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+                             on_delete=models.CASCADE,
+                             related_name="comments")
+    book = models.ForeignKey(Book, on_delete=models.CASCADE,
+                             related_name="comments")
     body = models.TextField(max_length=800)
     liked = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,
                                    related_name='comment_likes')
@@ -123,5 +127,3 @@ class CommentBook(models.Model):
     @property
     def comment_dislikes(self):
         return self.disliked.count()
-
-# Create your models here.

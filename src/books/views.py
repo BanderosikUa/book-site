@@ -1,31 +1,32 @@
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
+from typing import Any
+from django.http import HttpRequest, HttpResponse
+from silk.profiling.profiler import silk_profile
+
+from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 
-from hitcount.views import HitCountDetailView, HitCountMixin
+from hitcount.views import HitCountDetailView
 
-from books.services import *
-from books.selectors import *
+from books.selectors import get_books, order_queryset
 from books.forms import CommentCreateForm
-from .models import Book, UserBookRelation, CommentBook
+from .models import Book, UserBookRelation
 
 
-class BookView(HitCountDetailView):
+class BookView(DetailView):
     """Class-based view for displaying Book and UserBookRelation models"""
     model = Book
     template_name = "Books/book_page.html"
     slug_url_kwarg = 'book_slug'
-    count_hit = True
 
     def get_object(self, queryset=None):
         slug = self.kwargs.get('book_slug')
-        book = get_users_bookmarks_and_rating()
-        return get_object_or_404(
-                                book
-                                .select_related('author')
-                                .prefetch_related('genre', 'hit_count_generic'),
-                                slug=slug
-                                )
+        books = get_books()
+        book = get_object_or_404(
+            books.prefetch_related('hit_count_generic'),
+            slug=slug
+        )
+        return book
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -34,9 +35,10 @@ class BookView(HitCountDetailView):
         create_comment_form = CommentCreateForm()
         if self.request.user.is_authenticated:
             user_relation = UserBookRelation.objects.filter(book=book)\
-                            .get_or_create(
-                                user=self.request.user,
-                                book=book)
+                                                    .get_or_create(
+                                                        user=self.request.user,
+                                                        book=book
+                                                        )
             context['user_relation'] = user_relation[0]
         
         context['Book'] = book
@@ -52,11 +54,8 @@ class Search(ListView):
     def get_queryset(self):
         searching = self.request.GET.get('q')
         ordering_by = self.request.GET.get('ordering')
-        qs = get_users_bookmarks_and_rating().select_related('author')\
-                                             .prefetch_related('genre', 'comments')
-        qs = qs.filter(
-            name__icontains=searching
-        )
+        books = get_books()
+        qs = books.filter(name__icontains=searching)
         return order_queryset(qs=qs, ordering_by=ordering_by)
 
     def get_context_data(self, **kwargs):
@@ -74,9 +73,8 @@ class AllBookView(ListView):
 
     def get_queryset(self):
         ordering_by = self.request.GET.get('ordering')
-        qs = get_users_bookmarks_and_rating().select_related('author')\
-                                             .prefetch_related('genre', 'comments')
-        qs = qs.all()
+        books = get_books()
+        qs = books.all()
         return order_queryset(qs=qs, ordering_by=ordering_by)
 
     def get_context_data(self, **kwargs):

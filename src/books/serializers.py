@@ -6,13 +6,13 @@ from users.serializers import UserSerializer
 from .models import CommentBook, Book
 
 
-class SingleCommentSerializer(serializers.ModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = self.context['request'].user if 'request' in self.context else None
     
     user = UserSerializer()
-    comment = serializers.CharField(source="body")
+    body = serializers.CharField()
     likes = serializers.IntegerField(source="comment_likes")
     dislikes = serializers.IntegerField(source="comment_dislikes")
     liked = serializers.SerializerMethodField()
@@ -23,7 +23,7 @@ class SingleCommentSerializer(serializers.ModelSerializer):
         model = CommentBook
         fields = ["id", "likes", "dislikes",
                   "liked", "disliked", "time_created",
-                  "user", "is_creator", "comment"]
+                  "user", "body", "is_creator"]
         
     def get_liked(self, obj):
         return True if self.user in obj.liked.all() else False
@@ -35,17 +35,18 @@ class SingleCommentSerializer(serializers.ModelSerializer):
         return obj.user == self.user
 
 
-class ShortBookSerializer(serializers.ModelSerializer):
+class BookShortSerializer(serializers.ModelSerializer):
     author = serializers.SerializerMethodField()
     genres = serializers.SerializerMethodField()
     views = serializers.SerializerMethodField()
-    rating = serializers.SerializerMethodField()
+    avg_rating = serializers.SerializerMethodField()
     
     class Meta:
         model = Book
         fields = ['id', 'name', 'author', 'genres', 
                   'age_category', 'time_created',
-                  'time_modified', 'views', 'rating']
+                  'time_modified', 'views', 'avg_rating']
+        abstract=True
         
     def get_author(self, obj):
         if obj.author:
@@ -59,5 +60,5 @@ class ShortBookSerializer(serializers.ModelSerializer):
     def get_views(self, obj):
         return obj.hit_count.hits
     
-    def get_rating(self, obj):
+    def get_avg_rating(self, obj):
         return obj.avg_rating
