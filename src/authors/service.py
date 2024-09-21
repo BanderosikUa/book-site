@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.db.models.functions import Round, Coalesce, Cast
 from django.contrib.postgres.aggregates.general import ArrayAgg
 
+
 def get_tops_dict(object_list: QuerySet) -> list:
     """Return list of dicts with name and queryset author's tops """
     tops = []
@@ -30,6 +31,7 @@ def get_tops_dict(object_list: QuerySet) -> list:
     tops.append(rated_top_dict)
     return tops
 
+
 def _get_most_viewed_authors(object_list: QuerySet) -> list:
     """Return list of 10 most popular author by a month"""
     period_month = timezone.now() - timedelta(days=30)
@@ -37,7 +39,7 @@ def _get_most_viewed_authors(object_list: QuerySet) -> list:
         hit_count_generic__hit__created__gte=period_month)\
         .annotate(
             counts=F('hit_count_generic__hits'),
-            genres=ArrayAgg(F('book_author__genre__name'),
+            genres=ArrayAgg(F('books__genre__name'),
                             distinct=True)
         ).order_by('-counts')[:10]
     return list(ordering)
@@ -49,21 +51,21 @@ def _get_more_rated_authors(object_list: QuerySet) -> list:
         rate=Cast(
             Coalesce(
                 Round(
-                    Avg('book_author__userbookrelation__rate'),
+                    Avg('books__userrelations__rate'),
                     precision=1), 0),
             output_field=FloatField()),
         genres=ArrayAgg(
-            F('book_author__genre__name'),
+            F('books__genre__name'),
             distinct=True)
         ).order_by('-rate')[:10]
     return list(ordering)
 
 
 def _get_top_authors_by_books(object_list: QuerySet):
-    ordering = object_list.filter(book_author__isnull=False)\
+    ordering = object_list.filter(books__isnull=False)\
                           .annotate(
-        hits_all_books=Sum('book_author__hit_count_generic__hits'),
-        genres=ArrayAgg(F('book_author__genre__name'),
+        hits_all_books=Sum('books__hit_count_generic__hits'),
+        genres=ArrayAgg(F('books__genre__name'),
                         distinct=True)
         ).order_by('-hits_all_books')[:10]
     return list(ordering)

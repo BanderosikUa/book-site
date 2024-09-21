@@ -1,13 +1,12 @@
 from django.conf import settings
+from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-
-from hitcount.views import HitCountDetailView
 
 from .models import Author
 from .service import get_tops_dict
 
 
-class AuthorView(HitCountDetailView):
+class AuthorView(DetailView):
     model = Author
     template_name = 'Authors/author_page.html'
     count_hit = True
@@ -18,7 +17,7 @@ class AuthorView(HitCountDetailView):
         context = super().get_context_data(**kwargs)
 
         context['genres'] = (context['author']
-                             .book_author
+                             .books
                              .values('genre__name', 'genre__slug')
                              .distinct()
                              )
@@ -34,13 +33,13 @@ class AuthorAllView(ListView):
         authors = (
             Author.objects
             .all()
-            .prefetch_related('book_author')
+            .prefetch_related('books')
         )
         return authors
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(self.request.COOKIES.get(settings.SESSION_COOKIE_NAME))
+        # print(self.request.COOKIES.get(settings.SESSION_COOKIE_NAME))
         context['tops'] = get_tops_dict(self.object_list)
         
         return context

@@ -22,7 +22,7 @@
                                                 <a href="{% url 'author' author.slug %}"><img class='owl-lazy' data-src="{{author.photo.url}}"></a>
                                                 <div class='card-body text-center'>
                                                     <h5 class='card-title'><a href='{% url 'author' author.slug %}' style='color:inherit;text-decoration:inherit;'>{{author.name}}</a></h5>
-                                                    <p>{{author.book_author.count}} books</p>
+                                                    <p>{{author.books.count}} books</p>
                                                     <ul class="list-group text-center" style="">
                                                     {% for genre in author.genres%}
                                                         <li class="list-group-item rounded" style=""><a href="{% url 'genre' genre|slugify %}">{{genre}}</a></li>

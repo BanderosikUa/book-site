@@ -18,7 +18,7 @@ class AuthorAdmin(admin.ModelAdmin):
 
     @admin.display(description='Books')
     def get_author_books(self, obj):
-        books = obj.book_author.all()
+        books = obj.books.all()
         if books:
             html = '<ul>'
             for book in books:
