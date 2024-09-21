@@ -1,4 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.contrib.auth import login
 from django.contrib import messages
@@ -11,7 +12,6 @@ from ..forms import CustomAuthenticationForm, UserFormCreate
 def email_send_reset_view(request):
     if request.method == 'POST':
         form = PasswordResetForm(request.POST)
-        print(form)
         if form.is_valid():
             token_generator = default_token_generator
             extra_context = {'sent_url': request.POST.get('url')}
@@ -67,5 +67,4 @@ def login_validation_view(request):
 
 
 def login_view(request):
-    print(request.path)
     return redirect('#LoginModal')

@@ -20,7 +20,7 @@ class HomeView(ListView):
         authors = (
             Author.objects
             .all()
-            .prefetch_related(Prefetch('book_author', queryset=books))
+            .prefetch_related(Prefetch('books', queryset=books))
             .defer('biography')
         )
         # chapters = (
