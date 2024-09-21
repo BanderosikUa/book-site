@@ -27,6 +27,11 @@ class TestBookViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'books/book_page.html')
+        
+    def test_not_found_book_view_GET(self):
+        response = self.client.get(reverse('book', args=("slig", )))
+        
+        self.assertEquals(response.status_code, 404)
 
     def test_unlogined_book_view_GET(self):
         """Test response from BookView based-class"""

@@ -33,6 +33,11 @@ class TestAuthorViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'authors/author_page.html')
         
+    def test_not_found_author_view_GET(self):
+        response = self.client.get(reverse('author', args=("slig", )))
+        
+        self.assertEquals(response.status_code, 404)
+        
     def test_logined_author_all_view_GET(self):
         """Test response from BookView based-class with logined user"""
         self.client.force_login(self.user)

@@ -42,6 +42,11 @@ class TestBookViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'genres/genre_page.html')
+        
+    def test_not_found_book_genre_list_view_GET(self):
+        response = self.client.get(reverse('genre', args=("slig", )))
+        
+        self.assertEquals(response.status_code, 404)
     
     def test_logined_genre_list_view_GET(self):
         """Test working url of GenreListView"""
@@ -56,7 +61,7 @@ class TestBookViews(TestCase):
         response = self.client.get(self.genres_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'genres/all_genre_page.html')
+        self.assertTemplateUsed(response, 'genres/all_genre_page.html')\
     
 
     # def test_hit_count_adding(self):

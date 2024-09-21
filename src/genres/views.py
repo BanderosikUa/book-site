@@ -1,4 +1,6 @@
 from django.views.generic.list import ListView
+from django.shortcuts import get_object_or_404
+
 
 from books.selectors import order_queryset, get_books
 from .models import Genre
@@ -20,7 +22,7 @@ class BookGenreListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         genre_slug = self.kwargs.get('genre_slug')
-        genre = Genre.objects.get(slug=genre_slug)
+        genre = get_object_or_404(Genre, slug=genre_slug)
 
         context['count'] = self.object_list.count()
         context['genre'] = genre

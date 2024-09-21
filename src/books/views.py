@@ -49,6 +49,7 @@ class Search(ListView):
     """Search books"""
     paginate_by = 20
     context_object_name = 'books'
+    template_name = "books/book_list.html"
 
     def get_queryset(self):
         searching = self.request.GET.get('q')
@@ -69,6 +70,7 @@ class AllBookView(ListView):
     """Display all books"""
     paginate_by = 20
     context_object_name = 'books'
+    template_name = "books/book_list.html"
 
     def get_queryset(self):
         ordering_by = self.request.GET.get('ordering')
