@@ -6,7 +6,7 @@ from .models import BookNotification, Chapter
 from .service import *
 
 class ChaptersListView(ListView):
-    template_name = 'Chapters/chapter_page.html'
+    template_name = 'chapters/chapter_page.html'
     paginate_by = 1
     context_object_name = 'chapter'
 

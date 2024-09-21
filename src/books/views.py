@@ -15,7 +15,7 @@ from .models import Book, UserBookRelation
 class BookView(DetailView):
     """Class-based view for displaying Book and UserBookRelation models"""
     model = Book
-    template_name = "Books/book_page.html"
+    template_name = "books/book_page.html"
     slug_url_kwarg = 'book_slug'
 
     def get_object(self, queryset=None):

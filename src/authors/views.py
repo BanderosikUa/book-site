@@ -8,7 +8,7 @@ from .service import get_tops_dict
 
 class AuthorView(DetailView):
     model = Author
-    template_name = 'Authors/author_page.html'
+    template_name = 'authors/author_page.html'
     count_hit = True
     slug_url_kwarg = 'author_slug'
     context_object_name = 'author'
@@ -26,7 +26,7 @@ class AuthorView(DetailView):
 
 
 class AuthorAllView(ListView):
-    template_name = 'Authors/all_author_page.html'
+    template_name = 'authors/all_author_page.html'
     context_object_name = 'authors'
 
     def get_queryset(self):

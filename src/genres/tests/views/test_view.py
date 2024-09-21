@@ -34,14 +34,14 @@ class TestBookViews(TestCase):
         response = self.client.get(self.book_genres_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Genres/genre_page.html')
+        self.assertTemplateUsed(response, 'genres/genre_page.html')
         
     def test_unlogined_book_genre_list_view_GET(self):
         """Test working url of BookGenreListView"""
         response = self.client.get(self.book_genres_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Genres/genre_page.html')
+        self.assertTemplateUsed(response, 'genres/genre_page.html')
     
     def test_logined_genre_list_view_GET(self):
         """Test working url of GenreListView"""
@@ -49,14 +49,14 @@ class TestBookViews(TestCase):
         response = self.client.get(self.genres_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Genres/all_genre_page.html')
+        self.assertTemplateUsed(response, 'genres/all_genre_page.html')
         
     def test_unlogined_genre_list_view_GET(self):
         """Test working url of GenreListView"""
         response = self.client.get(self.genres_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Genres/all_genre_page.html')
+        self.assertTemplateUsed(response, 'genres/all_genre_page.html')
     
 
     # def test_hit_count_adding(self):

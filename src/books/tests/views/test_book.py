@@ -15,6 +15,7 @@ class TestBookViews(TestCase):
         cls.user = User.objects.create_user(username='user1', password='username123', email='admifn@gmail.com')
 
         cls.book_url = reverse('book', args=(cls.model1.slug,))
+        cls.book_all_url = reverse('all-books')
         # cls.rate_book_url = reverse('rate-book',)
         # cls.get_avarage_rating_url = reverse('get-average-rating',
         #                                      args=(cls.model1.pk,))
@@ -25,14 +26,30 @@ class TestBookViews(TestCase):
         response = self.client.get(self.book_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Books/book_page.html')
+        self.assertTemplateUsed(response, 'books/book_page.html')
 
     def test_unlogined_book_view_GET(self):
         """Test response from BookView based-class"""
         response = self.client.get(self.book_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Books/book_page.html')
+        self.assertTemplateUsed(response, 'books/book_page.html')
+        
+    def test_logined_all_book_view_GET(self):
+        """Test response from BookView based-class with logined user"""
+        self.client.force_login(self.user)
+        response = self.client.get(self.book_all_url)
+        print(Book.objects.all().count())
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'books/book_list.html')
+
+    def test_unlogined_all_book_view_GET(self):
+        """Test response from BookView based-class"""
+        response = self.client.get(self.book_all_url)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'books/book_list.html')
 
     
     # def test_rate_book_GET(self):

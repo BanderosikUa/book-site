@@ -24,14 +24,14 @@ class TestAuthorViews(TestCase):
         response = self.client.get(self.author_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Authors/author_page.html')
+        self.assertTemplateUsed(response, 'authors/author_page.html')
 
     def test_unlogined_author_view_GET(self):
         """Test response from BookView based-class"""
         response = self.client.get(self.author_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Authors/author_page.html')
+        self.assertTemplateUsed(response, 'authors/author_page.html')
         
     def test_logined_author_all_view_GET(self):
         """Test response from BookView based-class with logined user"""
@@ -39,13 +39,13 @@ class TestAuthorViews(TestCase):
         response = self.client.get(self.author_all_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Authors/all_author_page.html')
+        self.assertTemplateUsed(response, 'authors/all_author_page.html')
 
     def test_unlogined_author_all_view_GET(self):
         """Test response from BookView based-class"""
         response = self.client.get(self.author_all_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'Authors/all_author_page.html')
+        self.assertTemplateUsed(response, 'authors/all_author_page.html')
 
     

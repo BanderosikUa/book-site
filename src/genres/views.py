@@ -5,7 +5,7 @@ from .models import Genre
 
 
 class BookGenreListView(ListView):
-    template_name = "Genres/genre_page.html"
+    template_name = "genres/genre_page.html"
     paginate_by = 20
     context_object_name = 'books'
 
@@ -29,7 +29,7 @@ class BookGenreListView(ListView):
 
 
 class GenreListView(ListView):
-    template_name = "Genres/all_genre_page.html"
+    template_name = "genres/all_genre_page.html"
     paginate_by = 10
     context_object_name = 'genres'
 
