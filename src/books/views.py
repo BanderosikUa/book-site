@@ -1,6 +1,5 @@
 from typing import Any
 from django.http import HttpRequest, HttpResponse
-from silk.profiling.profiler import silk_profile
 
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
