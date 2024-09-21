@@ -142,6 +142,8 @@ logs/
 !**/migrations/__init__.py
 __pycache__
 .coverage
+.env
+.env.*
 
 # jsons
 db.json
