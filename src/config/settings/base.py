@@ -57,7 +57,6 @@ INSTALLED_APPS += [
 
 # extension
 INSTALLED_APPS += [
-                   'debug_toolbar',
                    'django_extensions',
                    'hitcount',
                    'crispy_forms',
@@ -65,6 +64,7 @@ INSTALLED_APPS += [
                    'widget_tweaks',
                    'ckeditor',
                    'ckeditor_uploader',
+                   'cacheops',
                     ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -80,7 +80,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -225,4 +224,47 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
     'EXCEPTION_HANDLER': 'api.handlers.hacksoft_proposed_exception_handler',
+}
+
+# django setting.
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://redis:6379/1',
+    }
+}
+CACHEOPS_REDIS = "redis://redis:6379/1"
+
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_BACKEND_URL = "redis://redis:6379/0"
+
+
+# cacheops
+CACHEOPS = {
+    # Automatically cache any User.objects.get() calls for 15 minutes
+    # This also includes .first() and .last() calls,
+    # as well as request.user or post.author access,
+    # where Post.author is a foreign key to auth.User
+    'auth.user': {'ops': 'get', 'timeout': 60*15},
+
+    # Automatically cache all gets and queryset fetches
+    # to other django.contrib.auth models for an hour
+    'auth.*': {'ops': {'fetch', 'get'}, 'timeout': 60*60},
+
+    # Cache all queries to Permission
+    # 'all' is an alias for {'get', 'fetch', 'count', 'aggregate', 'exists'}
+    'auth.permission': {'ops': 'all', 'timeout': 60*60},
+
+    # Enable manual caching on all other models with default timeout of an hour
+    # Use Post.objects.cache().get(...)
+    #  or Tags.objects.filter(...).order_by(...).cache()
+    # to cache particular ORM request.
+    # Invalidation is still automatic
+    '*.*': {'ops': (), 'timeout': 60*2},
+
+    # NOTE: binding signals has its overhead, like preventing fast mass deletes,
+    #       you might want to only register whatever you cache and dependencies.
+
+    # Finally you can explicitely forbid even manual caching with:
+    'some_app.*': None,
 }

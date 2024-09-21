@@ -29,6 +29,10 @@ services:
       - POSTGRES_DB=postgres
     networks:
       - djangonetwork
+  redis:
+    image: redis:alpine
+    networks:
+      - djangonetwork
 
 volumes:
   postgres_data:
