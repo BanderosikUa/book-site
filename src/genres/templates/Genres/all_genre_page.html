@@ -32,7 +32,7 @@
                         <div class='container'>
                             <h3><a href='{{ genre.get_absolute_url }}' style='padding-left:12px;color:inherit;text-decoration:inherit;'>{{genre.name}}</a></h3>
                             <div class="owl-carousel owl-theme">
-                                {% for book in genre.books %}
+                                {% for book in genre.books.all %}
                                     <div class="ms-2 me-2">
                                         <a href="{% url 'book' book.slug %}"><img class='owl-lazy' data-src="{{book.photo.url}}"></a>
                                     </div>

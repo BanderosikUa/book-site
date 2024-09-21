@@ -23,6 +23,7 @@ class Genre(NameStampedModel, HitCountMixin):
     def __str__(self):
         return self.name
 
+    @property
     def get_absolute_url(self):
         return reverse("genre", kwargs={"genre_slug": self.slug})+'?ordering=Popular'
 
