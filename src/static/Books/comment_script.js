@@ -211,7 +211,7 @@ function comment_html(el){
                 </div>
                 <div class='row' style='padding-top:10px'>
                     <div class="comment">
-                        ${el.comment}
+                        ${el.body}
                         <ul class="list-inline"
                             style="padding-top: 20px">
                             <li class="list-inline-item">

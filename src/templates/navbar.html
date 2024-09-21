@@ -32,7 +32,9 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-genres" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Genres
             </a>
-            <ul class="dropdown-menu columns text-center" aria-labelledby="navbarDropdown-genres" id='genres-menu'></ul>
+            <ul class="dropdown-menu columns text-center" aria-labelledby="navbarDropdown-genres" id='genres-menu'>
+                <li><a class="dropdown-item" href="{% url 'all-genres' %}?ordering=Popular">All genres!</a></li>
+            </ul>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'all-authors' %}">Authors</a>
