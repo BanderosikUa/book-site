@@ -96,19 +96,24 @@
 <script src="{% static 'hitcount/jquery.postcsrf.js' %}"></script>
 {% load hitcount_tags %}
 {% get_hit_count_js_variables for author as hitcount %}
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-  // use the template tags in our JavaScript call
-  $.postCSRF("{{ hitcount.ajax_url }}", { hitcountPK : "{{ hitcount.pk }}" })
-    .done(function(data){
-      $('<i />').text(data.hit_counted).attr('id','hit-counted-value').appendTo('#hit-counted');
-      $('#hit-response').text(data.hit_message);
-      console.log('success')
-  }).fail(function(data){
-      console.log('POST failed');
-      console.log(data);
-  });
-});
+<script>
+$.ajax({
+    type:"POST",
+    url:"{% url 'hit_ajax' %}",
+    headers: {
+        'X-CSRFToken': csrftoken
+    },
+    data: {hitcountPK: "{{ hitcount.pk }}"},
+    success: function(response){
+        $('<i />').text(response.hit_counted).attr('id','hit-counted-value').appendTo('#hit-counted');
+        $('#hit-response').text(response.hit_message);
+        console.log('success')
+    },
+    error: function(response){
+        console.log('POST failed');
+        console.log(response);
+    }
+})
 </script>
 
 {% endblock scripts %}

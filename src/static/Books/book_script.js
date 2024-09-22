@@ -84,7 +84,7 @@ const RateBook = (rate_value) =>{
         
         $.ajax({
             type: 'POST',
-            url: '/rating/create',
+            url: '/rating/create/',
             headers: {
                 'X-CSRFToken': csrftoken
             },
@@ -119,7 +119,7 @@ const UserBookmarking = () =>{
         
         $.ajax({
             type: "POST",
-            url: "/bookmarks/create",
+            url: "/bookmarks/create/",
             headers: {
                 'X-CSRFToken': csrftoken
             },
@@ -157,7 +157,7 @@ const SetUserBookmark = () => {
 
     $.ajax({
         type: "GET",
-        url: `/books/${BookPk}/bookmarks`,
+        url: `/books/${BookPk}/bookmarks/`,
         success: function(response){
             if(response.bookmarks){
                 const UserBookmark = BookmarkButtons[response.bookmarks-1]
@@ -182,6 +182,5 @@ function main(){
     getUserValue()
     setRatingActiveWidth(ratingValue.textContent);
     SetRating();
-    SetUserBookmark();
     UserBookmarking();
 }

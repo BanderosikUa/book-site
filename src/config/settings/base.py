@@ -42,12 +42,12 @@ INSTALLED_APPS = [
 
 # apps
 INSTALLED_APPS += [
+                   'users',
                    'api',
                    'authors',
                    'genres',
                    'books',
                    'core',
-                   'users',
                    'chapters',
                    ]
 

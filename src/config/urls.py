@@ -4,6 +4,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic import TemplateView
 
+from hitcount.views import HitCountJSONView
+
 from users.views import *
 
 urlpatterns = [
@@ -12,6 +14,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('hitcount/', include('hitcount.urls', namespace='hitcount')),
+    path('hit/ajax/', HitCountJSONView.as_view(), name='hit_ajax'),
     path('api/v1/', include('api.urls')),
     path('', include('core.urls')),
     path('', include('chapters.urls')),
