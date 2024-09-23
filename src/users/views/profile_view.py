@@ -17,10 +17,9 @@ class ProfileView(DetailView):
         user = context['profile_user']
 
         context['books_reading'] = (
-            user.books
-            .filter(userbookrelation__bookmarks=2)
+            user.bookrelations
+            .filter(bookmarks=2)
             )
-
         return context
 
 
