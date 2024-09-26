@@ -1,36 +1,38 @@
 ## Requirements
-To install all libraries run the following:
-`pip install -r requirements.txt`
+To install all necessary libraries, run:
 
-Also, you need set up your virtual environment.
-
-### Settings
-Converted to python package, that contains base, local, production, staging and
-test .py files for all servers we need to start.
-
-To start server use this command:
-```python
-python manage.py runserver --settings=config.settings.local(or other server we need)
+```bash
+pip install -r requirements.txt
 ```
 
-You also can set DJANGO_SETTINGS_MODULE environment variable.
+Make sure to set up your virtual environment before proceeding.
+
+### Settings
+This project uses a Python package for settings, with configurations for base, local, production, staging, and test environments.
+
+To start the server, use:
+```python
+python manage.py runserver --settings=config.settings.local
+```
+(Replace local with the desired environment.)
+
+
+Alternatively, you can set the DJANGO_SETTINGS_MODULE environment variable:
 
 Windows command: `set DJANGO_SETTINGS_MODULE=config.settings.local`
 
-until venv is started. To add permanent variable add this line in venv/Scripts/activate.bat
+To make this setting permanent, add the following line to venv/Scripts/activate.bat:
 ### Database
-Db used in this project is a PostgresSQL.
+The project uses PostgreSQL as the database.
 
 #### Env
-Collect all your secret keys in config/settings/.env file.
-For template .env check env_example file in config/settings, don't forget to rename the file.
+Store all your secret keys in the config/settings/.env file. For an example, check the env_example file in config/settings and rename it to .env.
 
-#### Random data fill script
-If you wanna fill your database with data, then just download book database from here: https://www.kaggle.com/datasets/lukaanicin/book-covers-dataset.
-After unzip files in statitcfiles dir and run 
+#### Populating the Database
+To populate your database with sample data, download the book dataset from here[https://www.kaggle.com/datasets/lukaanicin/book-covers-dataset]. After unzipping the files into the staticfiles directory, run:
 ```python
 python manage.py fill_db [--books] [--genres]. 
 ```
 Where --books and --genres is optional params that
 
-define amount of genres and amount of books in separate genre.
+Both --books and --genres are optional parameters that specify the number of books and genres.

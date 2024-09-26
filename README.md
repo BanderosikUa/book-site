@@ -1,15 +1,17 @@
 # Book-site
+Welcome to Book-site, a comprehensive online platform for book lovers!
+https://bookly.banderosik.click
 
-The studying website contains:
-- Books
-- Notifications
-- Genres
-- Authors
-- Commenting
-- Like, dislike comment
-- Star rating
-- Modal auth
-- User profile
+
+Features:
+- Explore a vast collection of Books
+- Stay updated with Notifications
+- Browse by Genres
+- Discover new authors and their works in Authors
+- Engage with the community through Commenting and Like/Dislike comments
+- Rate your favorite books with Star ratings
+- Securely access your account with Modal auth
+- Personalize your experience with User profile
 
 # How pages are looking:
 
@@ -31,4 +33,4 @@ The studying website contains:
 <p align="center"><img src="Readme_assets/genres-all.gif" width = 85% ></p>
 
 
-For more settings configuration, open the "src" folder.
+Configuration: For more settings configuration, open the "src" folder.
