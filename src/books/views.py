@@ -33,12 +33,12 @@ class BookView(DetailView):
 
         create_comment_form = CommentCreateForm()
         if self.request.user.is_authenticated:
-            user_relation = UserBookRelation.objects.filter(book=book)\
+            user_relation, _ = UserBookRelation.objects.filter(book=book)\
                                                     .get_or_create(
                                                         user=self.request.user,
                                                         book=book
                                                         )
-            context['user_relation'] = user_relation[0]
+            context['user_relation'] = user_relation
         
         context['Book'] = book
         context['comment_create_form'] = create_comment_form

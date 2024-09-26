@@ -53,9 +53,12 @@ class BookListApi(APIView):
 class BookGetApi(APIView):
     class OutputSerializer(BookShortSerializer):
 
-        class Meta(BookShortSerializer.Meta):
-            fields = BookShortSerializer.Meta.fields
-            fields += ["about", ]
+        class Meta:
+            model = Book
+            fields = ['id', 'name', 'author', 'genres', 
+                     'age_category', 'time_created',
+                     'time_modified', 'views', 'avg_rating',
+                     'slug', 'photo', 'about']
     
     class FilterSerializer(serializers.Serializer):
         from_date = serializers.DateTimeField(required=False)

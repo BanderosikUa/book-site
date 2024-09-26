@@ -21,8 +21,9 @@ function InputActive(){
         event.preventDefault()
         $.ajax({
             type: "POST",
-            url: '/validate-email-form/',
+            url: '/auth/validate/email/',
             data: $(this).serialize()+`&url=${$('#email-form').attr('url')}`,
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
             success: function(response){
                 if (response.error){
                     $('#send-email').html(response.form)

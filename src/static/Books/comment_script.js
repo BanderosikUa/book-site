@@ -14,7 +14,7 @@ const LikeComment = () =>{
 
         $.ajax({
             type: "GET",
-            url: `/comments/${ClickedId}/like`,
+            url: `/comments/${ClickedId}/like/`,
             csrfmiddlewaretoken: csrftoken,
             success: function(response){
                 $(`#like-${ClickedId}`).find('span').text(response.likes)
@@ -52,7 +52,7 @@ const DislikeComment = () =>{
 
         $.ajax({
             type: "GET",
-            url: `/comments/${ClickedId}/dislike`,
+            url: `/comments/${ClickedId}/dislike/`,
             csrfmiddlewaretoken: csrftoken,
             success: function(response){
                 $(`#dislike-${ClickedId}`).find('span').text(response.dislikes)
@@ -87,7 +87,7 @@ var visible = 0
 const GetCommentData = () =>{
     $.ajax({
         type: "GET",
-        url: `/books/${BookPk}/comments`,
+        url: `/books/${BookPk}/comments/`,
         csrfmiddlewaretoken: csrftoken,
         dataType: 'json',
         data: {offset: visible},
@@ -151,7 +151,7 @@ $(document).on('click', '#delete-comment', function(e){
     var comment_pk = $(this).attr('delete_id')
     $.ajax({
       type: 'GET',
-      url: `/comments/${comment_pk}/delete`,
+      url: `/comments/${comment_pk}/delete/`,
       csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
       success: function(response){
         if(response.deleted){
@@ -172,7 +172,7 @@ $(document).on('submit', '#CommentForm', function(e){
     e.preventDefault()
     $.ajax({
         type: "POST",
-        url: "/comments/create",
+        url: "/comments/create/",
         credentials: 'include',
         headers: {
             'X-CSRFToken': csrftoken
@@ -199,40 +199,36 @@ $(document).on('submit', '#CommentForm', function(e){
 
 function comment_html(el){
     html = `<div id='comment-${el.id}' style='padding-top:20px'><div class="row border">
-            <div class="col-1 border-right text-center">
-                <a href="${el.user.url}}" style='href-unstyle'><img class="border rounded-circle"
-                src="${el.user.avatar}" style="width: 80px;height: 60px;"></a>
-            </div>
-                <div class="col-11">
-                <div class="row">
-                        <span><a href="${el.user.url}}" class='href-unstyle'>${el.user.username}</a></span>
-                        <span style="padding-top:10px">${new Date(el.time_created).toLocaleString("en-US")}</span>
-                    <hr style='margin: 0em; border-width: 2px'>
-                </div>
-                <div class='row' style='padding-top:10px'>
-                    <div class="comment">
-                        ${el.body}
-                        <ul class="list-inline"
-                            style="padding-top: 20px">
-                            <li class="list-inline-item">
-                                <form action="" method="POST" class="like-form-comment" data-form-id="${el.id}"><button
-                                class="" id="like-${el.id}" type="submit"
-                                style="background-color: Transparent; background-repeat:no-repeat;border: none;">
-                                    <i class="fa fa-thumbs-up"></i>
-                                    <span id="span-like-${el.id}" class="" style="">${el.likes}</span>
-                                </button></form>
-                            </li>
-                            <li class="list-inline-item">
-                                <form action="" method="POST" class="dislike-form-comment" data-form-id="${el.id}">
-                                    <button class="" id="dislike-${el.id}" type="submit"
-                                    style="background-color: Transparent; background-repeat:no-repeat;border: none;">
-                                        <i class="fa fa-thumbs-down"></i>
-                                        <span id="span-dislike-${el.id}" class="" style="">${el.dislikes}</span>
-                                    </button></form>
-                            </li>`
+            <div class="col-12">
+                            <div class="row flex-row h-100">
+                                <div class="col-sm-6 col-lg-2 col-md-3 flex-shrink-1"><a href="${el.user.url}}" style='href-unstyle'><img class="border rounded-circle pfp"
+                                    src="${el.user.avatar}"></a></div>
+                                <div class="col-sm-6 col-lg-10 col-md-9 flex-shrink-1">
+                                    <span>${el.user.username}</span>
+                                    <p style="padding-top:10px">${el.time_created}</p>
+                                </div>
+                                <div class="comment h-100 flex-grow-1">
+                                    <span class="body">${el.body}</span>
+                                    <ul class="list-inline reactions">
+                                        <li class="list-inline-item"><div>
+                                            <i
+                                            class="fa fa-thumbs-up"></i>
+                                            <span id="span-like-${el.id}"
+                                            class=""
+                                            style="">${el.likes}</span></div>
+                                        </li>
+                                        <li class="list-inline-item">
+                                                <div style='padding-left:10px'>
+                                                    <i
+                                                    class="fa fa-thumbs-down"></i>
+                                                    <span id="span-dislike-${el.id}"
+                                                    class=""
+                                                    style="">${el.dislikes}</span><div>
+                                        </li>
+    `
     if(el.is_creator){
         html += `<li class="list-inline-item"><a href="#" class='href-unstyle' id='delete-comment' style='color:red' delete_id=${el.id}>Delete</a></li>`
     }
-    html += `</ul></div></div></div></div></div></div>`
+    html += `</ul></div></div></div></div>`
     return html
 }

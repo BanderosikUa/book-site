@@ -31,7 +31,7 @@ $(document).ready(function(){
         event.preventDefault();
         $.ajax({
             type: "POST",
-            url: '/validate-login-form/',
+            url: '/auth/login/',
             csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
             data: $(this).serialize(),
             success: function(response){

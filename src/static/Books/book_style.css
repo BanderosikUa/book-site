@@ -1,32 +1,32 @@
-.rating{
+.rating {
     display: flex;
     align-items: flex-end;
-    font-size:40px;
+    font-size: 40px;
     line-height: 0.75;
     padding: 10px 0px 0px 5px;
-  }
+}
 
-  .rating__body{
+.rating__body {
     position: relative;
-  }
+}
 
 
-  .rating__body::before{
+.rating__body::before {
     content: "★★★★★";
-    color:rgb(177, 177, 177);
+    color: rgb(177, 177, 177);
     display: block;
-  }
+}
 
-  .rating__active{
+.rating__active {
     position: absolute;
     width: 0%;
     height: 100%;
     top: 0;
     left: 0;
-    overflow: hidden ;
-  }
+    overflow: hidden;
+}
 
-  .rating__active::before{
+.rating__active::before {
     content: "★★★★★";
     position: absolute;
     height: 100%;
@@ -34,27 +34,41 @@
     left: 0;
     color: rgb(241, 218, 10);
 
-  }
+}
 
-  .rating__items{
-      display: flex;
-      position: absolute;
-      width: 100%;
-      top: 0;
-  }
+.rating__items {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
 
-  .rating__item{
-      flex: 0 0 20%;
-      height: 32px;
-      opacity: 0%;
-  }
+.rating__item {
+    flex: 0 0 20%;
+    height: 32px;
+    opacity: 0%;
+}
 
-  .rating__value{
+.rating__value {
     font-size: 50%;
     line-height: 1;
     padding: 0px 0px 0px 10px;
-  }
+}
 
-  .not-visible{
+.not-visible {
     display: none;
-  }
+}
+
+.pfp {
+    width: 100%;
+    height: 100%;
+}
+
+.comment{
+    border-top: outset;
+    /* height: initial; */
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1; /* Makes the comment fill available height */
+    display: flex;
+}

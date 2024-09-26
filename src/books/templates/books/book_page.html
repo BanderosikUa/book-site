@@ -67,7 +67,7 @@ $.ajax({
                                     </div>
                                     <div class="rating__value">{{Book.avg_rating}}</div>
                                 </div>
-                                {%if user_relation %}{% if user_relation.rate %}<span id="user_checked_value">Your rate: {{ user_relation.rate }}</span>{% endif %}{% endif %}
+                                <span style="" id="user_checked_value">{% if user_relation.rate %} Your rate: {{ user_relation.rate }}{% endif %}</span>
                                 </form>
                         </div>
                         <div class="text-start col-xs-12 col-md" id="text" style="padding-left: 20px;padding-right: 0px;margin-bottom: 0px;margin-left: 13px;font-size: 14px;">
@@ -92,13 +92,25 @@ $.ajax({
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
                                         <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle border rounded-pill" id="dropdownMenuButton1" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fa fa-bookmark"></i><span style="margin-left: 7px;">Add this book</span></button>
+                                            <button class="btn btn-secondary dropdown-toggle border rounded-pill" id="dropdownMenuButton1" aria-expanded="false" data-bs-toggle="dropdown" type="button">
+                                                {% if user_relation.bookmarks == 1 %}
+                                                <i class="fa fa-clock-o"></i><span style="margin-left: 11px;">Plan to read</span>
+                                                {% elif user_relation.bookmarks == 2 %}
+                                                <i class="fa fa-book"></i><span style="margin-left: 11px;">Reading</span>
+                                                {% elif user_relation.bookmarks == 3 %}
+                                                <i class="fa fa-check"></i><span style="margin-left: 11px;">Read</span>
+                                                {% elif user_relation.bookmarks == 4 %}
+                                                <i class="fa fa-remove"></i><span style="margin-left: 11px;">Abandonded</span>
+                                                {% else %}
+                                                <i class="fa fa-bookmark"></i><span style="margin-left: 7px;">Add this book</span>
+                                                {% endif %}
+                                            </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                    <li><button class="dropdown-item bookmark" type='submit' value='1'><i class="fa fa-clock-o"></i><span style="margin-left: 11px;">Plan to read</span></button></li>
-                                                    <li><button class="dropdown-item bookmark" type='sumbit' value='2'><i class="fa fa-book"></i><span style="margin-left: 11px;">Reading</span></button></li>
-                                                    <li><button class="dropdown-item bookmark" type='sumbit' value='3'><i class="fa fa-check"></i><span style="margin-left: 11px;">Read</span></button></li>
-                                                    <li><button class="dropdown-item bookmark" type='sumbit' value='4'><i class="fa fa-remove"></i><span style="margin-left: 11px;">Abandonded</span></button></li>
-                                            </ul>>
+                                                <li><button class="dropdown-item bookmark" type='submit' value='1' {% if user_relation.bookmarks == 1 %} style="background-color:orange"{% endif %}><i class="fa fa-clock-o"></i><span style="margin-left: 11px;">Plan to read</span></button></li>
+                                                <li><button class="dropdown-item bookmark" type='sumbit' value='2'{% if user_relation.bookmarks == 2 %} style="background-color:orange"{% endif %}><i class="fa fa-book"></i><span style="margin-left: 11px;">Reading</span></button></li>
+                                                <li><button class="dropdown-item bookmark" type='sumbit' value='3'{% if user_relation.bookmarks == 3 %} style="background-color:orange"{% endif %}><i class="fa fa-check"></i><span style="margin-left: 11px;">Read</span></button></li>
+                                                <li><button class="dropdown-item bookmark" type='sumbit' value='4'{% if user_relation.bookmarks == 4 %} style="background-color:orange"{% endif %}><i class="fa fa-remove"></i><span style="margin-left: 11px;">Abandonded</span></button></li>
+                                            </ul>
                                         </div>
                                     </li>
                                     <li class="list-inline-item">

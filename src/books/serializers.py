@@ -40,13 +40,15 @@ class BookShortSerializer(serializers.ModelSerializer):
     genres = serializers.SerializerMethodField()
     views = serializers.SerializerMethodField()
     avg_rating = serializers.SerializerMethodField()
+    url = serializers.URLField(source="get_absolute_url")
     
     class Meta:
         model = Book
         fields = ['id', 'name', 'author', 'genres', 
                   'age_category', 'time_created',
-                  'time_modified', 'views', 'avg_rating']
-        abstract=True
+                  'time_modified', 'views', 'avg_rating',
+                  'slug', 'photo', 'url']
+        # abstract=True
         
     def get_author(self, obj):
         if obj.author:
@@ -61,4 +63,5 @@ class BookShortSerializer(serializers.ModelSerializer):
         return obj.hit_count.hits
     
     def get_avg_rating(self, obj):
-        return obj.avg_rating
+        if hasattr(obj, "avg_rating"):
+            return obj.avg_rating

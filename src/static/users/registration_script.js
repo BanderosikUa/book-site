@@ -21,7 +21,7 @@ $(document).ready(function(){
           event.preventDefault()
           $.ajax({
               type: "POST",
-              url: '/validate-registration-form/',
+              url: '/auth/register/',
               data: $(this).serialize(),
               success: function(response){
                   if (response.error){
