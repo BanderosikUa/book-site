@@ -6,11 +6,7 @@
 <script src="{% static 'js/navbar_script.js' %}"></script>
 {% endblock %}
 
-
-
-
 <!-- Navbar -->
-  
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-secondary">
     <!-- Container wrapper -->
     <div class="container-fluid">
@@ -19,7 +15,7 @@
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fa fa-bars"></i>
       </button>
-  
+
       <!-- Collapsible wrapper -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Left links -->
@@ -90,16 +86,10 @@
           <li class="nav-item user-form">
               <a id='registration-link' href="javascript:void(null);" class="nav-link" data-mdb-target="#RegistrationModal" data-mdb-toggle="modal">
               Registration</a>
-              <div id='registration-li'>
-                {% include 'registration.html' %}
-              </div>    
           </li>
            <li class="nav-item user-form">
-            <a id='login-link' href="javascript:void(null);" class="nav-link" data-mdb-target="#LoginModal" data-mdb-toggle="modal">
+           <a id='login-link' href="javascript:void(null);" class="nav-link" data-mdb-target="#LoginModal" data-mdb-toggle="modal">
               Login</a>
-            <div id='login-li'>
-              {% include 'login.html'%}
-            </div>
             <div id='send-email'>{% include 'password_reset/send_email_for_reset.html'%}</div>
           </li>
 
@@ -110,5 +100,4 @@
       <!-- Collapsible wrapper -->  
     </div>
     <!-- Container wrapper -->
-  </nav>
-  <!-- Navbar -->
+  </nav>  <!-- Navbar -->

@@ -15,6 +15,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="{% static 'bootstrap/assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/assets/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
     {% comment %} {% block scripts %}{% endblock scripts %} {% endcomment %}
 </head>
@@ -23,9 +24,12 @@
     {% include 'navbar.html' %}
     {% block content%}
     {% endblock%}
+    {% include 'registration.html' %}
+    {% include 'login.html' %}  
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-    <script src="{% static 'mdb5/js/mdb.min.js' %}"></script>
+    <script src="{% static 'mdb5/js/mdb.min.js' %}" defer></script>
     <script src="{% static 'js/base.js' %}"></script>
     {% block scripts %}{% endblock scripts %}
 

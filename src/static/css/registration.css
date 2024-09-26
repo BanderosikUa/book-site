@@ -26,3 +26,7 @@
 .modal-backdrop {
     display: none;
 }
+
+body.modal-open {
+    padding-right: 0 !important;
+  }

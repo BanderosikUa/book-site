@@ -6,18 +6,6 @@ const UserId = $('#user-id').attr('userId')
 
 var visible = 0
 
-function formatDateTimeShort(dateTimeString) {
-    const date = new Date(dateTimeString);
-  
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-  
-    return `${year}-${month}-${day} ${hours}:${minutes}`;
-  }
-
 const GetCommentData = () =>{
     $.ajax({
         type: "GET",
@@ -37,8 +25,8 @@ const GetCommentData = () =>{
                             </a>
                         </div>
                         <div class="col-md-7 col-sm-6 col-lg-9">
-                            <div class="row flex-row h-100">
-                                <div class="col-sm-6 col-lg-2 col-md-3 flex-shrink-1"><a href="${el.user.url}}" style='href-unstyle'><img class="border rounded-circle pfp"
+                            <div class="row flex-row h-80">
+                                <div class="col-sm-6 col-lg-2 col-md-3 flex-shrink-1"><a href="${el.user.url}}" style='href-unstyle' class='d-flex justify-content-center'><img class="border rounded-circle pfp"
                                     src="${el.user.avatar}"></a></div>
                                 <div class="col-sm-6 col-lg-10 col-md-9 flex-shrink-1">
                                     <span>${el.user.username}</span>

@@ -4,9 +4,11 @@
 {% providers_media_js %}
 
 {% block scripts %}
+
 <link rel="stylesheet" href="{% static 'css/registration.css' %}">
 <script src="{% static 'users/registration_script.js' %}"></script>
 {% endblock scripts %}
+
 
 <div class="modal fade" id="RegistrationModal" tabindex="-1" aria-labelledby="RegistrationModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -74,9 +76,9 @@
               class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
           </div>
 
-          <p class="text-center text-muted mt-5 mb-0">Have already an account? 
+          {% comment %} <p class="text-center text-muted mt-5 mb-0">Have already an account? 
             <a id="login-link" href="javascript:void(null);" data-mdb-target="#LoginModal" data-mdb-toggle="modal"
-              class="fw-bold text-body"><u>Login here</u></a></p>
+              class="fw-bold text-body"><u>Login here</u></a></p> {% endcomment %}
 
         </form>
       </div>

@@ -1,3 +1,4 @@
+
 function InputActive(){
   $('.form-outline input').each(function(){
     if($(this).val()){

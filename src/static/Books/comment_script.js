@@ -198,37 +198,36 @@ $(document).on('submit', '#CommentForm', function(e){
 })
 
 function comment_html(el){
-    html = `<div id='comment-${el.id}' style='padding-top:20px'><div class="row border">
-            <div class="col-12">
-                            <div class="row flex-row h-100">
-                                <div class="col-sm-6 col-lg-2 col-md-3 flex-shrink-1"><a href="${el.user.url}}" style='href-unstyle'><img class="border rounded-circle pfp"
-                                    src="${el.user.avatar}"></a></div>
-                                <div class="col-sm-6 col-lg-10 col-md-9 flex-shrink-1">
-                                    <span>${el.user.username}</span>
-                                    <p style="padding-top:10px">${el.time_created}</p>
-                                </div>
-                                <div class="comment h-100 flex-grow-1">
-                                    <span class="body">${el.body}</span>
-                                    <ul class="list-inline reactions">
-                                        <li class="list-inline-item"><div>
-                                            <i
-                                            class="fa fa-thumbs-up"></i>
-                                            <span id="span-like-${el.id}"
-                                            class=""
-                                            style="">${el.likes}</span></div>
-                                        </li>
-                                        <li class="list-inline-item">
-                                                <div style='padding-left:10px'>
-                                                    <i
-                                                    class="fa fa-thumbs-down"></i>
-                                                    <span id="span-dislike-${el.id}"
-                                                    class=""
-                                                    style="">${el.dislikes}</span><div>
-                                        </li>
+    html = `<div id='comment-${el.id}' style='padding-top:20px'><div class="row border h-100 flex-row min-vh-50">
+                <div class="col-sm-5 col-lg-1 col-md-3 flex-shrink-1"><a href="${el.user.url}" style='href-unstyle' class='d-flex justify-content-center'><img class="border rounded-circle pfp"
+                    src="${el.user.avatar}"></a></div>
+                <div class="col-sm-7 col-lg-11 col-md-9 flex-shrink-1">
+                    <span>${el.user.username}</span>
+                    <p style="padding-top:10px">${formatDateTimeShort(el.time_created)}</p>
+                </div>
+                <div class="comment h-100 flex-grow-1">
+                    <span class="body">${el.body}</span>
+                    <ul class="list-inline reactions">
+                        <li class="list-inline-item">
+                            <form action="" method="POST" class="like-form-comment" data-form-id="${el.id}"><button
+                            class="" id="like-${el.id}" type="submit"
+                            style="background-color: Transparent; background-repeat:no-repeat;border: none;">
+                                <i class="fa fa-thumbs-up"></i>
+                                <span id="span-like-${el.id}" class="" style="">${el.likes}</span>
+                            </button></form>
+                        </li>
+                        <li class="list-inline-item">
+                            <form action="" method="POST" class="dislike-form-comment" data-form-id="${el.id}">
+                                <button class="" id="dislike-${el.id}" type="submit"
+                                style="background-color: Transparent; background-repeat:no-repeat;border: none;">
+                                    <i class="fa fa-thumbs-down"></i>
+                                    <span id="span-dislike-${el.id}" class="" style="">${el.dislikes}</span>
+                                </button></form>
+                        </li>
     `
     if(el.is_creator){
         html += `<li class="list-inline-item"><a href="#" class='href-unstyle' id='delete-comment' style='color:red' delete_id=${el.id}>Delete</a></li>`
     }
-    html += `</ul></div></div></div></div>`
+    html += `</ul></div></div>`
     return html
 }

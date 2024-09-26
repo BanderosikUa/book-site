@@ -25,14 +25,14 @@
                     </ul>
                     <h2 style='padding-top:10px'>Biography</h2>
                     <div style='padding-top:10px' class='border-top border-bottom row'>
-                        <div class='col-2'>
-                            <span class="image"><img class="rounded d-block mx-auto tooltip-title lazyloaded" title="#" width="180" height="180" src="{{author.photo.url}}"</span>
+                        <div class='col-md-3 col-sm-6'>
+                            <img class="rounded d-block mx-auto tooltip-title lazyloaded pfp" title="#" src="{{author.photo.url}}">
                         </div>
-                        <div class='col'>
+                        <div class='col-md-9 col-sm-6'>
                             {{author.biography | linebreaksbr}}
                         </div>
                     </div>
-                    <div class = 'row' style='padding-top:15px'>
+                    <div class='row' style='padding-top:15px'>
                         <h2>Books</h2>
                         <div class='container'>
                             <div class="owl-carousel owl-theme">

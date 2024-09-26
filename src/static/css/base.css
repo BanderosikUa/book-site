@@ -1,0 +1,10 @@
+.pfp {
+    width: 100%;
+    max-width: 150px;
+    /* height: 100%; */
+}
+
+.pfp-href{
+    justify-content: center;
+    display: flex;
+}
