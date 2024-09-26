@@ -35,10 +35,6 @@ def email_send_reset_view(request):
             return JsonResponse({'error': True, 'form': rendered_template})
 
 
-def reset_password_confirm_view(request):
-    pass
-
-
 def registration_validation_view(request):
     if request.method == 'POST':
         form = UserFormCreate(request.POST)
@@ -64,7 +60,3 @@ def login_validation_view(request):
             rendered_template = render_to_string('login.html', {'login_form': form},
                                                  request=request)
             return JsonResponse({'error': True, 'form': rendered_template})
-
-
-def login_view(request):
-    return redirect('#LoginModal')

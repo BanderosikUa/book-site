@@ -8,12 +8,12 @@
     <div class='row'>
         <div class='col-3'></div>
         <div class='col-6'>
-            <div class="row">
-                <div class="col-2">
-                    <div id="user-username" username="{{profile_user.username}}"></div>
-                    <span class='image'><img class="rounded lazyloaded" src="{{ profile_user.avatar.url }}" height="200" width="150"></span>
+            <div class="row profile-section">
+                <div class="col-md-3 col-sm-6">
+                    <div id="user-id" userId="{{profile_user.id}}"></div>
+                    <img class="rounded lazyloaded pfp" src="{{ profile_user.avatar.url }}">
                 </div>
-                <div class="col-10">
+                <div class="col-md-9 col-sm-6">
                     <h2>{{profile_user.username}}</h2>
                     <hr>
                     <div class='description'>
@@ -68,6 +68,7 @@
 <link rel="stylesheet" href="{% static 'OwlCarousel/owl.theme.default.min.css' %}">
 <link rel="stylesheet" href="{% static 'css/owl-carousel.css' %}">
 <link rel="stylesheet" href="{% static 'Books/book_style.css' %}">
+<link rel="stylesheet" href="{% static 'users/user_style.css' %}">
 
 <script src="{% static 'users/profile_script.js' %}" defer></script>
 <script src="{% static 'OwlCarousel/owl.carousel.js' %}"></script>

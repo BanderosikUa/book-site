@@ -1,9 +1,9 @@
+from unidecode import unidecode
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
-from unidecode import unidecode
 from django.utils.text import slugify
-from django.core.exceptions import ValidationError
 from django.core.validators import validate_slug
 
 

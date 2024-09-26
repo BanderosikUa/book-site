@@ -1,7 +1,4 @@
-from django.http import JsonResponse
 from django.views.generic import DetailView
-
-from ..services import get_user_comments_data
 
 from ..models import User
 
@@ -21,10 +18,3 @@ class ProfileView(DetailView):
             .filter(bookmarks=2)
             )
         return context
-
-
-def get_user_comments_view(request, user_slug, num_comments):
-    user = User.objects.get(slug=user_slug)
-    response = get_user_comments_data(user=user,
-                                      num_comments=num_comments)
-    return JsonResponse(response)

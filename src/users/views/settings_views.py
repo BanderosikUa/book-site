@@ -9,9 +9,10 @@ from ..forms import *
 from ..models import User, Profile
 
 
-class InformationSettingsView(UpdateView, LoginRequiredMixin):
+class InformationSettingsView(LoginRequiredMixin, UpdateView):
     model = User
     template_name = 'users/settings/information.html'
+    login_url = 'home'
     fields = ['avatar', 'username', 'email']
 
     def get_object(self):
@@ -23,9 +24,10 @@ class InformationSettingsView(UpdateView, LoginRequiredMixin):
         return reverse_lazy('profile-settings-information', kwargs={'user_id': user_id})
 
 
-class SiteSettingsView(UpdateView, LoginRequiredMixin):
+class SiteSettingsView(LoginRequiredMixin, UpdateView):
     model = Profile
-    template_name = 'users/settings/site_settings.html'
+    login_url = 'home'
+    template_name = 'users/settings/site.html'
     fields = ['description', 'age']
 
     def get_object(self):
@@ -37,9 +39,10 @@ class SiteSettingsView(UpdateView, LoginRequiredMixin):
         return reverse_lazy('profile-settings-site',
                             kwargs={'user_id': user_id})
 
-class NotificationsSettingsView(UpdateView, LoginRequiredMixin):
+class NotificationsSettingsView(LoginRequiredMixin, UpdateView):
     model = Profile
     template_name = 'users/settings/notifications.html'
+    login_url = 'home'
     fields = (
         'notificate_planning',
         'notificate_reading',
@@ -57,9 +60,10 @@ class NotificationsSettingsView(UpdateView, LoginRequiredMixin):
                             kwargs={'user_id': user_id})
 
 
-class SecuritySettingsView(PasswordChangeView, LoginRequiredMixin):
+class SecuritySettingsView(LoginRequiredMixin, PasswordChangeView):
     model = User
     template_name = 'users/settings/security.html'
+    login_url = 'home'
     form_class = ChangePasswordForm
 
     # def get_object(self):

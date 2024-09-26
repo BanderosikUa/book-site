@@ -1,10 +1,11 @@
-from attr import attrs
+from django import forms
+from django.contrib.auth.forms import (
+    UserCreationForm, AuthenticationForm, PasswordChangeForm
+    )
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Layout, Row, Column, Field, ButtonHolder, Submit
 
-from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
-from django.contrib.auth import authenticate
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox
 
