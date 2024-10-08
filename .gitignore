@@ -3,3 +3,4 @@ etc/
 .DS_Store
 venv/
 .env.prod.db
+!.env*_example
